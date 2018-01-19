@@ -16,7 +16,7 @@ rustup install nightly
 
 次のどちらかを選択してください。
 
-* A. GitHub からインストール
+* A. GitHub から直接インストール
 * B. ソースコードからインストール
 
 ##### A.GitHub から直接インストール

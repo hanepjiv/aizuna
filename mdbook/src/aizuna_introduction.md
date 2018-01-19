@@ -17,8 +17,10 @@ rustup install nightly
 GitHubの[repository][repository]から直接インストールします。
 
 ```shell
-cargo install --git https://github.com/hanepjiv/aizuna.git
+rustup run nightly cargo install --git https://github.com/hanepjiv/aizuna.git
 ```
+
+nightly toolchain を指定するため `rustup run nightly` が必要です。
 
 ##### ソースコードの入手
 GitHubの[repository][repository]からソースコードを入手します。

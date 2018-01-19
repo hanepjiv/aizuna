@@ -153,8 +153,9 @@
 </code></pre>
 <a class="header" href="print.html#github-からインストール" id="github-からインストール"><h5>GitHub からインストール</h5></a>
 <p>GitHubの<a href="https://github.com/hanepjiv/aizuna.git">repository</a>から直接インストールします。</p>
-<pre><code class="language-shell">cargo install --git https://github.com/hanepjiv/aizuna.git
+<pre><code class="language-shell">rustup run nightly cargo install --git https://github.com/hanepjiv/aizuna.git
 </code></pre>
+<p>nightly toolchain を指定するため <code>rustup run nightly</code> が必要です。</p>
 <a class="header" href="print.html#ソースコードの入手" id="ソースコードの入手"><h5>ソースコードの入手</h5></a>
 <p>GitHubの<a href="https://github.com/hanepjiv/aizuna.git">repository</a>からソースコードを入手します。</p>
 <pre><code class="language-shell">git clone https://github.com/hanepjiv/aizuna.git
@@ -713,12 +714,12 @@ maches[1] をサイコロの数 n 、 maches[2] をサイコロの種類 m と�
 <a class="header" href="print.html#設定ファイル-1" id="設定ファイル-1"><h5>設定ファイル</h5></a>
 <p>Aizunaがlibfringeを利用してコルーチンで動作するように、設定ファイルを書き換えてください。</p>
 <pre><code># aizuna v0.1.0
-serdever            = 0
-greeting            = &quot;aizuna v0.1.0&quot;
-driver              = &quot;Fringe&quot;
+serdever        = 0
+greeting        = &quot;aizuna v0.1.0&quot;
+driver          = &quot;Fringe&quot;
 fringe_stack_size   = 1048576
-path_db             = &quot;./db&quot;
-prefix              = &quot;,&quot;
+path_db         = &quot;./db&quot;
+prefix          = &quot;,&quot;
 </code></pre>
 <p><code>driver = &quot;Thread&quot;</code> を <code>driver = &quot;Fringe&quot;</code> に書き換えます。</p>
 <p><a href="./aizuna_config.html#driver-">Aizuna 設定 driver =</a>と

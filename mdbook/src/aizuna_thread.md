@@ -42,12 +42,12 @@ Aizunaがlibfringeを利用してコルーチンで動作するように、設�
 
 ```
 # aizuna v0.1.0
-serdever            = 0
-greeting            = "aizuna v0.1.0"
-driver              = "Fringe"
+serdever        = 0
+greeting        = "aizuna v0.1.0"
+driver          = "Fringe"
 fringe_stack_size   = 1048576
-path_db             = "./db"
-prefix              = ","
+path_db         = "./db"
+prefix          = ","
 ```
 
 `driver = "Thread"` を `driver = "Fringe"` に書き換えます。

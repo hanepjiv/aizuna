@@ -1,5 +1,7 @@
 # Aizuna 0.1
 
+* [![Build Status](https://travis-ci.org/hanepjiv/aizuna.svg?branch=master)](https://travis-ci.org/hanepjiv/aizuna)
+
 Aizunaはチャットツール上でテーブルトークRPGを遊ぶための支援ツールです。
 サーバとして動作し、チャットと連携して各データを管理します。
 

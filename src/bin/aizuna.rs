@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/06
-//  @date 2018/01/06
+//  @date 2018/01/19
 
 // ////////////////////////////////////////////////////////////////////////////
 // attribute  =================================================================
@@ -98,10 +98,7 @@ fn app() -> Result<()> {
 }
 // ============================================================================
 fn main() {
-    if let Err(x) = env_logger::init() {
-        eprintln!("{}", x);
-        return;
-    }
+    env_logger::init();
     if let Err(x) = app() {
         eprintln!("{}", x);
     }

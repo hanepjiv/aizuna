@@ -47,7 +47,6 @@ rustup override set nightly
 cargo run --release
 ```
 
-
 ## 初回起動
 
 #### 設定ファイルの新規作成

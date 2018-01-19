@@ -2,7 +2,7 @@
 
 ## 実行ファイル の取得
 
-### ソースからコンパイルする
+### インストール
 
 #### [Rust][Rust] nightly 環境の準備
 [Rust][Rust]を参照して開発環境(`rustup`, `cargo`)を準備してください。
@@ -12,8 +12,14 @@ nightly toolchaine をインストールします。
 ```shell
 rustup install nightly
 ```
+#### コンパイル
 
-##### GitHub からインストール
+次のどちらかを選択してください。
+
+* A. GitHub からインストール
+* B. ソースコードからインストール
+
+##### A.GitHub から直接インストール
 GitHubの[repository][repository]から直接インストールします。
 
 ```shell
@@ -22,7 +28,7 @@ rustup run nightly cargo install --git https://github.com/hanepjiv/aizuna.git
 
 nightly toolchain を指定するため `rustup run nightly` が必要です。
 
-##### ソースコードの入手
+##### B.ソースコードからインストール
 GitHubの[repository][repository]からソースコードを入手します。
 
 ```shell

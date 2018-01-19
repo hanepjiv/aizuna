@@ -18,6 +18,7 @@ Aizuna 0.1 では チャットサービスの [Discord][Discord] を対象とし
 
 * hanepjiv
     * mail:  <hanepjiv@gmail.com>
+    * twitter: [@haneojiv](https://twitter.com/hanepjiv)
     * blog: [https://hanepjiv.blogspot.jp/](https://hanepjiv.blogspot.jp/)
 
 ##### Repository

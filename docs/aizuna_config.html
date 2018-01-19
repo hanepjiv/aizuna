@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Aizuna 設定 - </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./aizuna.html"><strong>1.</strong> Aizuna 0.1</a></li><li><ul class="section"><li><a href="./aizuna_introduction.html"><strong>1.1.</strong> Aizuna イントロダクション</a></li><li><a href="./aizuna_term.html"><strong>1.2.</strong> Aizuna 用語</a></li><li><a href="./aizuna_config.html" class="active"><strong>1.3.</strong> Aizuna 設定</a></li><li><a href="./aizuna_command.html"><strong>1.4.</strong> Aizuna コマンド</a></li><li><a href="./aizuna_thread.html"><strong>1.5.</strong> Aizuna スレッドとコルーチン</a></li></ul></li><li><strong>2.</strong> Connectors</li><li><ul class="section"><li><a href="./discord.html"><strong>2.1.</strong> Discord</a></li></ul></li><li><strong>3.</strong> Rules</li><li><ul class="section"><li><a href="./shinen.html"><strong>3.1.</strong> ShinEn ご注意</a></li><li><ul class="section"><li><a href="./shinen_term.html"><strong>3.1.1.</strong> ShinEn 用語</a></li><li><a href="./shinen_config.html"><strong>3.1.2.</strong> ShinEn 設定</a></li><li><a href="./shinen_command.html"><strong>3.1.3.</strong> ShinEn コマンド</a></li></ul></li></ul></li><li><a href="./faq.html"><strong>4.</strong> FAQ</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./aizuna_config.html#aizuna-設定" id="aizuna-設定"><h1>Aizuna 設定</h1></a>
+<p>Aizunaの動作は設定ファイルによって制御されます。</p>
+<a class="header" href="./aizuna_config.html#aizuna-起動オプション" id="aizuna-起動オプション"><h2>Aizuna 起動オプション</h2></a>
+<p><code>aizuna --help</code>で起動オプションを確認できます。</p>
+<pre><code class="language-shell">$ aizuna --help
+
+aizuna v0.1.0
+
+Usage:
+    aizuna [Options]
+
+Options:
+    -v, --version   print version
+    -h, --help      print this help menu
+    -R, --root PATH set Aizuna root path. default '${HOME}/.config/aizuna'
+</code></pre>
+<a class="header" href="./aizuna_config.html#aizuna-ルートディレクトリ" id="aizuna-ルートディレクトリ"><h2>Aizuna ルートディレクトリ</h2></a>
+<p>設定ファイルが保存されるディレクトリを差します。</p>
+<p>デフォルトでは <code>{HOME}/.confog/aizuna/</code> です。</p>
+<p>ルートディレクトリは、Aizuna起動オプション <code>--root / -R</code> で 変更できます。</p>
+<pre><code>aizuna --root ./
+</code></pre>
+<p>Aizunaの実行プロセスはルートディレクトリに対してファイルの作成権限を必要とします。</p>
+<a class="header" href="./aizuna_config.html#設定ファイル" id="設定ファイル"><h2>設定ファイル</h2></a>
+<p>ルートディレクトリに存在する<code>config.toml</code>という名前の、toml形式のテキストファイルです。</p>
+<p>設定ファイルが存在しない場合、自動的に作成されます。</p>
+<pre><code class="language-toml"># -*- mode:toml; coding:utf-8-unix; -*-
+# /////////////////////////////////////////////////////////////////////////////
+# =============================================================================
+# aizuna v0.1.0
+serdever        = 0
+greeting        = &quot;aizuna v0.1.0&quot;
+driver          = &quot;Thread&quot;
+fringe_stack_size   = 1048576
+path_db         = &quot;./db&quot;
+prefix          = &quot;,&quot;
+# /////////////////////////////////////////////////////////////////////////////
+# =============================================================================
+[connectors.console]
+serdever        = 0
+enable          = true
+connector       = &quot;console&quot;
+# =============================================================================
+[connectors.discord-00]
+serdever        = 0
+enable          = false
+connector       = &quot;discord&quot;
+[connectors.discord-00.config]
+serdever        = 0
+token           = &quot;DISCORD_BOT_TOKEN&quot;
+# /////////////////////////////////////////////////////////////////////////////
+# =============================================================================
+[rules.shinen]
+serdever        = 0
+enable          = false
+prefix          = &quot;,&quot;
+[rules.shinen.config]
+serdever        = 0
+root            = &quot;SHINEN_ROOT_PATH&quot;
+# /////////////////////////////////////////////////////////////////////////////
+# =============================================================================
+[admin]
+console         = [&quot;.*&quot;]
+discord-00      = [&quot;DISCORD_USER_ID_00&quot;, &quot;DISCORD_USER_ID_01&quot;]
+</code></pre>
+<a class="header" href="./aizuna_config.html#serdever-" id="serdever-"><h3>serdever =</h3></a>
+<p>設定ファイルには<code>serdever = number</code>という項目がいくつか存在します。</p>
+<p>serdeverは&quot;serialize desserialize version&quot;の略で、
+設定ファイルの構成を管理するバージョンを表します。</p>
+<p><strong><code>serdever</code>は自動的に決定されるので、Aizunaから指示がないかぎり書き換えてはいけません</strong>。</p>
+<a class="header" href="./aizuna_config.html#セクション" id="セクション"><h3>セクション</h3></a>
+<a class="header" href="./aizuna_config.html#aizuna" id="aizuna"><h4>aizuna</h4></a>
+<hr />
+<a class="header" href="./aizuna_config.html#greeting-" id="greeting-"><h5>greeting =</h5></a>
+<p><a href="./aizuna_command.html#greeting">,greeting</a>コマンドによって、Aizunaが表示する文章です。
+自由に書き換えて構いません。</p>
+<hr />
+<a class="header" href="./aizuna_config.html#driver-" id="driver-"><h5>driver =</h5></a>
+<p>Aizunaの動作モードを下記の文字列で指定します。デフォルトは<code>&quot;Tread&quot;</code>です。</p>
+<ul>
+<li>&quot;Tread&quot;: OSスレッドで動作します。</li>
+<li>&quot;Fringe&quot;: libfringeを使用してコルーチンで動作します。</li>
+</ul>
+<p>詳しくは<a href="./aizuna_thread.html">Aizuna スレッドとコルーチン</a>を参照してください。</p>
+<hr />
+<a class="header" href="./aizuna_config.html#fringe_stack_size-" id="fringe_stack_size-"><h5>fringe_stack_size =</h5></a>
+<p><code>&quot;Fringe&quot;</code>モードで動作する場合のコルーチンのスタックサイズをバイト数で指定します。
+デフォルトは<code>1048576</code>(= 1024 * 1024 bytes = 1MB)です。</p>
+<p>詳しくは<a href="./aizuna_thread.html">Aizuna スレッドとコルーチン</a>を参照してください。</p>
+<hr />
+<a class="header" href="./aizuna_config.html#path_db-" id="path_db-"><h5>path_db =</h5></a>
+<p>Aizunaの情報を保持するデータベースへのパスです。デフォルトは<code>&quot;./db&quot;</code>です。</p>
+<p>相対パスを指定した場合、ルートディレクトリからのパスとして認識されます。
+絶対パスを指定することも可能です。</p>
+<p>データベースはAizunaによって管理されています。<strong>データベースの内容を書き換えてはいけません</strong>。</p>
+<hr />
+<a class="header" href="./aizuna_config.html#prefix-" id="prefix-"><h5>prefix =</h5></a>
+<p><a href="./aizuna_command.html">Aizuna コマンド</a>を識別するための接頭辞です。デフォルトは<code>&quot;,&quot;</code>です。</p>
+<pre><code class="language-toml">prefix = &quot;aizuna-&quot;
+</code></pre>
+<p>このように設定すれば</p>
+<pre><code>aizuna-help
+aizuna-2d6
+</code></pre>
+<p>このようにコマンドを使用することが出来ます。</p>
+<a class="header" href="./aizuna_config.html#connectors" id="connectors"><h4>[connectors]</h4></a>
+<p>外部のチャットサービスと接続するためのコネクタの設定を行います。</p>
+<p>コネクタには識別名を決定する必要があります。
+自動生成された設定ファイルには<code>console</code>と<code>discord00</code>が設定されています。</p>
+<pre><code class="language-toml">[connectors.console]
+serdever        = 0
+enable          = true
+connector       = &quot;console&quot;
+</code></pre>
+<pre><code class="language-toml">[connectors.discord-00]
+serdever        = 0
+enable          = false
+connector       = &quot;discord&quot;
+[connectors.discord-00.config]
+serdever        = 0
+token           = &quot;DISCORD_BOT_TOKEN&quot;
+</code></pre>
+<p><code>[connectors.${識別名}]</code>のように記述することでコネクタの設定を開始します。</p>
+<p>識別名はユーザの判別に使用され、同一のコネクタ識別名を持つユーザ同士のみがセッションを共有できます。
+<strong>セッションを作成したコネクタの識別名を書き換えてしまうと、
+セッションに接続できなくなってしまう場合があります</strong>。
+よってコネクタ識別名の変更は推奨されません。</p>
+<hr />
+<a class="header" href="./aizuna_config.html#enable-" id="enable-"><h5>enable =</h5></a>
+<p>コネクタを使用するかどうかのbool値です。<code>true</code>, <code>false</code>で指定します。</p>
+<p><code>false</code>を指定した場合、そのコネクタは使用されません。</p>
+<hr />
+<a class="header" href="./aizuna_config.html#connector-" id="connector-"><h5>connector =</h5></a>
+<p>コネクタの種別を文字列で指定します。</p>
+<ul>
+<li><code>&quot;console&quot;</code>: デバックコンソールを使用します。</li>
+<li><code>&quot;discord&quot;</code>: Discordを使用します。</li>
+</ul>
+<blockquote>
+<p>デフォルトでは[connectors.console]が有効、[connectors.discode00]が無効と設定されています。</p>
+<p>実運用環境ではデバックコンソールを無効にし、その他のコネクタを有効化することを推奨します。</p>
+<p>Aizunaは全てのコネクタが終了するまで、プロセスを終了しません。<a href="./aizuna_command.html#quit--q">,quit</a>を参照してください。</p>
+</blockquote>
+<hr />
+<a class="header" href="./aizuna_config.html#connectors識別名config" id="connectors識別名config"><h5>[connectors.${識別名}.config]</h5></a>
+<p>コネクタによっては追加の設定が必要となります。</p>
+<a class="header" href="./aizuna_config.html#discord" id="discord"><h6>&quot;discord&quot;</h6></a>
+<p><a href="./discord.html#%E8%A8%AD%E5%AE%9A">Discord 設定</a>を参照してください。</p>
+<a class="header" href="./aizuna_config.html#rules" id="rules"><h4>[rules]</h4></a>
+<p>Aizunaで使用するゲームのルールを設定します。</p>
+<p>ルールは識別名で区別されます。
+自動生成された設定ファイルには<code>shinen</code>が設定されています。</p>
+<pre><code class="language-toml">[rules.shinen]
+serdever        = 0
+enable          = false
+prefix          = &quot;,&quot;
+[rules.shinen.config]
+serdever        = 0
+root            = &quot;SHINEN_ROOT_PATH&quot;
+</code></pre>
+<p><code>[rules.${識別名}]</code>のように記述することでルールの設定を開始します。</p>
+<hr />
+<a class="header" href="./aizuna_config.html#enable--1" id="enable--1"><h5>enable =</h5></a>
+<p>ルールを使用するかどうかのbool値です。<code>true</code>, <code>false</code>で指定します。</p>
+<p><code>false</code>を指定した場合、そのルールは使用されません。</p>
+<hr />
+<a class="header" href="./aizuna_config.html#prefix--1" id="prefix--1"><h5>prefix =</h5></a>
+<p>コマンドでルールを識別する接頭辞を示す文字列です。</p>
+<hr />
+<a class="header" href="./aizuna_config.html#rules識別名config" id="rules識別名config"><h5>[rules.${識別名}.config]</h5></a>
+<p>ルールによっては追加の設定が必要となります。</p>
+<a class="header" href="./aizuna_config.html#shinen" id="shinen"><h6>&quot;shinen&quot;</h6></a>
+<p><a href="./shinen_config.html">ShinEn 設定</a>を参照してください。</p>
+<a class="header" href="./aizuna_config.html#admin" id="admin"><h4>[admin]</h4></a>
+<p>コネクタ毎にAizunaの管理者として扱われるユーザを設定します。</p>
+<pre><code>${connetor識別名} = [&quot;${Rust正規表現}&quot;, &quot;${Rust正規表現}&quot;]
+</code></pre>
+<p>デフォルトではconsole接続が管理者として扱われます。</p>
+<p>Discord接続はデフォルトでは無効化されています。
+有効化する場合、管理者として扱うDiscordID(数字列)を指定してください</p>
+<pre><code class="language-toml">[admin]
+console         = [&quot;.*&quot;]
+discord-00      = [&quot;DISCORD_USER_ID_00&quot;, &quot;DISCORD_USER_ID_01&quot;]
+</code></pre>
+<p>管理者を設定していないコネクタは、<a href="./aizuna_command.html#quit--q">,quit</a>を使用できません。
+その場合、Aizunaプロセスを強制終了させなくてはいけないことに注意してください。
+タイミングによってはデータベースに書き込みが完了していないデータが消失してしまう可能性があります。
+<strong>管理者権限を与えるユーザを必ず設定してください</strong>。</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a rel="prev" href="./aizuna_term.html" class="mobile-nav-chapters previous" title="Previous chapter">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="./aizuna_command.html" class="mobile-nav-chapters next" title="Next chapter">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./aizuna_term.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./aizuna_command.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

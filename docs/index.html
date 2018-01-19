@@ -1,0 +1,189 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Aizuna 0.1 - </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./aizuna.html" class="active"><strong>1.</strong> Aizuna 0.1</a></li><li><ul class="section"><li><a href="./aizuna_introduction.html"><strong>1.1.</strong> Aizuna イントロダクション</a></li><li><a href="./aizuna_term.html"><strong>1.2.</strong> Aizuna 用語</a></li><li><a href="./aizuna_config.html"><strong>1.3.</strong> Aizuna 設定</a></li><li><a href="./aizuna_command.html"><strong>1.4.</strong> Aizuna コマンド</a></li><li><a href="./aizuna_thread.html"><strong>1.5.</strong> Aizuna スレッドとコルーチン</a></li></ul></li><li><strong>2.</strong> Connectors</li><li><ul class="section"><li><a href="./discord.html"><strong>2.1.</strong> Discord</a></li></ul></li><li><strong>3.</strong> Rules</li><li><ul class="section"><li><a href="./shinen.html"><strong>3.1.</strong> ShinEn ご注意</a></li><li><ul class="section"><li><a href="./shinen_term.html"><strong>3.1.1.</strong> ShinEn 用語</a></li><li><a href="./shinen_config.html"><strong>3.1.2.</strong> ShinEn 設定</a></li><li><a href="./shinen_command.html"><strong>3.1.3.</strong> ShinEn コマンド</a></li></ul></li></ul></li><li><a href="./faq.html"><strong>4.</strong> FAQ</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./aizuna.html#aizuna-01" id="aizuna-01"><h1>Aizuna 0.1</h1></a>
+<p>Aizunaはチャットツール上でテーブルトークRPGを遊ぶための支援ツールです。
+サーバとして動作し、チャットと連携して各データを管理します。</p>
+<p>名前の由来であるアイズナが示すようにテーブルトークRPG
+『<a href="https://ja.wikipedia.org/wiki/%E6%B7%B1%E6%B7%B5_(%E3%82%B2%E3%83%BC%E3%83%A0)">深淵</a>』
+のカードをチャット上で管理する目的で開発されました。
+アイズナは『深淵』でネズミ使いが操る魔力あるネズミの名前です。ネズミ使い自身もアイズナと呼ばれます。</p>
+<p><a href="https://www.rust-lang.org">Rust</a> nightlyで記述されています。</p>
+<p>Aizuna 0.1 では チャットサービスの <a href="https://discordapp.com/">Discord</a> を対象として動作します。</p>
+<p><img src="./images/screenshot00.png" alt="screenshot00" /></p>
+<a class="header" href="./aizuna.html#author" id="author"><h5>Author</h5></a>
+<ul>
+<li>hanepjiv
+<ul>
+<li>mail:  <a href="mailto:hanepjiv@gmail.com">hanepjiv@gmail.com</a></li>
+<li>blog: <a href="https://hanepjiv.blogspot.jp/">https://hanepjiv.blogspot.jp/</a></li>
+</ul>
+</li>
+</ul>
+<a class="header" href="./aizuna.html#repository" id="repository"><h5>Repository</h5></a>
+<p><a href="https://github.com/hanepjiv/aizuna.git">https://github.com/hanepjiv/aizuna.git</a></p>
+<a class="header" href="./aizuna.html#license" id="license"><h5>License</h5></a>
+<ul>
+<li>MIT</li>
+<li>Apache-2.0</li>
+</ul>
+<a class="header" href="./aizuna.html#機能" id="機能"><h3>機能</h3></a>
+<ul>
+<li>ユーザ管理</li>
+<li>セッション管理</li>
+<li>サイコロ</li>
+<li>『深淵』
+<ul>
+<li>カード管理</li>
+</ul>
+</li>
+</ul>
+<a class="header" href="./aizuna.html#接続" id="接続"><h4>接続</h4></a>
+<p>Aizuna 0.1 では 下記の接続で動作します。</p>
+<ul>
+<li>デバッグ コンソール</li>
+<li><a href="https://discordapp.com/">Discord</a></li>
+</ul>
+<a class="header" href="./aizuna.html#動作環境" id="動作環境"><h3>動作環境</h3></a>
+<ul>
+<li><a href="https://www.rust-lang.org">Rust</a> nightly</li>
+</ul>
+<a class="header" href="./aizuna.html#動作確認環境" id="動作確認環境"><h4>動作確認環境</h4></a>
+<ul>
+<li>Linux(libc)</li>
+</ul>
+<a class="header" href="./aizuna.html#依存ライブラリ" id="依存ライブラリ"><h4>依存ライブラリ</h4></a>
+<p><a href="https://github.com/hanepjiv/aizuna/blob/master/Cargo.toml">Cargo.toml</a>を参照してくだささい。</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+
+                
+                    <a rel="next" href="./aizuna_introduction.html" class="mobile-nav-chapters next" title="Next chapter">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+
+            
+                <a href="./aizuna_introduction.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

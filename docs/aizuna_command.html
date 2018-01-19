@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Aizuna コマンド - </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./aizuna.html"><strong>1.</strong> Aizuna 0.1</a></li><li><ul class="section"><li><a href="./aizuna_introduction.html"><strong>1.1.</strong> Aizuna イントロダクション</a></li><li><a href="./aizuna_term.html"><strong>1.2.</strong> Aizuna 用語</a></li><li><a href="./aizuna_config.html"><strong>1.3.</strong> Aizuna 設定</a></li><li><a href="./aizuna_command.html" class="active"><strong>1.4.</strong> Aizuna コマンド</a></li><li><a href="./aizuna_thread.html"><strong>1.5.</strong> Aizuna スレッドとコルーチン</a></li></ul></li><li><strong>2.</strong> Connectors</li><li><ul class="section"><li><a href="./discord.html"><strong>2.1.</strong> Discord</a></li></ul></li><li><strong>3.</strong> Rules</li><li><ul class="section"><li><a href="./shinen.html"><strong>3.1.</strong> ShinEn ご注意</a></li><li><ul class="section"><li><a href="./shinen_term.html"><strong>3.1.1.</strong> ShinEn 用語</a></li><li><a href="./shinen_config.html"><strong>3.1.2.</strong> ShinEn 設定</a></li><li><a href="./shinen_command.html"><strong>3.1.3.</strong> ShinEn コマンド</a></li></ul></li></ul></li><li><a href="./faq.html"><strong>4.</strong> FAQ</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./aizuna_command.html#aizuna-コマンド" id="aizuna-コマンド"><h1>Aizuna コマンド</h1></a>
+<p>Aizunaの機能はチャットによる入力をコマンドとして解釈することで動作します。</p>
+<p>Aizunaは接頭辞(prefix: デフォルトでは&quot;,&quot;)から始まる文字列をコマンドとして認識します。</p>
+<p>接頭辞を変更するには<a href="./aizuna_config.html#prefix-">Aizuna 設定 prefix</a>を参照してください。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#help" id="help"><h4>,help</h4></a>
+<p>ヘルプメッセージを表示します。</p>
+<pre><code>,help
+</code></pre>
+<pre><code>Aizuna v0.1.0:
+ ,help              Print this message.
+ ,user / ,u         Print User info.
+ ,session / ,s      Session controll.
+ ,[0-9]*d[0-9]*     Dice roll. etc. ,2d6 / ,3d / ,d10
+ ,quit / ,Q         Aizuna logout server. Need administrator's authority.
+</code></pre>
+<hr />
+<a class="header" href="./aizuna_command.html#quit--q" id="quit--q"><h4>,quit / ,Q</h4></a>
+<p>Aizunaの接続を終了します。</p>
+<p><strong>Aizunaの管理者権限が必要です</strong>。</p>
+<pre><code>,quit
+,Q
+</code></pre>
+<p><strong>コマンドを送ったコネクタの接続のみを終了します</strong>。
+デバッグコンソールとDiscordを同時に起動しているような場合、
+その両方が<code>,quit</code>コマンドで終了されるまでAizunaは終了されません。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#greeting" id="greeting"><h4>,greeting</h4></a>
+<p>設定ファイルに記述された任意の文章を表示します。</p>
+<pre><code>,greeting
+</code></pre>
+<pre><code>Console: Whisper: aizuna v0.1.0
+</code></pre>
+<p>文章を変更するには<a href="./aizuna_config.html#greeting-">Aizuna 設定 greeting</a>を参照してください。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#d" id="d"><h4>,d</h4></a>
+<p>サイコロを振り結果を得ます。</p>
+<pre><code>,d
+Console: Send: 1d6 = [1] = 1.
+</code></pre>
+<pre><code>,2d6
+Console: Send: 2d6 = [5, 4] = 9.
+</code></pre>
+<p>正規表現で <code>,([0-9]*)d([0-9]*)</code> のパターンを受け付け、
+maches[1] をサイコロの数 n 、 maches[2] をサイコロの種類 m として認識します。</p>
+<p>n が省略された場合、n = 1、m が省略された場合、m = 6 になります。</p>
+<p>n の最大値は 99 に制限されます。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#user-u" id="user-u"><h4>,user ,u</h4></a>
+<p>ユーザ情報を表示します。</p>
+<pre><code>,user
+,u
+</code></pre>
+<pre><code>Console: Send: user: Uuid: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+</code></pre>
+<hr />
+<a class="header" href="./aizuna_command.html#session--s" id="session--s"><h4>,session / ,s</h4></a>
+<p>Aizuna セッションを管理します。</p>
+<pre><code>,session
+,s
+</code></pre>
+<p>{SUB_COMMAND}を省略した場合、<code>,session list</code>が指定されたように動作します。</p>
+<pre><code>,session {SUB_COMMAND} {ARGS..}
+,s {SUB_COMMAND} {ARGS..}
+</code></pre>
+<a class="header" href="./aizuna_command.html#sub_command" id="sub_command"><h5>{SUB_COMMAND}</h5></a>
+<a class="header" href="./aizuna_command.html#a-hrefsession-infoinfoa" id="a-hrefsession-infoinfoa"><h6><a href="./aizuna_command.html#session-info">info</a></h6></a>
+<p>現在のセッションの情報を表示します。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-listlista" id="a-hrefsession-listlista"><h6><a href="./aizuna_command.html#session-list">list</a></h6></a>
+<p>セッションの一覧を表示します。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-allalla" id="a-hrefsession-allalla"><h6><a href="./aizuna_command.html#session-all">all</a></h6></a>
+<p>閉じたセッションを含むセッションの一覧を表示します。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-defaultdefaulta" id="a-hrefsession-defaultdefaulta"><h6><a href="./aizuna_command.html#session-default">default</a></h6></a>
+<p>現在のセッションを設定します。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-newnewa" id="a-hrefsession-newnewa"><h6><a href="./aizuna_command.html#session-new">new</a></h6></a>
+<p>セッションを新規作成します。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-closeclosea" id="a-hrefsession-closeclosea"><h6><a href="./aizuna_command.html#session-close">close</a></h6></a>
+<p>現在のセッションを閉じます。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-reopenreopena" id="a-hrefsession-reopenreopena"><h6><a href="./aizuna_command.html#session-reopen">reopen</a></h6></a>
+<p>閉じられた現在のセッションを再開します。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-deletedeletea" id="a-hrefsession-deletedeletea"><h6><a href="./aizuna_command.html#session-delete">delete</a></h6></a>
+<p>閉じられた現在のセッションを消去します。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-titletitlea" id="a-hrefsession-titletitlea"><h6><a href="./aizuna_command.html#session-title">title</a></h6></a>
+<p>現在のセッションのタイトルを変更します。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-ownerownera" id="a-hrefsession-ownerownera"><h6><a href="./aizuna_command.html#session-owner">owner</a></h6></a>
+<p>現在のセッションのメンバーにセッションの所有者権限を与えます。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-waiverwaivera" id="a-hrefsession-waiverwaivera"><h6><a href="./aizuna_command.html#session-waiver">waiver</a></h6></a>
+<p>現在のセッションの所有者権限を放棄します。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-inviteinvitea" id="a-hrefsession-inviteinvitea"><h6><a href="./aizuna_command.html#session-invite">invite</a></h6></a>
+<p>現在のセッションにメンバーを追加します。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-kickkicka" id="a-hrefsession-kickkicka"><h6><a href="./aizuna_command.html#session-kick">kick</a></h6></a>
+<p>現在のセッションからメンバーを除外します。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-requestrequesta" id="a-hrefsession-requestrequesta"><h6><a href="./aizuna_command.html#session-request">request</a></h6></a>
+<p>セッションの所持者に参加要求を送ります。</p>
+<a class="header" href="./aizuna_command.html#a-hrefsession-byebyea" id="a-hrefsession-byebyea"><h6><a href="./aizuna_command.html#session-bye">bye</a></h6></a>
+<p>現在のセッションから脱退します。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#session-info" id="session-info"><h4>,session info</h4></a>
+<p>現在のセッションの情報を表示します。</p>
+<pre><code>,sesssion info
+,s info
+</code></pre>
+<hr />
+<a class="header" href="./aizuna_command.html#session-list" id="session-list"><h4>,session list</h4></a>
+<p>自分が参加しているセッションの一覧を表示します。</p>
+<pre><code>,sesssion list
+,s list
+</code></pre>
+<p>表示の見方については<a href="./aizuna_command.html#session-all">,session all</a>を参照してください。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#session-all" id="session-all"><h4>,session all</h4></a>
+<p>閉じたセッションを含む自分が参加しているセッションの一覧を表示します。</p>
+<pre><code>,sesssion all
+,s all
+</code></pre>
+<pre><code> * o   title0  shinen  2018-01-01 12:00 +09:00  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+   o x title1  shinen  2018-01-01 12:00 +09:00  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+   o   title2  shinen  2018-01-01 12:00 +09:00  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+</code></pre>
+<a class="header" href="./aizuna_command.html#" id=""><h6>*</h6></a>
+<p>自分の現在のセッションに表示されます。</p>
+<a class="header" href="./aizuna_command.html#o" id="o"><h6>o</h6></a>
+<p>自分が所持しているセッションに表示されます。</p>
+<a class="header" href="./aizuna_command.html#x" id="x"><h6>x</h6></a>
+<p>自分が所持している閉じたセッションに表示されます。</p>
+<a class="header" href="./aizuna_command.html#文字列" id="文字列"><h6>文字列</h6></a>
+<p>セッションのタイトル。</p>
+<a class="header" href="./aizuna_command.html#utc時刻" id="utc時刻"><h6>UTC時刻</h6></a>
+<p>セッションの作成日時。</p>
+<a class="header" href="./aizuna_command.html#xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"><h6>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</h6></a>
+<p>セッションのUuid。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#session-default" id="session-default"><h4>,session default</h4></a>
+<p>現在のセッションを設定します。</p>
+<pre><code>,sesssion default {SESSION_UUID}
+,s default {SESSION_UUID}
+</code></pre>
+<a class="header" href="./aizuna_command.html#session_uuid" id="session_uuid"><h5>{SESSION_UUID}</h5></a>
+<p>現在のセッションに設定するセッションのUuidです。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#session-new" id="session-new"><h4>,session new</h4></a>
+<p>セッションを新規作成します。</p>
+<pre><code>,sesssion new {RULE_TEXT}
+,s new
+</code></pre>
+<a class="header" href="./aizuna_command.html#rule_text" id="rule_text"><h5>{RULE_TEXT}</h5></a>
+<p>セッションに使用するゲームのルールを指定する文字列です。</p>
+<ul>
+<li>shinen</li>
+</ul>
+<hr />
+<a class="header" href="./aizuna_command.html#session-close" id="session-close"><h4>,session close</h4></a>
+<p>現在のセッションを閉じます。</p>
+<p><strong>セッションの所有者権限が必要です</strong>。</p>
+<pre><code>,sesssion close
+,s close
+</code></pre>
+<hr />
+<a class="header" href="./aizuna_command.html#session-reopen" id="session-reopen"><h4>,session reopen</h4></a>
+<p>閉じられた現在のセッションを再開します。</p>
+<p><strong>セッションの所有者権限が必要です</strong>。</p>
+<pre><code>,sesssion reopen
+,s reopen
+</code></pre>
+<hr />
+<a class="header" href="./aizuna_command.html#session-delete" id="session-delete"><h4>,session delete</h4></a>
+<p>閉じられた現在のセッションを消去します。</p>
+<p><strong>セッションの所有者権限が必要です</strong>。</p>
+<pre><code>,sesssion delete
+,s delete
+</code></pre>
+<hr />
+<a class="header" href="./aizuna_command.html#session-title" id="session-title"><h4>,session title</h4></a>
+<p>現在のセッションのタイトルを変更します。</p>
+<p><strong>セッションの所有者権限が必要です</strong>。</p>
+<p>閉じたセッションのタイトルは変更できません。
+<a href="./aizuna_command.html#session-reopen">,reopen</a> で再開する必要があります。</p>
+<pre><code>,sesssion title {TITLE_TEXT}
+,s title {TITLE_TEXT}
+</code></pre>
+<a class="header" href="./aizuna_command.html#title_text" id="title_text"><h5>{TITLE_TEXT}</h5></a>
+<p>現在のセッションのタイトルを指定する文字列です。
+<strong>空白を含むことはできません</strong>。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#session-owner" id="session-owner"><h4>,session owner</h4></a>
+<p>現在のセッションのメンバーにセッションの所有者権限を与えます。</p>
+<pre><code>,sesssion owner {USER_UUID}
+,s owner {USER_UUID}
+</code></pre>
+<a class="header" href="./aizuna_command.html#user_uuid" id="user_uuid"><h5>{USER_UUID}</h5></a>
+<p>セッションの所有者権限を与える現在のセッションのユーザを指定するUuidです。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#session-waiver" id="session-waiver"><h4>,session waiver</h4></a>
+<p>現在のセッションの所有者権限を放棄します。</p>
+<pre><code>,sesssion waiver
+,s waiver
+</code></pre>
+<hr />
+<a class="header" href="./aizuna_command.html#session-invite" id="session-invite"><h4>,session invite</h4></a>
+<p>現在のセッションにメンバーを追加します。</p>
+<pre><code>,sesssion invite {USER_UUID}
+,s invite
+</code></pre>
+<a class="header" href="./aizuna_command.html#user_uuid-1" id="user_uuid-1"><h5>{USER_UUID}</h5></a>
+<p>現在のセッションに追加するユーザを指定するUuidです。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#session-kick" id="session-kick"><h4>,session kick</h4></a>
+<p>現在のセッションからメンバーを除外します。</p>
+<pre><code>,sesssion kick {USER_UUID}
+,s kick {USER_UUID}
+</code></pre>
+<a class="header" href="./aizuna_command.html#user_uuid-2" id="user_uuid-2"><h5>{USER_UUID}</h5></a>
+<p>現在のセッションから除外するユーザを指定するUuidです。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#session-request" id="session-request"><h4>,session request</h4></a>
+<p>セッションの所持者に参加要求を送ります。</p>
+<pre><code>,sesssion request {SESSION_UUID}
+,s request {SESSION_UUID}
+</code></pre>
+<a class="header" href="./aizuna_command.html#session_uuid-1" id="session_uuid-1"><h5>{SESSION_UUID}</h5></a>
+<p>参加要求を送るセッションを指定するUuidです。</p>
+<hr />
+<a class="header" href="./aizuna_command.html#session-bye" id="session-bye"><h4>,session bye</h4></a>
+<p>現在のセッションから脱退します。</p>
+<pre><code>,sesssion bye
+,s bye
+</code></pre>
+<p>セッションの所有者が再び<a href="./aizuna_command.html#session-invite">,session invite</a>を行なえば
+セッションに再度参加できます。</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a rel="prev" href="./aizuna_config.html" class="mobile-nav-chapters previous" title="Previous chapter">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="./aizuna_thread.html" class="mobile-nav-chapters next" title="Next chapter">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./aizuna_config.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./aizuna_thread.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

@@ -1,0 +1,1195 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./aizuna.html"><strong>1.</strong> Aizuna 0.1</a></li><li><ul class="section"><li><a href="./aizuna_introduction.html"><strong>1.1.</strong> Aizuna イントロダクション</a></li><li><a href="./aizuna_term.html"><strong>1.2.</strong> Aizuna 用語</a></li><li><a href="./aizuna_config.html"><strong>1.3.</strong> Aizuna 設定</a></li><li><a href="./aizuna_command.html"><strong>1.4.</strong> Aizuna コマンド</a></li><li><a href="./aizuna_thread.html"><strong>1.5.</strong> Aizuna スレッドとコルーチン</a></li></ul></li><li><strong>2.</strong> Connectors</li><li><ul class="section"><li><a href="./discord.html"><strong>2.1.</strong> Discord</a></li></ul></li><li><strong>3.</strong> Rules</li><li><ul class="section"><li><a href="./shinen.html"><strong>3.1.</strong> ShinEn ご注意</a></li><li><ul class="section"><li><a href="./shinen_term.html"><strong>3.1.1.</strong> ShinEn 用語</a></li><li><a href="./shinen_config.html"><strong>3.1.2.</strong> ShinEn 設定</a></li><li><a href="./shinen_command.html"><strong>3.1.3.</strong> ShinEn コマンド</a></li></ul></li></ul></li><li><a href="./faq.html"><strong>4.</strong> FAQ</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="print.html#aizuna-01" id="aizuna-01"><h1>Aizuna 0.1</h1></a>
+<p>Aizunaはチャットツール上でテーブルトークRPGを遊ぶための支援ツールです。
+サーバとして動作し、チャットと連携して各データを管理します。</p>
+<p>名前の由来であるアイズナが示すようにテーブルトークRPG
+『<a href="https://ja.wikipedia.org/wiki/%E6%B7%B1%E6%B7%B5_(%E3%82%B2%E3%83%BC%E3%83%A0)">深淵</a>』
+のカードをチャット上で管理する目的で開発されました。
+アイズナは『深淵』でネズミ使いが操る魔力あるネズミの名前です。ネズミ使い自身もアイズナと呼ばれます。</p>
+<p><a href="https://www.rust-lang.org">Rust</a> nightlyで記述されています。</p>
+<p>Aizuna 0.1 では チャットサービスの <a href="https://discordapp.com/">Discord</a> を対象として動作します。</p>
+<p><img src="./images/screenshot00.png" alt="screenshot00" /></p>
+<a class="header" href="print.html#author" id="author"><h5>Author</h5></a>
+<ul>
+<li>hanepjiv
+<ul>
+<li>mail:  <a href="mailto:hanepjiv@gmail.com">hanepjiv@gmail.com</a></li>
+<li>blog: <a href="https://hanepjiv.blogspot.jp/">https://hanepjiv.blogspot.jp/</a></li>
+</ul>
+</li>
+</ul>
+<a class="header" href="print.html#repository" id="repository"><h5>Repository</h5></a>
+<p><a href="https://github.com/hanepjiv/aizuna.git">https://github.com/hanepjiv/aizuna.git</a></p>
+<a class="header" href="print.html#license" id="license"><h5>License</h5></a>
+<ul>
+<li>MIT</li>
+<li>Apache-2.0</li>
+</ul>
+<a class="header" href="print.html#機能" id="機能"><h3>機能</h3></a>
+<ul>
+<li>ユーザ管理</li>
+<li>セッション管理</li>
+<li>サイコロ</li>
+<li>『深淵』
+<ul>
+<li>カード管理</li>
+</ul>
+</li>
+</ul>
+<a class="header" href="print.html#接続" id="接続"><h4>接続</h4></a>
+<p>Aizuna 0.1 では 下記の接続で動作します。</p>
+<ul>
+<li>デバッグ コンソール</li>
+<li><a href="https://discordapp.com/">Discord</a></li>
+</ul>
+<a class="header" href="print.html#動作環境" id="動作環境"><h3>動作環境</h3></a>
+<ul>
+<li><a href="https://www.rust-lang.org">Rust</a> nightly</li>
+</ul>
+<a class="header" href="print.html#動作確認環境" id="動作確認環境"><h4>動作確認環境</h4></a>
+<ul>
+<li>Linux(libc)</li>
+</ul>
+<a class="header" href="print.html#依存ライブラリ" id="依存ライブラリ"><h4>依存ライブラリ</h4></a>
+<p><a href="https://github.com/hanepjiv/aizuna/blob/master/Cargo.toml">Cargo.toml</a>を参照してくだささい。</p>
+<a class="header" href="print.html#aizuna-イントロダクション" id="aizuna-イントロダクション"><h1>Aizuna イントロダクション</h1></a>
+<a class="header" href="print.html#実行ファイル-の取得" id="実行ファイル-の取得"><h2>実行ファイル の取得</h2></a>
+<a class="header" href="print.html#ソースからコンパイルする" id="ソースからコンパイルする"><h3>ソースからコンパイルする</h3></a>
+<a class="header" href="print.html#a-hrefhttpswwwrust-langorgrusta-nightly-環境の準備" id="a-hrefhttpswwwrust-langorgrusta-nightly-環境の準備"><h4><a href="https://www.rust-lang.org">Rust</a> nightly 環境の準備</h4></a>
+<p><a href="https://www.rust-lang.org">Rust</a>を参照して開発環境(<code>rustup</code>, <code>cargo</code>)を準備してください。</p>
+<p>nightly toolchaine をインストールします。</p>
+<pre><code class="language-shell">rustup install nightly
+</code></pre>
+<a class="header" href="print.html#github-からインストール" id="github-からインストール"><h5>GitHub からインストール</h5></a>
+<p>GitHubの<a href="https://github.com/hanepjiv/aizuna.git">repository</a>から直接インストールします。</p>
+<pre><code class="language-shell">cargo install --git https://github.com/hanepjiv/aizuna.git
+</code></pre>
+<a class="header" href="print.html#ソースコードの入手" id="ソースコードの入手"><h5>ソースコードの入手</h5></a>
+<p>GitHubの<a href="https://github.com/hanepjiv/aizuna.git">repository</a>からソースコードを入手します。</p>
+<pre><code class="language-shell">git clone https://github.com/hanepjiv/aizuna.git
+cd asizuna
+</code></pre>
+<a class="header" href="print.html#インストール" id="インストール"><h6>インストール</h6></a>
+<p>nightlyでコンパイルすることを指示し、<code>cargo</code>コマンドでインストールします。</p>
+<pre><code class="language-shell">rustup override set nightly
+cargo install
+aizuna
+</code></pre>
+<a class="header" href="print.html#インストールをしないで実行" id="インストールをしないで実行"><h6>インストールをしないで実行</h6></a>
+<p><code>cargo run</code>コマンドでインストールせずに実行することもできます。</p>
+<pre><code class="language-shell">rustup override set nightly
+cargo run --release
+</code></pre>
+<a class="header" href="print.html#初回起動" id="初回起動"><h2>初回起動</h2></a>
+<a class="header" href="print.html#設定ファイルの新規作成" id="設定ファイルの新規作成"><h4>設定ファイルの新規作成</h4></a>
+<p>初回起動で設定ファイルが無い場合、設定ファイルを新規作成するかを問われます。</p>
+<pre><code>create config file? &quot;${HOME}/.config/aizuna/config.toml&quot; [Y/n]:
+</code></pre>
+<blockquote>
+<p>--root オプションを付与して実行すると設定ファイルを参照するディレクトリを指定できます。
+デフォルトでは ${HOME}/.confog/aizuna/ を参照します。</p>
+<pre><code class="language-shell">aizuna --root ./
+</code></pre>
+<p><code>cargo run</code>で起動する場合は次のように指定します。</p>
+<pre><code class="language-shell">cargo run --release -- --root ./
+</code></pre>
+</blockquote>
+<p>設定ファイルを新規作成すると、デバッグコンソールのみに接続した状態で起動します。</p>
+<pre><code>Console::new: *** Caution! This is a DEBUG console. ***
+Console: Spawn
+</code></pre>
+<p>詳しくは、<a href="./aizuna_config.html">Aizuna 設定</a>を参照してください。</p>
+<a class="header" href="print.html#基本コマンド" id="基本コマンド"><h2>基本コマンド</h2></a>
+<p>Aizunaは接頭辞(prefix: デフォルトでは&quot;,&quot;)から始まる文字列をコマンドとして認識します。</p>
+<a class="header" href="print.html#help" id="help"><h4>,help</h4></a>
+<p>先ずは &quot;,help&quot; コマンドを入力してください。</p>
+<pre><code>,help
+Console: Whisper:
+Aizuna v0.1.0:
+ ,help      Print this message.
+ ,user/ ,u  Print User info.
+ ,session / ,s  Session controll.
+ ,[0-9]*d[0-9]* Dice roll. etc. ,2d6 / ,3d / ,d10
+ ,quit / ,Q Aizuna logout server. Need administrator's authority.
+ ,database  Dump database. Need administrator's authority.
+</code></pre>
+<p>入力と出力にプロンプト(&quot; &gt;&quot; のような入力を促す表示)による区別がないことに注意してください。</p>
+<a class="header" href="print.html#d" id="d"><h4>,d</h4></a>
+<p>&quot;,d&quot; コマンドでサイコロを振ることが出来ます。</p>
+<pre><code>,d
+Console: Send: 1d6 = [4] = 4.
+</code></pre>
+<pre><code>,2d6
+Console: Send: 2d6 = [3, 4] = 7.
+</code></pre>
+<a class="header" href="print.html#quit" id="quit"><h4>,quit</h4></a>
+<p>&quot;,quit&quot; コマンド で Aizunaを終了出来ます。</p>
+<pre><code>,quit
+Console: Exit
+</code></pre>
+<p>その他のコマンドの詳説は<a href="./aizuna_command.html">Aizuna コマンド</a>を参照してください。</p>
+<a class="header" href="print.html#aizuna-用語" id="aizuna-用語"><h1>Aizuna 用語</h1></a>
+<p>Aizunaで使用される用語を解説します。</p>
+<a class="header" href="print.html#uuid" id="uuid"><h4>Uuid</h4></a>
+<p>データを識別するための固有のバイト列で、16bytes = 128bit の長さを持ちます。
+16進数表記で xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx のように表示されます。</p>
+<p>個別に割り当てられ、同種のグループ内では重複が無いことが保証されています。
+Aizunaでは重複が無い様にランダムに決定されており、MACアドレス等の固有の識別
+情報は含まれていません。</p>
+<a class="header" href="print.html#コネクタ" id="コネクタ"><h4>コネクタ</h4></a>
+<p>Aizunaはチャット機能を他のサービスに依存しています。
+他のサービスとの連携を司る機能をコネクタと呼びます。</p>
+<p><strong>デフォルトではデバッグ用のコンソール入出力のみと接続します</strong>。</p>
+<p>詳しくは、<a href="./aizuna_config.html#%E3%82%B3%E3%83%8D%E3%82%AF%E3%82%BF">Aizuna 設定 - コネクタ</a>を参照してください。</p>
+<a class="header" href="print.html#ユーザ" id="ユーザ"><h4>ユーザ</h4></a>
+<p>ユーザとは下記の情報を保持する構造を差します。</p>
+<ul>
+<li>Uuid</li>
+<li>ユーザ名</li>
+</ul>
+<p>Aizunaは利用者をユーザとして、個別に管理します。
+Aizunaにコマンドを送ると自動的にユーザが作成されます。</p>
+<p>ユーザはUuidで区別され、コネクタから自動的に参照されたユーザ名を持ちます。</p>
+<p>ユーザはコネクタ毎に分断されており、別のコネクタからの接続は別のユーザとして認識されます。</p>
+<p>ユーザの情報は<a href="./aizuna_command.html#user">,user</a>によって表示されます。</p>
+<a class="header" href="print.html#セッション" id="セッション"><h4>セッション</h4></a>
+<p>セッションとは下記の情報を保持する構造を差します。</p>
+<ul>
+<li>Uuid</li>
+<li>タイトル</li>
+<li>所有者(複数)</li>
+<li>メンバー(複数)</li>
+</ul>
+<p>Aizunaは複数のユーザの集まりをセッションとして、個別に管理します。</p>
+<p>セッションはUuidで区別され、
+所属するユーザを変更の権限を持つ所有者と変更の権限を持たないメンバーとして管理します。</p>
+<p>セッションはコネクタ毎に分断されており、
+同じコネクタで接続しているユーザ同士のみがセッションを共有できます。</p>
+<p>ユーザは<a href="./aizuna_command.html#session-new">,session new</a> によってセッションを自由に複数作成できます。</p>
+<a class="header" href="print.html#ユーザの現在のセッション" id="ユーザの現在のセッション"><h5>ユーザの現在のセッション</h5></a>
+<p>ユーザの現在のセッションとは、一部のコマンドにおいて、暗黙の内に操作対象となるセッションを差します。</p>
+<p>ユーザの現在のセッションは <a href="./aizuna_command.html#session-default">,session list</a> で <strong>*</strong> で表示され、
+<a href="./aizuna_command.html#session-default">,session default</a> によって変更できます。</p>
+<a class="header" href="print.html#send--whisper" id="send--whisper"><h4>Send / Whisper</h4></a>
+<p>Aizunaからの応答はコマンドを打ち込んだチャットに送られる Send と
+コマンドを打ったユーザのみに送られる Whisper とで区別されます。</p>
+<p>Send は同じチャット内にいる他のユーザにも表示されます。</p>
+<a class="header" href="print.html#aizuna-設定" id="aizuna-設定"><h1>Aizuna 設定</h1></a>
+<p>Aizunaの動作は設定ファイルによって制御されます。</p>
+<a class="header" href="print.html#aizuna-起動オプション" id="aizuna-起動オプション"><h2>Aizuna 起動オプション</h2></a>
+<p><code>aizuna --help</code>で起動オプションを確認できます。</p>
+<pre><code class="language-shell">$ aizuna --help
+
+aizuna v0.1.0
+
+Usage:
+    aizuna [Options]
+
+Options:
+    -v, --version   print version
+    -h, --help      print this help menu
+    -R, --root PATH set Aizuna root path. default '${HOME}/.config/aizuna'
+</code></pre>
+<a class="header" href="print.html#aizuna-ルートディレクトリ" id="aizuna-ルートディレクトリ"><h2>Aizuna ルートディレクトリ</h2></a>
+<p>設定ファイルが保存されるディレクトリを差します。</p>
+<p>デフォルトでは <code>{HOME}/.confog/aizuna/</code> です。</p>
+<p>ルートディレクトリは、Aizuna起動オプション <code>--root / -R</code> で 変更できます。</p>
+<pre><code>aizuna --root ./
+</code></pre>
+<p>Aizunaの実行プロセスはルートディレクトリに対してファイルの作成権限を必要とします。</p>
+<a class="header" href="print.html#設定ファイル" id="設定ファイル"><h2>設定ファイル</h2></a>
+<p>ルートディレクトリに存在する<code>config.toml</code>という名前の、toml形式のテキストファイルです。</p>
+<p>設定ファイルが存在しない場合、自動的に作成されます。</p>
+<pre><code class="language-toml"># -*- mode:toml; coding:utf-8-unix; -*-
+# /////////////////////////////////////////////////////////////////////////////
+# =============================================================================
+# aizuna v0.1.0
+serdever        = 0
+greeting        = &quot;aizuna v0.1.0&quot;
+driver          = &quot;Thread&quot;
+fringe_stack_size   = 1048576
+path_db         = &quot;./db&quot;
+prefix          = &quot;,&quot;
+# /////////////////////////////////////////////////////////////////////////////
+# =============================================================================
+[connectors.console]
+serdever        = 0
+enable          = true
+connector       = &quot;console&quot;
+# =============================================================================
+[connectors.discord-00]
+serdever        = 0
+enable          = false
+connector       = &quot;discord&quot;
+[connectors.discord-00.config]
+serdever        = 0
+token           = &quot;DISCORD_BOT_TOKEN&quot;
+# /////////////////////////////////////////////////////////////////////////////
+# =============================================================================
+[rules.shinen]
+serdever        = 0
+enable          = false
+prefix          = &quot;,&quot;
+[rules.shinen.config]
+serdever        = 0
+root            = &quot;SHINEN_ROOT_PATH&quot;
+# /////////////////////////////////////////////////////////////////////////////
+# =============================================================================
+[admin]
+console         = [&quot;.*&quot;]
+discord-00      = [&quot;DISCORD_USER_ID_00&quot;, &quot;DISCORD_USER_ID_01&quot;]
+</code></pre>
+<a class="header" href="print.html#serdever-" id="serdever-"><h3>serdever =</h3></a>
+<p>設定ファイルには<code>serdever = number</code>という項目がいくつか存在します。</p>
+<p>serdeverは&quot;serialize desserialize version&quot;の略で、
+設定ファイルの構成を管理するバージョンを表します。</p>
+<p><strong><code>serdever</code>は自動的に決定されるので、Aizunaから指示がないかぎり書き換えてはいけません</strong>。</p>
+<a class="header" href="print.html#セクション" id="セクション"><h3>セクション</h3></a>
+<a class="header" href="print.html#aizuna" id="aizuna"><h4>aizuna</h4></a>
+<hr />
+<a class="header" href="print.html#greeting-" id="greeting-"><h5>greeting =</h5></a>
+<p><a href="./aizuna_command.html#greeting">,greeting</a>コマンドによって、Aizunaが表示する文章です。
+自由に書き換えて構いません。</p>
+<hr />
+<a class="header" href="print.html#driver-" id="driver-"><h5>driver =</h5></a>
+<p>Aizunaの動作モードを下記の文字列で指定します。デフォルトは<code>&quot;Tread&quot;</code>です。</p>
+<ul>
+<li>&quot;Tread&quot;: OSスレッドで動作します。</li>
+<li>&quot;Fringe&quot;: libfringeを使用してコルーチンで動作します。</li>
+</ul>
+<p>詳しくは<a href="./aizuna_thread.html">Aizuna スレッドとコルーチン</a>を参照してください。</p>
+<hr />
+<a class="header" href="print.html#fringe_stack_size-" id="fringe_stack_size-"><h5>fringe_stack_size =</h5></a>
+<p><code>&quot;Fringe&quot;</code>モードで動作する場合のコルーチンのスタックサイズをバイト数で指定します。
+デフォルトは<code>1048576</code>(= 1024 * 1024 bytes = 1MB)です。</p>
+<p>詳しくは<a href="./aizuna_thread.html">Aizuna スレッドとコルーチン</a>を参照してください。</p>
+<hr />
+<a class="header" href="print.html#path_db-" id="path_db-"><h5>path_db =</h5></a>
+<p>Aizunaの情報を保持するデータベースへのパスです。デフォルトは<code>&quot;./db&quot;</code>です。</p>
+<p>相対パスを指定した場合、ルートディレクトリからのパスとして認識されます。
+絶対パスを指定することも可能です。</p>
+<p>データベースはAizunaによって管理されています。<strong>データベースの内容を書き換えてはいけません</strong>。</p>
+<hr />
+<a class="header" href="print.html#prefix-" id="prefix-"><h5>prefix =</h5></a>
+<p><a href="./aizuna_command.html">Aizuna コマンド</a>を識別するための接頭辞です。デフォルトは<code>&quot;,&quot;</code>です。</p>
+<pre><code class="language-toml">prefix = &quot;aizuna-&quot;
+</code></pre>
+<p>このように設定すれば</p>
+<pre><code>aizuna-help
+aizuna-2d6
+</code></pre>
+<p>このようにコマンドを使用することが出来ます。</p>
+<a class="header" href="print.html#connectors" id="connectors"><h4>[connectors]</h4></a>
+<p>外部のチャットサービスと接続するためのコネクタの設定を行います。</p>
+<p>コネクタには識別名を決定する必要があります。
+自動生成された設定ファイルには<code>console</code>と<code>discord00</code>が設定されています。</p>
+<pre><code class="language-toml">[connectors.console]
+serdever        = 0
+enable          = true
+connector       = &quot;console&quot;
+</code></pre>
+<pre><code class="language-toml">[connectors.discord-00]
+serdever        = 0
+enable          = false
+connector       = &quot;discord&quot;
+[connectors.discord-00.config]
+serdever        = 0
+token           = &quot;DISCORD_BOT_TOKEN&quot;
+</code></pre>
+<p><code>[connectors.${識別名}]</code>のように記述することでコネクタの設定を開始します。</p>
+<p>識別名はユーザの判別に使用され、同一のコネクタ識別名を持つユーザ同士のみがセッションを共有できます。
+<strong>セッションを作成したコネクタの識別名を書き換えてしまうと、
+セッションに接続できなくなってしまう場合があります</strong>。
+よってコネクタ識別名の変更は推奨されません。</p>
+<hr />
+<a class="header" href="print.html#enable-" id="enable-"><h5>enable =</h5></a>
+<p>コネクタを使用するかどうかのbool値です。<code>true</code>, <code>false</code>で指定します。</p>
+<p><code>false</code>を指定した場合、そのコネクタは使用されません。</p>
+<hr />
+<a class="header" href="print.html#connector-" id="connector-"><h5>connector =</h5></a>
+<p>コネクタの種別を文字列で指定します。</p>
+<ul>
+<li><code>&quot;console&quot;</code>: デバックコンソールを使用します。</li>
+<li><code>&quot;discord&quot;</code>: Discordを使用します。</li>
+</ul>
+<blockquote>
+<p>デフォルトでは[connectors.console]が有効、[connectors.discode00]が無効と設定されています。</p>
+<p>実運用環境ではデバックコンソールを無効にし、その他のコネクタを有効化することを推奨します。</p>
+<p>Aizunaは全てのコネクタが終了するまで、プロセスを終了しません。<a href="./aizuna_command.html#quit--q">,quit</a>を参照してください。</p>
+</blockquote>
+<hr />
+<a class="header" href="print.html#connectors識別名config" id="connectors識別名config"><h5>[connectors.${識別名}.config]</h5></a>
+<p>コネクタによっては追加の設定が必要となります。</p>
+<a class="header" href="print.html#discord" id="discord"><h6>&quot;discord&quot;</h6></a>
+<p><a href="./discord.html#%E8%A8%AD%E5%AE%9A">Discord 設定</a>を参照してください。</p>
+<a class="header" href="print.html#rules" id="rules"><h4>[rules]</h4></a>
+<p>Aizunaで使用するゲームのルールを設定します。</p>
+<p>ルールは識別名で区別されます。
+自動生成された設定ファイルには<code>shinen</code>が設定されています。</p>
+<pre><code class="language-toml">[rules.shinen]
+serdever        = 0
+enable          = false
+prefix          = &quot;,&quot;
+[rules.shinen.config]
+serdever        = 0
+root            = &quot;SHINEN_ROOT_PATH&quot;
+</code></pre>
+<p><code>[rules.${識別名}]</code>のように記述することでルールの設定を開始します。</p>
+<hr />
+<a class="header" href="print.html#enable--1" id="enable--1"><h5>enable =</h5></a>
+<p>ルールを使用するかどうかのbool値です。<code>true</code>, <code>false</code>で指定します。</p>
+<p><code>false</code>を指定した場合、そのルールは使用されません。</p>
+<hr />
+<a class="header" href="print.html#prefix--1" id="prefix--1"><h5>prefix =</h5></a>
+<p>コマンドでルールを識別する接頭辞を示す文字列です。</p>
+<hr />
+<a class="header" href="print.html#rules識別名config" id="rules識別名config"><h5>[rules.${識別名}.config]</h5></a>
+<p>ルールによっては追加の設定が必要となります。</p>
+<a class="header" href="print.html#shinen" id="shinen"><h6>&quot;shinen&quot;</h6></a>
+<p><a href="./shinen_config.html">ShinEn 設定</a>を参照してください。</p>
+<a class="header" href="print.html#admin" id="admin"><h4>[admin]</h4></a>
+<p>コネクタ毎にAizunaの管理者として扱われるユーザを設定します。</p>
+<pre><code>${connetor識別名} = [&quot;${Rust正規表現}&quot;, &quot;${Rust正規表現}&quot;]
+</code></pre>
+<p>デフォルトではconsole接続が管理者として扱われます。</p>
+<p>Discord接続はデフォルトでは無効化されています。
+有効化する場合、管理者として扱うDiscordID(数字列)を指定してください</p>
+<pre><code class="language-toml">[admin]
+console         = [&quot;.*&quot;]
+discord-00      = [&quot;DISCORD_USER_ID_00&quot;, &quot;DISCORD_USER_ID_01&quot;]
+</code></pre>
+<p>管理者を設定していないコネクタは、<a href="./aizuna_command.html#quit--q">,quit</a>を使用できません。
+その場合、Aizunaプロセスを強制終了させなくてはいけないことに注意してください。
+タイミングによってはデータベースに書き込みが完了していないデータが消失してしまう可能性があります。
+<strong>管理者権限を与えるユーザを必ず設定してください</strong>。</p>
+<a class="header" href="print.html#aizuna-コマンド" id="aizuna-コマンド"><h1>Aizuna コマンド</h1></a>
+<p>Aizunaの機能はチャットによる入力をコマンドとして解釈することで動作します。</p>
+<p>Aizunaは接頭辞(prefix: デフォルトでは&quot;,&quot;)から始まる文字列をコマンドとして認識します。</p>
+<p>接頭辞を変更するには<a href="./aizuna_config.html#prefix-">Aizuna 設定 prefix</a>を参照してください。</p>
+<hr />
+<a class="header" href="print.html#help-1" id="help-1"><h4>,help</h4></a>
+<p>ヘルプメッセージを表示します。</p>
+<pre><code>,help
+</code></pre>
+<pre><code>Aizuna v0.1.0:
+ ,help              Print this message.
+ ,user / ,u         Print User info.
+ ,session / ,s      Session controll.
+ ,[0-9]*d[0-9]*     Dice roll. etc. ,2d6 / ,3d / ,d10
+ ,quit / ,Q         Aizuna logout server. Need administrator's authority.
+</code></pre>
+<hr />
+<a class="header" href="print.html#quit--q" id="quit--q"><h4>,quit / ,Q</h4></a>
+<p>Aizunaの接続を終了します。</p>
+<p><strong>Aizunaの管理者権限が必要です</strong>。</p>
+<pre><code>,quit
+,Q
+</code></pre>
+<p><strong>コマンドを送ったコネクタの接続のみを終了します</strong>。
+デバッグコンソールとDiscordを同時に起動しているような場合、
+その両方が<code>,quit</code>コマンドで終了されるまでAizunaは終了されません。</p>
+<hr />
+<a class="header" href="print.html#greeting" id="greeting"><h4>,greeting</h4></a>
+<p>設定ファイルに記述された任意の文章を表示します。</p>
+<pre><code>,greeting
+</code></pre>
+<pre><code>Console: Whisper: aizuna v0.1.0
+</code></pre>
+<p>文章を変更するには<a href="./aizuna_config.html#greeting-">Aizuna 設定 greeting</a>を参照してください。</p>
+<hr />
+<a class="header" href="print.html#d-1" id="d-1"><h4>,d</h4></a>
+<p>サイコロを振り結果を得ます。</p>
+<pre><code>,d
+Console: Send: 1d6 = [1] = 1.
+</code></pre>
+<pre><code>,2d6
+Console: Send: 2d6 = [5, 4] = 9.
+</code></pre>
+<p>正規表現で <code>,([0-9]*)d([0-9]*)</code> のパターンを受け付け、
+maches[1] をサイコロの数 n 、 maches[2] をサイコロの種類 m として認識します。</p>
+<p>n が省略された場合、n = 1、m が省略された場合、m = 6 になります。</p>
+<p>n の最大値は 99 に制限されます。</p>
+<hr />
+<a class="header" href="print.html#user-u" id="user-u"><h4>,user ,u</h4></a>
+<p>ユーザ情報を表示します。</p>
+<pre><code>,user
+,u
+</code></pre>
+<pre><code>Console: Send: user: Uuid: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+</code></pre>
+<hr />
+<a class="header" href="print.html#session--s" id="session--s"><h4>,session / ,s</h4></a>
+<p>Aizuna セッションを管理します。</p>
+<pre><code>,session
+,s
+</code></pre>
+<p>{SUB_COMMAND}を省略した場合、<code>,session list</code>が指定されたように動作します。</p>
+<pre><code>,session {SUB_COMMAND} {ARGS..}
+,s {SUB_COMMAND} {ARGS..}
+</code></pre>
+<a class="header" href="print.html#sub_command" id="sub_command"><h5>{SUB_COMMAND}</h5></a>
+<a class="header" href="print.html#a-hrefsession-infoinfoa" id="a-hrefsession-infoinfoa"><h6><a href="print.html#session-info">info</a></h6></a>
+<p>現在のセッションの情報を表示します。</p>
+<a class="header" href="print.html#a-hrefsession-listlista" id="a-hrefsession-listlista"><h6><a href="print.html#session-list">list</a></h6></a>
+<p>セッションの一覧を表示します。</p>
+<a class="header" href="print.html#a-hrefsession-allalla" id="a-hrefsession-allalla"><h6><a href="print.html#session-all">all</a></h6></a>
+<p>閉じたセッションを含むセッションの一覧を表示します。</p>
+<a class="header" href="print.html#a-hrefsession-defaultdefaulta" id="a-hrefsession-defaultdefaulta"><h6><a href="print.html#session-default">default</a></h6></a>
+<p>現在のセッションを設定します。</p>
+<a class="header" href="print.html#a-hrefsession-newnewa" id="a-hrefsession-newnewa"><h6><a href="print.html#session-new">new</a></h6></a>
+<p>セッションを新規作成します。</p>
+<a class="header" href="print.html#a-hrefsession-closeclosea" id="a-hrefsession-closeclosea"><h6><a href="print.html#session-close">close</a></h6></a>
+<p>現在のセッションを閉じます。</p>
+<a class="header" href="print.html#a-hrefsession-reopenreopena" id="a-hrefsession-reopenreopena"><h6><a href="print.html#session-reopen">reopen</a></h6></a>
+<p>閉じられた現在のセッションを再開します。</p>
+<a class="header" href="print.html#a-hrefsession-deletedeletea" id="a-hrefsession-deletedeletea"><h6><a href="print.html#session-delete">delete</a></h6></a>
+<p>閉じられた現在のセッションを消去します。</p>
+<a class="header" href="print.html#a-hrefsession-titletitlea" id="a-hrefsession-titletitlea"><h6><a href="print.html#session-title">title</a></h6></a>
+<p>現在のセッションのタイトルを変更します。</p>
+<a class="header" href="print.html#a-hrefsession-ownerownera" id="a-hrefsession-ownerownera"><h6><a href="print.html#session-owner">owner</a></h6></a>
+<p>現在のセッションのメンバーにセッションの所有者権限を与えます。</p>
+<a class="header" href="print.html#a-hrefsession-waiverwaivera" id="a-hrefsession-waiverwaivera"><h6><a href="print.html#session-waiver">waiver</a></h6></a>
+<p>現在のセッションの所有者権限を放棄します。</p>
+<a class="header" href="print.html#a-hrefsession-inviteinvitea" id="a-hrefsession-inviteinvitea"><h6><a href="print.html#session-invite">invite</a></h6></a>
+<p>現在のセッションにメンバーを追加します。</p>
+<a class="header" href="print.html#a-hrefsession-kickkicka" id="a-hrefsession-kickkicka"><h6><a href="print.html#session-kick">kick</a></h6></a>
+<p>現在のセッションからメンバーを除外します。</p>
+<a class="header" href="print.html#a-hrefsession-requestrequesta" id="a-hrefsession-requestrequesta"><h6><a href="print.html#session-request">request</a></h6></a>
+<p>セッションの所持者に参加要求を送ります。</p>
+<a class="header" href="print.html#a-hrefsession-byebyea" id="a-hrefsession-byebyea"><h6><a href="print.html#session-bye">bye</a></h6></a>
+<p>現在のセッションから脱退します。</p>
+<hr />
+<a class="header" href="print.html#session-info" id="session-info"><h4>,session info</h4></a>
+<p>現在のセッションの情報を表示します。</p>
+<pre><code>,sesssion info
+,s info
+</code></pre>
+<hr />
+<a class="header" href="print.html#session-list" id="session-list"><h4>,session list</h4></a>
+<p>自分が参加しているセッションの一覧を表示します。</p>
+<pre><code>,sesssion list
+,s list
+</code></pre>
+<p>表示の見方については<a href="print.html#session-all">,session all</a>を参照してください。</p>
+<hr />
+<a class="header" href="print.html#session-all" id="session-all"><h4>,session all</h4></a>
+<p>閉じたセッションを含む自分が参加しているセッションの一覧を表示します。</p>
+<pre><code>,sesssion all
+,s all
+</code></pre>
+<pre><code> * o   title0  shinen  2018-01-01 12:00 +09:00  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+   o x title1  shinen  2018-01-01 12:00 +09:00  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+   o   title2  shinen  2018-01-01 12:00 +09:00  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+</code></pre>
+<a class="header" href="print.html#" id=""><h6>*</h6></a>
+<p>自分の現在のセッションに表示されます。</p>
+<a class="header" href="print.html#o" id="o"><h6>o</h6></a>
+<p>自分が所持しているセッションに表示されます。</p>
+<a class="header" href="print.html#x" id="x"><h6>x</h6></a>
+<p>自分が所持している閉じたセッションに表示されます。</p>
+<a class="header" href="print.html#文字列" id="文字列"><h6>文字列</h6></a>
+<p>セッションのタイトル。</p>
+<a class="header" href="print.html#utc時刻" id="utc時刻"><h6>UTC時刻</h6></a>
+<p>セッションの作成日時。</p>
+<a class="header" href="print.html#xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"><h6>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</h6></a>
+<p>セッションのUuid。</p>
+<hr />
+<a class="header" href="print.html#session-default" id="session-default"><h4>,session default</h4></a>
+<p>現在のセッションを設定します。</p>
+<pre><code>,sesssion default {SESSION_UUID}
+,s default {SESSION_UUID}
+</code></pre>
+<a class="header" href="print.html#session_uuid" id="session_uuid"><h5>{SESSION_UUID}</h5></a>
+<p>現在のセッションに設定するセッションのUuidです。</p>
+<hr />
+<a class="header" href="print.html#session-new" id="session-new"><h4>,session new</h4></a>
+<p>セッションを新規作成します。</p>
+<pre><code>,sesssion new {RULE_TEXT}
+,s new
+</code></pre>
+<a class="header" href="print.html#rule_text" id="rule_text"><h5>{RULE_TEXT}</h5></a>
+<p>セッションに使用するゲームのルールを指定する文字列です。</p>
+<ul>
+<li>shinen</li>
+</ul>
+<hr />
+<a class="header" href="print.html#session-close" id="session-close"><h4>,session close</h4></a>
+<p>現在のセッションを閉じます。</p>
+<p><strong>セッションの所有者権限が必要です</strong>。</p>
+<pre><code>,sesssion close
+,s close
+</code></pre>
+<hr />
+<a class="header" href="print.html#session-reopen" id="session-reopen"><h4>,session reopen</h4></a>
+<p>閉じられた現在のセッションを再開します。</p>
+<p><strong>セッションの所有者権限が必要です</strong>。</p>
+<pre><code>,sesssion reopen
+,s reopen
+</code></pre>
+<hr />
+<a class="header" href="print.html#session-delete" id="session-delete"><h4>,session delete</h4></a>
+<p>閉じられた現在のセッションを消去します。</p>
+<p><strong>セッションの所有者権限が必要です</strong>。</p>
+<pre><code>,sesssion delete
+,s delete
+</code></pre>
+<hr />
+<a class="header" href="print.html#session-title" id="session-title"><h4>,session title</h4></a>
+<p>現在のセッションのタイトルを変更します。</p>
+<p><strong>セッションの所有者権限が必要です</strong>。</p>
+<p>閉じたセッションのタイトルは変更できません。
+<a href="print.html#session-reopen">,reopen</a> で再開する必要があります。</p>
+<pre><code>,sesssion title {TITLE_TEXT}
+,s title {TITLE_TEXT}
+</code></pre>
+<a class="header" href="print.html#title_text" id="title_text"><h5>{TITLE_TEXT}</h5></a>
+<p>現在のセッションのタイトルを指定する文字列です。
+<strong>空白を含むことはできません</strong>。</p>
+<hr />
+<a class="header" href="print.html#session-owner" id="session-owner"><h4>,session owner</h4></a>
+<p>現在のセッションのメンバーにセッションの所有者権限を与えます。</p>
+<pre><code>,sesssion owner {USER_UUID}
+,s owner {USER_UUID}
+</code></pre>
+<a class="header" href="print.html#user_uuid" id="user_uuid"><h5>{USER_UUID}</h5></a>
+<p>セッションの所有者権限を与える現在のセッションのユーザを指定するUuidです。</p>
+<hr />
+<a class="header" href="print.html#session-waiver" id="session-waiver"><h4>,session waiver</h4></a>
+<p>現在のセッションの所有者権限を放棄します。</p>
+<pre><code>,sesssion waiver
+,s waiver
+</code></pre>
+<hr />
+<a class="header" href="print.html#session-invite" id="session-invite"><h4>,session invite</h4></a>
+<p>現在のセッションにメンバーを追加します。</p>
+<pre><code>,sesssion invite {USER_UUID}
+,s invite
+</code></pre>
+<a class="header" href="print.html#user_uuid-1" id="user_uuid-1"><h5>{USER_UUID}</h5></a>
+<p>現在のセッションに追加するユーザを指定するUuidです。</p>
+<hr />
+<a class="header" href="print.html#session-kick" id="session-kick"><h4>,session kick</h4></a>
+<p>現在のセッションからメンバーを除外します。</p>
+<pre><code>,sesssion kick {USER_UUID}
+,s kick {USER_UUID}
+</code></pre>
+<a class="header" href="print.html#user_uuid-2" id="user_uuid-2"><h5>{USER_UUID}</h5></a>
+<p>現在のセッションから除外するユーザを指定するUuidです。</p>
+<hr />
+<a class="header" href="print.html#session-request" id="session-request"><h4>,session request</h4></a>
+<p>セッションの所持者に参加要求を送ります。</p>
+<pre><code>,sesssion request {SESSION_UUID}
+,s request {SESSION_UUID}
+</code></pre>
+<a class="header" href="print.html#session_uuid-1" id="session_uuid-1"><h5>{SESSION_UUID}</h5></a>
+<p>参加要求を送るセッションを指定するUuidです。</p>
+<hr />
+<a class="header" href="print.html#session-bye" id="session-bye"><h4>,session bye</h4></a>
+<p>現在のセッションから脱退します。</p>
+<pre><code>,sesssion bye
+,s bye
+</code></pre>
+<p>セッションの所有者が再び<a href="print.html#session-invite">,session invite</a>を行なえば
+セッションに再度参加できます。</p>
+<a class="header" href="print.html#aizuna-スレッドとコルーチン" id="aizuna-スレッドとコルーチン"><h1>Aizuna スレッドとコルーチン</h1></a>
+<p>AizunaはデフォルトでOSのスレッドで動作します。</p>
+<p>スレッドの代わりに、オプションで<a href="https://github.com/edef1c/libfringe">libfringe</a>によるコルーチンを使用して動作させることも可能です。</p>
+<p><strong>コルーチンによる動作は実験的機能であり、スレッドによる動作が推奨されています。</strong></p>
+<a class="header" href="print.html#コルーチンによる動作" id="コルーチンによる動作"><h4>コルーチンによる動作</h4></a>
+<p>コルーチンで動作する場合、Aizunaの応答性が高くなることが期待できます。
+その分、CPUリソース及び電力消費等が高くなることが予想されます。</p>
+<p>手元の観測ではコルーチンによる動作によって、CPUコア1つを占有して消費し続けている様子が見られました。</p>
+<a class="header" href="print.html#動作環境-1" id="動作環境-1"><h4>動作環境</h4></a>
+<p>コルーチン動作は下記のlibfringeの動作環境に依存します。<strong>Windowsはサポートされていません</strong>。</p>
+<ul>
+<li>bare metal</li>
+<li>Linux (any libc)</li>
+<li>FreeBSD</li>
+<li>DragonFly BSD</li>
+<li>macOS</li>
+</ul>
+<a class="header" href="print.html#設定方法" id="設定方法"><h4>設定方法</h4></a>
+<a class="header" href="print.html#コンパイル" id="コンパイル"><h5>コンパイル</h5></a>
+<p>デフォルトではコルーチンは有効化されていません。
+コルーチンを有効化してAizunaをコンパイルする必要があります。</p>
+<p><code>--features=coroutine-fringe</code> を指定してください。</p>
+<a class="header" href="print.html#インストールする場合" id="インストールする場合"><h6>インストールする場合</h6></a>
+<pre><code class="language-shell">cargo install --features=coroutine-fringe
+</code></pre>
+<a class="header" href="print.html#インストール無しで実行する場合" id="インストール無しで実行する場合"><h6>インストール無しで実行する場合</h6></a>
+<pre><code class="language-shell">cargo run --release --features=coroutine-fringe
+</code></pre>
+<a class="header" href="print.html#設定ファイル-1" id="設定ファイル-1"><h5>設定ファイル</h5></a>
+<p>Aizunaがlibfringeを利用してコルーチンで動作するように、設定ファイルを書き換えてください。</p>
+<pre><code># aizuna v0.1.0
+serdever            = 0
+greeting            = &quot;aizuna v0.1.0&quot;
+driver              = &quot;Fringe&quot;
+fringe_stack_size   = 1048576
+path_db             = &quot;./db&quot;
+prefix              = &quot;,&quot;
+</code></pre>
+<p><code>driver = &quot;Thread&quot;</code> を <code>driver = &quot;Fringe&quot;</code> に書き換えます。</p>
+<p><a href="./aizuna_config.html#driver-">Aizuna 設定 driver =</a>と
+<a href="./aizuna_config.html#fringe_stack_size-">Aizuna 設定 fringe_stack_size =</a>
+を参照してください。</p>
+<a class="header" href="print.html#実行" id="実行"><h4>実行</h4></a>
+<pre><code class="language-shell">aizuna
+</code></pre>
+<a class="header" href="print.html#thread" id="thread"><h5>Thread</h5></a>
+<pre><code>Console::new: *** Caution! This is a DEBUG console. ***
+Console: Spawn
+</code></pre>
+<a class="header" href="print.html#fringe" id="fringe"><h5>Fringe</h5></a>
+<pre><code>Console::new: *** Caution! This is a DEBUG console. ***
+Console: Gen
+</code></pre>
+<p><code>Spawn</code> の代わりに <code>Gen</code> が表示されれば <code>&quot;Fringe&quot;</code> による起動に成功しています。</p>
+<a class="header" href="print.html#discord-1" id="discord-1"><h1>Discord</h1></a>
+<a class="header" href="print.html#設定ファイル-2" id="設定ファイル-2"><h2>設定ファイル</h2></a>
+<p>ルートフォルダに存在する<code>config.toml</code>に設定を記述する必要があります。</p>
+<p>詳説は<a href="./aizuna_config.html#connectors">Aizuna 設定 connectors</a>を参照してください。</p>
+<pre><code>[connectors.discord-00]
+serdever            = 0
+enable              = false
+connector           = &quot;discord&quot;
+[connectors.discord-00.config]
+serdever            = 0
+token               = &quot;DISCORD_BOT_TOKEN&quot;
+</code></pre>
+<a class="header" href="print.html#connector識別名config" id="connector識別名config"><h4>[connector.${識別名}.config]</h4></a>
+<hr />
+<a class="header" href="print.html#token-" id="token-"><h5>token =</h5></a>
+<p>DiscordのBOT Tokenを文字列で指定します。</p>
+<a class="header" href="print.html#admin-1" id="admin-1"><h4>[admin]</h4></a>
+<p><strong><a href="./aizuna_config.html#admin">Aizuna 設定 admin</a>を参考に管理者権限を与えるユーザを必ず設定してください</strong>。</p>
+<a class="header" href="print.html#shinen-1" id="shinen-1"><h1>ShinEn</h1></a>
+<a class="header" href="print.html#ご注意" id="ご注意"><h3>ご注意</h3></a>
+<p><strong>『深淵』は株式会社 KADOKAWA エンターブレインの著作物です</strong>。
+その内容を公開することは法的に許されていませんので、データファイルを公開することはできません。</p>
+<p>この文章では参照用として一部分のみを公開しています。</p>
+<p>当方はデータファイルの公開要求にもお答えできません。ご了承下さい。</p>
+<a class="header" href="print.html#-1" id="-1"><h4></h4></a>
+<a class="header" href="print.html#shinen-用語" id="shinen-用語"><h1>ShinEn 用語</h1></a>
+<p>Aizuna ShinEnで使用される用語を解説します。</p>
+<p>その他の用語については、<a href="./aizuna_term.html">Aizuna 用語</a>を参照してください。</p>
+<a class="header" href="print.html#shinenセッション" id="shinenセッション"><h4>ShinEnセッション</h4></a>
+<p>ShinEnセッションとは、下記の情報を保持する構造を差します。</p>
+<ul>
+<li>Uuid</li>
+<li>場札
+<ul>
+<li>山札</li>
+<li>捨て札</li>
+</ul>
+</li>
+<li>プレイヤー(複数)</li>
+<li>参加ユーザの現在のプレイヤー</li>
+</ul>
+<p>項目の一部は<a href="./shinen_command.html">ShinEn コマンド</a>によって、変更できます。</p>
+<p>ShinEn セッションは<a href="./aizuna_term.html#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">Aizuna セッション</a>の構造の一部として扱われます。
+よって所有者やメンバーやタイトル等を
+<a href="./aizuna_term.html#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">Aizuna セッション</a>の機能によって変更できます。</p>
+<a class="header" href="print.html#プレイヤー" id="プレイヤー"><h4>プレイヤー</h4></a>
+<p>プレイヤーとは下記の情報を保持する構造を差します。</p>
+<ul>
+<li>Uuid</li>
+<li>所有ユーザUuid</li>
+<li>プレイヤー名</li>
+<li>手札</li>
+</ul>
+<p>項目の一部は<a href="./shinen_command.html">ShinEn コマンド</a>によって、変更できます。</p>
+<p><a href="./shinen_term.html#shinen%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">ShinEn セッション</a>は複数のプレイヤーを保持します。</p>
+<p><a href="./aizuna_term.html#%E3%83%A6%E3%83%BC%E3%82%B6">Aizuna ユーザ</a>はセッション内で複数のプレイヤーを所持することができます。</p>
+<a class="header" href="print.html#ユーザの現在のプレイヤー" id="ユーザの現在のプレイヤー"><h5>ユーザの現在のプレイヤー</h5></a>
+<p>ユーザの現在のプレイヤーとは、一部のコマンドにおいて、暗黙の内に操作対象となるプレイヤーを差します。</p>
+<p><a href="./shinen_command.html#player-default">,,player default</a> によって変更できます。</p>
+<p>ユーザの現在のプレイヤーは <a href="./shinen_command.html#player-list">,,player list</a> で <strong>*</strong> で表示されます。</p>
+<a class="header" href="print.html#ユーザが所持しているプレイヤー" id="ユーザが所持しているプレイヤー"><h5>ユーザが所持しているプレイヤー</h5></a>
+<p>ユーザが所持しているプレイヤーとは現在のセッション内でユーザが変更の権限を所有しているプレイヤーを差します。</p>
+<p>ユーザが所持しているプレイヤーは <a href="./shinen_command.html#player-list">,,player list</a> で <strong>o</strong> で表示されます。</p>
+<a class="header" href="print.html#shinen-設定" id="shinen-設定"><h1>ShinEn 設定</h1></a>
+<a class="header" href="print.html#設定ファイル-3" id="設定ファイル-3"><h2>設定ファイル</h2></a>
+<p>ルートフォルダに存在する<code>config.toml</code>に設定を記述する必要があります。</p>
+<pre><code class="language-toml">[rules.shinen]
+serdever        = 0
+enable          = false
+prefix          = &quot;,&quot;
+[rules.shinen.config]
+serdever        = 0
+root            = &quot;SHINEN_ROOT_PATH&quot;
+</code></pre>
+<a class="header" href="print.html#rules識別名config-1" id="rules識別名config-1"><h5>[rules.${識別名}.config]</h5></a>
+<hr />
+<a class="header" href="print.html#root-" id="root-"><h6>root =</h6></a>
+<p>ShinEnのファイルを保存するディレクトリへのパスです。</p>
+<p>相対パスを指定した場合、Aizunaルートディレクトリからのパスとして認識されます。
+絶対パスを指定することも可能です。</p>
+<p>Aizunaルートディレクトリについては、
+<a href="./aizuna_config.html#aizuna-%E3%83%AB%E3%83%BC%E3%83%88%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA">Aizuna 設定 ルートディレクトリ</a>を参照してください。</p>
+<a class="header" href="print.html#カード" id="カード"><h2>カード</h2></a>
+<p>『深淵』はカードを使用しますので、そのデータが必要です。</p>
+<a class="header" href="print.html#カードデータファイル" id="カードデータファイル"><h3>カードデータファイル</h3></a>
+<p>カードの情報は<a href="print.html#root-">ShinEnルートディレクトリ</a>に保存されたtoml形式のテキストファイルから読み込まれます。</p>
+<pre><code class="language-shell">{SHINEN_ROOT_PATH}
+└── cards
+    ├── basic.toml
+    └── crimson.toml
+</code></pre>
+<a class="header" href="print.html#shinen_root_pathcardsbasictom" id="shinen_root_pathcardsbasictom"><h5>{SHINEN_ROOT_PATH}/cards/basic.tom</h5></a>
+<p>基本のカード情報です。</p>
+<a class="header" href="print.html#shinen_root_pathcardscrimsontom" id="shinen_root_pathcardscrimsontom"><h5>{SHINEN_ROOT_PATH}/cards/crimson.tom</h5></a>
+<p>『血のごとく赤き 〜夢魔の占い札〜』のカード情報です</p>
+<a class="header" href="print.html#tomlフォーマット" id="tomlフォーマット"><h3>tomlフォーマット</h3></a>
+<a class="header" href="print.html#例" id="例"><h4>例</h4></a>
+<pre><code class="language-toml">[&quot;白の黒剣&quot;]
+serdever = 0
+name = &quot;白の黒剣&quot;
+card_set = &quot;基本&quot;
+color = &quot;白&quot;
+constellation = &quot;黒剣&quot;
+value = 1
+story = [&quot;前兆&quot;, &quot;出自&quot;]
+story_desc = &quot;血が一滴、したたった。無明の闇から、今、何かが誕生し、世界に波紋をもたらしていく。&quot;
+action = [&quot;攻撃&quot;, &quot;防御&quot;]
+damage = &quot;衝撃&quot;
+damage_desc = &quot;頭がくらくらする。精神力-4。&quot;
+destiny = 1
+</code></pre>
+<pre><code class="language-toml">[&quot;狂気&quot;]
+serdever = 0
+name = &quot;狂気&quot;
+card_set = &quot;血のごとく赤き 〜夢魔の占い札〜&quot;
+value = 0
+desc = &quot;このカードには意味がない。そう意味はない。たぶん……&quot;
+story_desc = &quot;いつか お前は私を求めるだろう&quot;
+destiny = 95
+</code></pre>
+<a class="header" href="print.html#カード名" id="カード名"><h5>[&quot;カード名&quot;]</h5></a>
+<p>カード情報の記述を開始します。</p>
+<a class="header" href="print.html#serdever--1" id="serdever--1"><h5>serdever =</h5></a>
+<p>構造のバージョン番号です。現在は0が要求されます。</p>
+<a class="header" href="print.html#name-" id="name-"><h5>name =</h5></a>
+<p>カード名を示す文字列です。</p>
+<a class="header" href="print.html#card_set-" id="card_set-"><h5>card_set =</h5></a>
+<p>セットを示す文字列です。</p>
+<a class="header" href="print.html#color-" id="color-"><h5>color =</h5></a>
+<p>色を示す文字列です。</p>
+<a class="header" href="print.html#constellation-" id="constellation-"><h5>constellation =</h5></a>
+<p>星座を示す文字列です。</p>
+<a class="header" href="print.html#value-" id="value-"><h5>value =</h5></a>
+<p>カラーナンバーを示す数値です。</p>
+<a class="header" href="print.html#desc-" id="desc-"><h5>desc =</h5></a>
+<p>カードの文章を示す文字列です。</p>
+<a class="header" href="print.html#story-" id="story-"><h5>story =</h5></a>
+<p>語り部の種別を示す文字列の配列です。</p>
+<a class="header" href="print.html#story_desc-" id="story_desc-"><h5>story_desc =</h5></a>
+<p>語り部の文章を示す文字列です。</p>
+<a class="header" href="print.html#action-" id="action-"><h5>action =</h5></a>
+<p>行動の種別を示す文字列の配列です。</p>
+<a class="header" href="print.html#damage-" id="damage-"><h5>damage =</h5></a>
+<p>ダメージの種別を示す文字列です。</p>
+<a class="header" href="print.html#damage_desc-" id="damage_desc-"><h5>damage_desc =</h5></a>
+<p>ダメージの文章を示す文字列です。</p>
+<a class="header" href="print.html#destiny-" id="destiny-"><h5>destiny =</h5></a>
+<p>運命番号を示す数値です。</p>
+<a class="header" href="print.html#shinen-コマンド" id="shinen-コマンド"><h1>ShinEn コマンド</h1></a>
+<p>Aizunaの基本的な<a href="./aizuna_command.html">Aizuna コマンド</a>の他に、
+ShinEnを管理するためのコマンドが定義されています。</p>
+<p>ShinEnは<a href="./aizuna_command.html">Aizuna コマンド</a>の接頭辞(prefix: デフォルトでは&quot;,&quot;)に続いて、
+ShinEnコマンドの接頭辞(prefix: デフォルトでは&quot;,&quot;)から始まる文字列をコマンドとして認識します。</p>
+<p>接頭辞を変更するには<a href="./aizuna_config.html">Aizuna 設定</a>及び
+<a href="./shinen_config.html">ShinEn 設定</a>を参照してください。</p>
+<a class="header" href="print.html#コマンド一覧" id="コマンド一覧"><h2>コマンド一覧</h2></a>
+<hr />
+<a class="header" href="print.html#session--s-1" id="session--s-1"><h3>,,session / ,,s</h3></a>
+<p>現在のセッションの深淵セッションの情報を表示します。</p>
+<pre><code>,,session
+,, s
+</code></pre>
+<ul>
+<li>場札の枚数
+<ul>
+<li>山札の枚数</li>
+<li>捨て札の枚数</li>
+</ul>
+</li>
+<li>プレイヤーの情報</li>
+</ul>
+<hr />
+<a class="header" href="print.html#reload" id="reload"><h3>,,reload</h3></a>
+<p>カードデータの再読み込みを行います。</p>
+<p><strong>Aizunaの管理者権限が必要です</strong>。</p>
+<pre><code>,,reload
+</code></pre>
+<p>Aizuna内の全てのセッションに影響します。</p>
+<hr />
+<a class="header" href="print.html#deck" id="deck"><h3>,,deck</h3></a>
+<p>現在のセッションの深淵セッションの場札の情報を表示します。</p>
+<pre><code>,,deck
+</code></pre>
+<ul>
+<li>場札の情報
+<ul>
+<li>山札の枚数</li>
+<li>捨て札の内容</li>
+</ul>
+</li>
+</ul>
+<hr />
+<a class="header" href="print.html#shufle" id="shufle"><h3>,,shufle</h3></a>
+<p>山札をシャッフルします。</p>
+<pre><code>,,shuffle
+</code></pre>
+<hr />
+<a class="header" href="print.html#tsukimachi" id="tsukimachi"><h3>,,tsukimachi</h3></a>
+<p>月待ちの処理を行います。</p>
+<pre><code>,,tsukimachi
+</code></pre>
+<hr />
+<a class="header" href="print.html#card" id="card"><h3>,,card</h3></a>
+<p>カード情報を表示します</p>
+<pre><code>,,card {CARD_TEXT}
+</code></pre>
+<a class="header" href="print.html#card_text" id="card_text"><h5>{CARD_TEXT}</h5></a>
+<p>カード名示す文字列を指定します。
+<strong>空白を含むことはできません</strong>。</p>
+<hr />
+<a class="header" href="print.html#player--p" id="player--p"><h3>,,player / ,,p</h3></a>
+<p>プレイヤーを管理します。</p>
+<pre><code>,,player {SUB_COMMAND} {ARGS..}
+,,p {SUB_COMMAND} {ARGS..}
+
+,,player
+,,p
+</code></pre>
+<p>サブコマンドを指定しなかった場合、現在のセッション内のプレイヤー一覧を表示します。
+<a href="print.html#player-list">,,player list</a>を参照してください。</p>
+<a class="header" href="print.html#sub_command-1" id="sub_command-1"><h5>{SUB_COMMAND}</h5></a>
+<a class="header" href="print.html#a-hrefplayer-defaultdefaulta" id="a-hrefplayer-defaultdefaulta"><h6><a href="print.html#player-default">default</a></h6></a>
+<p>現在のプレイヤーを変更します。</p>
+<a class="header" href="print.html#a-hrefplayer-listlista" id="a-hrefplayer-listlista"><h6><a href="print.html#player-list">list</a></h6></a>
+<p>現在のセッション内のプレイヤー一覧を表示します。</p>
+<a class="header" href="print.html#a-hrefplayer-newnewa" id="a-hrefplayer-newnewa"><h6><a href="print.html#player-new">new</a></h6></a>
+<p>プレイヤーの新規作成。</p>
+<a class="header" href="print.html#a-hrefplayer-deletedeletea" id="a-hrefplayer-deletedeletea"><h6><a href="print.html#player-delete">delete</a></h6></a>
+<p>現在のプレイヤーの削除。</p>
+<a class="header" href="print.html#a-hrefplayer-namenamea" id="a-hrefplayer-namenamea"><h6><a href="print.html#player-name">name</a></h6></a>
+<p>現在のプレイヤーの名前変更。</p>
+<a class="header" href="print.html#a-hrefplayer-typetypea" id="a-hrefplayer-typetypea"><h6><a href="print.html#player-type">type</a></h6></a>
+<p>現在のプレイヤーのタイプ変更。</p>
+<a class="header" href="print.html#a-hrefplayer-assignassigna" id="a-hrefplayer-assignassigna"><h6><a href="print.html#player-assign">assign</a></h6></a>
+<p>指定プレイヤーの操作ユーザ変更。</p>
+<hr />
+<a class="header" href="print.html#player-default" id="player-default"><h4>,,player default</h4></a>
+<p>現在のプレイヤーを変更します。</p>
+<pre><code>,,player default {PLAYER_UUID}
+,,p default {PLAYER_UUID}
+</code></pre>
+<a class="header" href="print.html#player_type" id="player_type"><h5>{PLAYER_TYPE}</h5></a>
+<p>現在のセッション内で自分が所持しているプレイヤーのUuid。</p>
+<hr />
+<a class="header" href="print.html#player-list" id="player-list"><h4>,,player list</h4></a>
+<p>現在のセッション内のプレイヤー一覧を表示します。</p>
+<pre><code>,,player list
+,,p list
+</code></pre>
+<pre><code>ShinEn.player.list
+ * o 4 name00 (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+     6 name01 (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+   o 2 name02 (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+     2 name03 (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+</code></pre>
+<a class="header" href="print.html#-2" id="-2"><h6>*</h6></a>
+<p>自分の現在のプレイヤーに表示されます。</p>
+<a class="header" href="print.html#o-1" id="o-1"><h6>o</h6></a>
+<p>自分が所持しているプレイヤーに表示されます。</p>
+<a class="header" href="print.html#数字" id="数字"><h6>数字</h6></a>
+<p>プレイヤーの手札の枚数。</p>
+<a class="header" href="print.html#文字列-1" id="文字列-1"><h6>文字列</h6></a>
+<p>プレイヤーの名前。</p>
+<a class="header" href="print.html#xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx-1" id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx-1"><h6>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</h6></a>
+<p>プレイヤーのUuid。</p>
+<hr />
+<a class="header" href="print.html#player-new" id="player-new"><h4>,,player new</h4></a>
+<p>プレイヤーの新規作成。</p>
+<p><strong>新規作成したプレイヤーは自動的に現在のプレイヤーとなります。</strong></p>
+<pre><code>,,player new {PLAYER_TYPE}
+,,p new {PLAYER_TYPE}
+</code></pre>
+<a class="header" href="print.html#player_type-1" id="player_type-1"><h5>{PLAYER_TYPE}</h5></a>
+<p>Playerの種別を下記の文字列で指定します。</p>
+<ul>
+<li>Player
+<ul>
+<li>player</li>
+<li>Player</li>
+</ul>
+</li>
+<li>GameMaster
+<ul>
+<li>gm</li>
+<li>GM</li>
+<li>gamemaster</li>
+<li>GameMaster</li>
+<li>master</li>
+<li>Master</li>
+</ul>
+</li>
+</ul>
+<p><em>今のところ、 {PLAYER_TYPE} は表示以外の意味を持ちません。
+Player / GameMaster の違いで機能が制限される等の相違はありません。</em></p>
+<hr />
+<a class="header" href="print.html#player-delete" id="player-delete"><h4>,,player delete</h4></a>
+<p>現在のプレイヤーの削除。</p>
+<pre><code>,,player delete
+,,p delete
+</code></pre>
+<p>現在のプレイヤーのデータは削除されますが、
+<strong>現在のプレイヤーは自動的に変更されません</strong>。
+<a href="print.html#player-default">,,player default</a> によって明示的に変更する必要があります。</p>
+<hr />
+<a class="header" href="print.html#player-name" id="player-name"><h4>,,player name</h4></a>
+<p>現在のプレイヤーの名前変更。</p>
+<pre><code>,,player name {NAME}
+,,p name {NAME}
+</code></pre>
+<a class="header" href="print.html#name" id="name"><h5>{NAME}</h5></a>
+<p>名前を示す文字列です。
+<strong>空白を含むことはできません</strong>。</p>
+<hr />
+<a class="header" href="print.html#player-type" id="player-type"><h4>,,player type</h4></a>
+<p>現在のプレイヤーのタイプ変更。</p>
+<pre><code>,,player type {PLAYER_TYPE}
+,,p type {PLAYER_TYPE}
+</code></pre>
+<a class="header" href="print.html#player_type-2" id="player_type-2"><h5>{PLAYER_TYPE}</h5></a>
+<p><a href="print.html#player-new">,,player new</a>を参照してください。</p>
+<hr />
+<a class="header" href="print.html#player-assign" id="player-assign"><h4>,,player assign</h4></a>
+<p>指定プレイヤーのユーザー変更。</p>
+<p><strong>セッションの所有者権限が必要です</strong>。</p>
+<pre><code>,,player assign {PLAYER_UUID} {USER_UUID}
+,,p assign {PLAYER_UUID} {USER_UUID}
+</code></pre>
+<a class="header" href="print.html#player_uuid" id="player_uuid"><h5>{PLAYER_UUID}</h5></a>
+<p>現在のセッションのプレイヤーのUuid。</p>
+<a class="header" href="print.html#user_uuid-3" id="user_uuid-3"><h5>{USER_UUID}</h5></a>
+<p>現在のセッションのメンバーユーザーのUuid。</p>
+<hr />
+<a class="header" href="print.html#hand--h" id="hand--h"><h3>,,hand / ,,h</h3></a>
+<p>現在のプレイヤーの手札を表示します。</p>
+<pre><code>,,hand
+,h
+</code></pre>
+<pre><code>3 cards
+========
+   0. 黒の古鏡 / 基本 / 色： 黒 / 星座： 古鏡 / 数値: 2 / 叙述:  / 語り部: [&quot;英知&quot;, &quot;追想&quot;] 汝のなすことはすべて汝に返る。それを忘れるな。 / アクション: [&quot;攻撃&quot;, &quot;魔法&quot;] / ダメージ: 演出 相手の反撃が命中。攻撃側に効果値2のダメージ!(精神力-1)。 / 運命: 37
+========
+   1. 青の野槌 / 基本 / 色： 青 / 星座： 野槌 / 数値: 5 / 叙述:  / 語り部: [&quot;英知&quot;, &quot;主張&quot;] 同じことが良いこととは限らない。自由こそよし。 / アクション: [&quot;回避&quot;, &quot;移動&quot;] / ダメージ: 胴体 わき腹に当たり、激痛が顔を歪ませる。生命力-6、手札-1。 / 運命: 19
+========
+   2. 赤の黒剣 / 基本 / 色： 赤 / 星座： 黒剣 / 数値: 4 / 叙述:  / 語り部: [&quot;前兆&quot;, &quot;出自&quot;] 波乱の予感がする。新たな何かが生まれ、世界に飛び立っていく。 / アクション: [&quot;攻撃&quot;, &quot;防御&quot;] / ダメージ: 頭部 頭に当たる。頭蓋骨に損傷。生命力-10。 / 運命: 53
+</code></pre>
+<p>一部のコマンドでは行頭の数字でカードを指定することができます。</p>
+<hr />
+<a class="header" href="print.html#pick" id="pick"><h3>,,pick</h3></a>
+<p>場札(山札と捨て札)からカードを取得し、現在のプレイヤーの手札に加えます。</p>
+<pre><code>,,pick {CARD_TEXT}
+</code></pre>
+<a class="header" href="print.html#card_text-1" id="card_text-1"><h5>{CARD_TEXT}</h5></a>
+<p>取得するカードの名前を示す文字列です。
+<strong>空白を含むことはできません</strong>。</p>
+<hr />
+<a class="header" href="print.html#draw--d" id="draw--d"><h3>,,draw / ,,d</h3></a>
+<p>山札からカードを引き現在のプレイヤーの手札に加えます。</p>
+<pre><code>,,draw {NUMBER}
+,,d {NUMBER}
+</code></pre>
+<a class="header" href="print.html#number" id="number"><h5>{NUMBER}</h5></a>
+<p>手札に加えるカードの枚数を指定する数字です。</p>
+<p>省略した場合、 1 が指定されたものとして動作します。</p>
+<hr />
+<a class="header" href="print.html#top" id="top"><h3>,,top</h3></a>
+<p>山札のカードの一番上を公開し捨て札に置きます。</p>
+<pre><code>,,top {NUMBER}
+</code></pre>
+<a class="header" href="print.html#number-1" id="number-1"><h5>{NUMBER}</h5></a>
+<p>山札から公開するカードの枚数を指定する数字です。</p>
+<p>省略した場合、 1 が指定されたものとして動作します。</p>
+<hr />
+<a class="header" href="print.html#totop" id="totop"><h3>,,totop</h3></a>
+<p>現在のプレイヤーの手札のカードを公開し山札の一番上に置きます。</p>
+<pre><code>,,totop {HAND_NUMBER}
+</code></pre>
+<a class="header" href="print.html#hand_number" id="hand_number"><h5>{HAND_NUMBER}</h5></a>
+<p>手札のカードを指定する数字です。</p>
+<p><a href="print.html#hand--h">,,hand</a>を参照してください。</p>
+<hr />
+<a class="header" href="print.html#use--u" id="use--u"><h3>,,use / ,u</h3></a>
+<p>現在のプレイヤーの手札のカードを公開し捨て札に置きます。</p>
+<pre><code>,,use {HAND_NUMBER}
+,,u {HAND_NUMBER}
+</code></pre>
+<a class="header" href="print.html#hand_number-1" id="hand_number-1"><h5>{HAND_NUMBER}</h5></a>
+<p>手札のカードを指定する数字です。</p>
+<p><a href="print.html#hand--h">,,hand</a>を参照してください。</p>
+<hr />
+<a class="header" href="print.html#give" id="give"><h3>,,give</h3></a>
+<p>現在のプレイヤーの手札のカードを現在のセッションのプレイヤーに与えます。</p>
+<pre><code>,,give {HAND_NUMBER} {PLAYER_UUID}
+</code></pre>
+<a class="header" href="print.html#hand_number-2" id="hand_number-2"><h5>{HAND_NUMBER}</h5></a>
+<p>手札のカードを指定する数字です。</p>
+<p><a href="print.html#hand--h">,,hand</a>を参照してください。</p>
+<a class="header" href="print.html#player_uuid-1" id="player_uuid-1"><h5>{PLAYER_UUID}</h5></a>
+<p>カードを与える現在のセッションのプレイヤーを指定するUuidです。</p>
+<p><a href="print.html#player-list">,,player list</a>を参照してください。</p>
+<a class="header" href="print.html#faq" id="faq"><h1>FAQ</h1></a>
+<a class="header" href="print.html#aizuna-1" id="aizuna-1"><h2>Aizuna</h2></a>
+<hr />
+<a class="header" href="print.html#session-not-found" id="session-not-found"><h3>session not found.</h3></a>
+<p>現在のセッションが見つかりません。</p>
+<p>一度もセッションを作成していないか、
+現在のセッションが消去された後に現在のセッションが新しく指定されていない場合に起きます。</p>
+<p><a href="./aizuna_command.html#session-default">,session default</a>によって現在のセッションを指定する必要があります。</p>
+<a class="header" href="print.html#shinen-2" id="shinen-2"><h2>ShinEn</h2></a>
+<hr />
+<a class="header" href="print.html#player-not-found" id="player-not-found"><h3>player not found.</h3></a>
+<p>現在のプレイヤーが見つかりません。</p>
+<p>一度もプレイヤーを作成していないか、
+現在のプレイヤーが消去された後に現在のプレイヤーが新しく指定されていない場合に起きます。</p>
+<p><a href="./shinen_command.html#player-default">,,player default</a>によって現在のプレイヤーを指定する必要があります。</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+
+                
+
+            </div>
+
+            
+
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+        <script>
+            $(document).ready(function() {
+                window.print();
+            })
+        </script>
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

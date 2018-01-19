@@ -1,0 +1,230 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>ShinEn 設定 - </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./aizuna.html"><strong>1.</strong> Aizuna 0.1</a></li><li><ul class="section"><li><a href="./aizuna_introduction.html"><strong>1.1.</strong> Aizuna イントロダクション</a></li><li><a href="./aizuna_term.html"><strong>1.2.</strong> Aizuna 用語</a></li><li><a href="./aizuna_config.html"><strong>1.3.</strong> Aizuna 設定</a></li><li><a href="./aizuna_command.html"><strong>1.4.</strong> Aizuna コマンド</a></li><li><a href="./aizuna_thread.html"><strong>1.5.</strong> Aizuna スレッドとコルーチン</a></li></ul></li><li><strong>2.</strong> Connectors</li><li><ul class="section"><li><a href="./discord.html"><strong>2.1.</strong> Discord</a></li></ul></li><li><strong>3.</strong> Rules</li><li><ul class="section"><li><a href="./shinen.html"><strong>3.1.</strong> ShinEn ご注意</a></li><li><ul class="section"><li><a href="./shinen_term.html"><strong>3.1.1.</strong> ShinEn 用語</a></li><li><a href="./shinen_config.html" class="active"><strong>3.1.2.</strong> ShinEn 設定</a></li><li><a href="./shinen_command.html"><strong>3.1.3.</strong> ShinEn コマンド</a></li></ul></li></ul></li><li><a href="./faq.html"><strong>4.</strong> FAQ</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./shinen_config.html#shinen-設定" id="shinen-設定"><h1>ShinEn 設定</h1></a>
+<a class="header" href="./shinen_config.html#設定ファイル" id="設定ファイル"><h2>設定ファイル</h2></a>
+<p>ルートフォルダに存在する<code>config.toml</code>に設定を記述する必要があります。</p>
+<pre><code class="language-toml">[rules.shinen]
+serdever        = 0
+enable          = false
+prefix          = &quot;,&quot;
+[rules.shinen.config]
+serdever        = 0
+root            = &quot;SHINEN_ROOT_PATH&quot;
+</code></pre>
+<a class="header" href="./shinen_config.html#rules識別名config" id="rules識別名config"><h5>[rules.${識別名}.config]</h5></a>
+<hr />
+<a class="header" href="./shinen_config.html#root-" id="root-"><h6>root =</h6></a>
+<p>ShinEnのファイルを保存するディレクトリへのパスです。</p>
+<p>相対パスを指定した場合、Aizunaルートディレクトリからのパスとして認識されます。
+絶対パスを指定することも可能です。</p>
+<p>Aizunaルートディレクトリについては、
+<a href="./aizuna_config.html#aizuna-%E3%83%AB%E3%83%BC%E3%83%88%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA">Aizuna 設定 ルートディレクトリ</a>を参照してください。</p>
+<a class="header" href="./shinen_config.html#カード" id="カード"><h2>カード</h2></a>
+<p>『深淵』はカードを使用しますので、そのデータが必要です。</p>
+<a class="header" href="./shinen_config.html#カードデータファイル" id="カードデータファイル"><h3>カードデータファイル</h3></a>
+<p>カードの情報は<a href="./shinen_config.html#root-">ShinEnルートディレクトリ</a>に保存されたtoml形式のテキストファイルから読み込まれます。</p>
+<pre><code class="language-shell">{SHINEN_ROOT_PATH}
+└── cards
+    ├── basic.toml
+    └── crimson.toml
+</code></pre>
+<a class="header" href="./shinen_config.html#shinen_root_pathcardsbasictom" id="shinen_root_pathcardsbasictom"><h5>{SHINEN_ROOT_PATH}/cards/basic.tom</h5></a>
+<p>基本のカード情報です。</p>
+<a class="header" href="./shinen_config.html#shinen_root_pathcardscrimsontom" id="shinen_root_pathcardscrimsontom"><h5>{SHINEN_ROOT_PATH}/cards/crimson.tom</h5></a>
+<p>『血のごとく赤き 〜夢魔の占い札〜』のカード情報です</p>
+<a class="header" href="./shinen_config.html#tomlフォーマット" id="tomlフォーマット"><h3>tomlフォーマット</h3></a>
+<a class="header" href="./shinen_config.html#例" id="例"><h4>例</h4></a>
+<pre><code class="language-toml">[&quot;白の黒剣&quot;]
+serdever = 0
+name = &quot;白の黒剣&quot;
+card_set = &quot;基本&quot;
+color = &quot;白&quot;
+constellation = &quot;黒剣&quot;
+value = 1
+story = [&quot;前兆&quot;, &quot;出自&quot;]
+story_desc = &quot;血が一滴、したたった。無明の闇から、今、何かが誕生し、世界に波紋をもたらしていく。&quot;
+action = [&quot;攻撃&quot;, &quot;防御&quot;]
+damage = &quot;衝撃&quot;
+damage_desc = &quot;頭がくらくらする。精神力-4。&quot;
+destiny = 1
+</code></pre>
+<pre><code class="language-toml">[&quot;狂気&quot;]
+serdever = 0
+name = &quot;狂気&quot;
+card_set = &quot;血のごとく赤き 〜夢魔の占い札〜&quot;
+value = 0
+desc = &quot;このカードには意味がない。そう意味はない。たぶん……&quot;
+story_desc = &quot;いつか お前は私を求めるだろう&quot;
+destiny = 95
+</code></pre>
+<a class="header" href="./shinen_config.html#カード名" id="カード名"><h5>[&quot;カード名&quot;]</h5></a>
+<p>カード情報の記述を開始します。</p>
+<a class="header" href="./shinen_config.html#serdever-" id="serdever-"><h5>serdever =</h5></a>
+<p>構造のバージョン番号です。現在は0が要求されます。</p>
+<a class="header" href="./shinen_config.html#name-" id="name-"><h5>name =</h5></a>
+<p>カード名を示す文字列です。</p>
+<a class="header" href="./shinen_config.html#card_set-" id="card_set-"><h5>card_set =</h5></a>
+<p>セットを示す文字列です。</p>
+<a class="header" href="./shinen_config.html#color-" id="color-"><h5>color =</h5></a>
+<p>色を示す文字列です。</p>
+<a class="header" href="./shinen_config.html#constellation-" id="constellation-"><h5>constellation =</h5></a>
+<p>星座を示す文字列です。</p>
+<a class="header" href="./shinen_config.html#value-" id="value-"><h5>value =</h5></a>
+<p>カラーナンバーを示す数値です。</p>
+<a class="header" href="./shinen_config.html#desc-" id="desc-"><h5>desc =</h5></a>
+<p>カードの文章を示す文字列です。</p>
+<a class="header" href="./shinen_config.html#story-" id="story-"><h5>story =</h5></a>
+<p>語り部の種別を示す文字列の配列です。</p>
+<a class="header" href="./shinen_config.html#story_desc-" id="story_desc-"><h5>story_desc =</h5></a>
+<p>語り部の文章を示す文字列です。</p>
+<a class="header" href="./shinen_config.html#action-" id="action-"><h5>action =</h5></a>
+<p>行動の種別を示す文字列の配列です。</p>
+<a class="header" href="./shinen_config.html#damage-" id="damage-"><h5>damage =</h5></a>
+<p>ダメージの種別を示す文字列です。</p>
+<a class="header" href="./shinen_config.html#damage_desc-" id="damage_desc-"><h5>damage_desc =</h5></a>
+<p>ダメージの文章を示す文字列です。</p>
+<a class="header" href="./shinen_config.html#destiny-" id="destiny-"><h5>destiny =</h5></a>
+<p>運命番号を示す数値です。</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a rel="prev" href="./shinen_term.html" class="mobile-nav-chapters previous" title="Previous chapter">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="./shinen_command.html" class="mobile-nav-chapters next" title="Next chapter">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./shinen_term.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./shinen_command.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

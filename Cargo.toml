@@ -1,0 +1,61 @@
+# -*- mode:toml; coding:utf-8-unix; -*-
+# =============================================================================
+[package]
+name                    = "aizuna"
+version                 = "0.1.0"
+authors                 = ["hanepjiv <hanepjiv@gmail.com>"]
+license                 = "MIT/Apache-2.0"
+keywords                = ["bot", "game"]
+description             = "Chat BOT."
+readme                  = "README.md"
+documentation           = "https://bitbucket.org/hanepjiv/aizuna/overview"
+homepage                = "https://bitbucket.org/hanepjiv/aizuna"
+repository              = "https://bitbucket.org/hanepjiv/aizuna.git"
+publish                 = false
+# =============================================================================
+[features]
+coroutine               = []
+coroutine-fringe        = ["coroutine", "fringe"]
+# =============================================================================
+[build-dependencies]
+# =============================================================================
+[dependencies]
+bitflags                = { default-features = false, version = "^1.0.1" }
+discord                 = { default-features = false, version = "^0.8.0" }
+env_logger              = { default-features = false, version = "^0.4.3" }
+getopts                 = { default-features = false, version = "^0.2.15" }
+log                     = { default-features = false, version = "^0.4.1" }
+rand                    = { default-features = true, version = "^0.4.2" }
+regex                   = { default-features = false, version = "^0.2.5" }
+rusty-leveldb           = { default-features = false, version = "^0.1.6" }
+serde                   = { default-features = false, version = "^1.0.27" }
+serde_derive            = { default-features = false, version = "^1.0.27" }
+serde_json              = { default-features = false, version = "^1.0.9" }
+toml                    = { default-features = false, version = "^0.4.5" }
+# -----------------------------------------------------------------------------
+elicit                   = { default-features = false, git = "https://github.com/hanepjiv/elicit-rs.git" }
+#elicit                 = { default-features = false, path = "../../elicit-rs/orig" }
+# -----------------------------------------------------------------------------
+[dependencies.chrono]
+default-features        = false
+version                 = "^0.4.0"
+features                = ["serde"]
+# -----------------------------------------------------------------------------
+[dependencies.fringe]
+default-features        = false
+version                 = "^1.2.1"
+optional                = true
+# -----------------------------------------------------------------------------
+[dependencies.uuid]
+default-features        = false
+version                 = "^0.5.1"
+features                = ["v4", "serde"]
+# =============================================================================
+[[bin]]
+name                    = "aizuna"
+test                    = true
+doctest                 = true
+bench                   = false
+doc                     = false
+plugin                  = false
+harness                 = true

@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Aizuna イントロダクション - </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch JQuery from CDN but have a local fallback -->
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script>
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
+        <script src="store.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme = store.get('mdbook-theme');
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            $('body').removeClass().addClass(theme);
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = store.get('mdbook-sidebar');
+            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
+            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+        </script>
+
+        <div id="sidebar" class="sidebar">
+            <ul class="chapter"><li><a href="./aizuna.html"><strong>1.</strong> Aizuna 0.1</a></li><li><ul class="section"><li><a href="./aizuna_introduction.html" class="active"><strong>1.1.</strong> Aizuna イントロダクション</a></li><li><a href="./aizuna_term.html"><strong>1.2.</strong> Aizuna 用語</a></li><li><a href="./aizuna_config.html"><strong>1.3.</strong> Aizuna 設定</a></li><li><a href="./aizuna_command.html"><strong>1.4.</strong> Aizuna コマンド</a></li><li><a href="./aizuna_thread.html"><strong>1.5.</strong> Aizuna スレッドとコルーチン</a></li></ul></li><li><strong>2.</strong> Connectors</li><li><ul class="section"><li><a href="./discord.html"><strong>2.1.</strong> Discord</a></li></ul></li><li><strong>3.</strong> Rules</li><li><ul class="section"><li><a href="./shinen.html"><strong>3.1.</strong> ShinEn ご注意</a></li><li><ul class="section"><li><a href="./shinen_term.html"><strong>3.1.1.</strong> ShinEn 用語</a></li><li><a href="./shinen_config.html"><strong>3.1.2.</strong> ShinEn 設定</a></li><li><a href="./shinen_command.html"><strong>3.1.3.</strong> ShinEn コマンド</a></li></ul></li></ul></li><li><a href="./faq.html"><strong>4.</strong> FAQ</a></li></ul>
+        </div>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page" tabindex="-1">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div class="left-buttons">
+                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
+                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="content" class="content">
+                    <a class="header" href="./aizuna_introduction.html#aizuna-イントロダクション" id="aizuna-イントロダクション"><h1>Aizuna イントロダクション</h1></a>
+<a class="header" href="./aizuna_introduction.html#実行ファイル-の取得" id="実行ファイル-の取得"><h2>実行ファイル の取得</h2></a>
+<a class="header" href="./aizuna_introduction.html#ソースからコンパイルする" id="ソースからコンパイルする"><h3>ソースからコンパイルする</h3></a>
+<a class="header" href="./aizuna_introduction.html#a-hrefhttpswwwrust-langorgrusta-nightly-環境の準備" id="a-hrefhttpswwwrust-langorgrusta-nightly-環境の準備"><h4><a href="https://www.rust-lang.org">Rust</a> nightly 環境の準備</h4></a>
+<p><a href="https://www.rust-lang.org">Rust</a>を参照して開発環境(<code>rustup</code>, <code>cargo</code>)を準備してください。</p>
+<p>nightly toolchaine をインストールします。</p>
+<pre><code class="language-shell">rustup install nightly
+</code></pre>
+<a class="header" href="./aizuna_introduction.html#github-からインストール" id="github-からインストール"><h5>GitHub からインストール</h5></a>
+<p>GitHubの<a href="https://github.com/hanepjiv/aizuna.git">repository</a>から直接インストールします。</p>
+<pre><code class="language-shell">cargo install --git https://github.com/hanepjiv/aizuna.git
+</code></pre>
+<a class="header" href="./aizuna_introduction.html#ソースコードの入手" id="ソースコードの入手"><h5>ソースコードの入手</h5></a>
+<p>GitHubの<a href="https://github.com/hanepjiv/aizuna.git">repository</a>からソースコードを入手します。</p>
+<pre><code class="language-shell">git clone https://github.com/hanepjiv/aizuna.git
+cd asizuna
+</code></pre>
+<a class="header" href="./aizuna_introduction.html#インストール" id="インストール"><h6>インストール</h6></a>
+<p>nightlyでコンパイルすることを指示し、<code>cargo</code>コマンドでインストールします。</p>
+<pre><code class="language-shell">rustup override set nightly
+cargo install
+aizuna
+</code></pre>
+<a class="header" href="./aizuna_introduction.html#インストールをしないで実行" id="インストールをしないで実行"><h6>インストールをしないで実行</h6></a>
+<p><code>cargo run</code>コマンドでインストールせずに実行することもできます。</p>
+<pre><code class="language-shell">rustup override set nightly
+cargo run --release
+</code></pre>
+<a class="header" href="./aizuna_introduction.html#初回起動" id="初回起動"><h2>初回起動</h2></a>
+<a class="header" href="./aizuna_introduction.html#設定ファイルの新規作成" id="設定ファイルの新規作成"><h4>設定ファイルの新規作成</h4></a>
+<p>初回起動で設定ファイルが無い場合、設定ファイルを新規作成するかを問われます。</p>
+<pre><code>create config file? &quot;${HOME}/.config/aizuna/config.toml&quot; [Y/n]:
+</code></pre>
+<blockquote>
+<p>--root オプションを付与して実行すると設定ファイルを参照するディレクトリを指定できます。
+デフォルトでは ${HOME}/.confog/aizuna/ を参照します。</p>
+<pre><code class="language-shell">aizuna --root ./
+</code></pre>
+<p><code>cargo run</code>で起動する場合は次のように指定します。</p>
+<pre><code class="language-shell">cargo run --release -- --root ./
+</code></pre>
+</blockquote>
+<p>設定ファイルを新規作成すると、デバッグコンソールのみに接続した状態で起動します。</p>
+<pre><code>Console::new: *** Caution! This is a DEBUG console. ***
+Console: Spawn
+</code></pre>
+<p>詳しくは、<a href="./aizuna_config.html">Aizuna 設定</a>を参照してください。</p>
+<a class="header" href="./aizuna_introduction.html#基本コマンド" id="基本コマンド"><h2>基本コマンド</h2></a>
+<p>Aizunaは接頭辞(prefix: デフォルトでは&quot;,&quot;)から始まる文字列をコマンドとして認識します。</p>
+<a class="header" href="./aizuna_introduction.html#help" id="help"><h4>,help</h4></a>
+<p>先ずは &quot;,help&quot; コマンドを入力してください。</p>
+<pre><code>,help
+Console: Whisper:
+Aizuna v0.1.0:
+ ,help      Print this message.
+ ,user/ ,u  Print User info.
+ ,session / ,s  Session controll.
+ ,[0-9]*d[0-9]* Dice roll. etc. ,2d6 / ,3d / ,d10
+ ,quit / ,Q Aizuna logout server. Need administrator's authority.
+ ,database  Dump database. Need administrator's authority.
+</code></pre>
+<p>入力と出力にプロンプト(&quot; &gt;&quot; のような入力を促す表示)による区別がないことに注意してください。</p>
+<a class="header" href="./aizuna_introduction.html#d" id="d"><h4>,d</h4></a>
+<p>&quot;,d&quot; コマンドでサイコロを振ることが出来ます。</p>
+<pre><code>,d
+Console: Send: 1d6 = [4] = 4.
+</code></pre>
+<pre><code>,2d6
+Console: Send: 2d6 = [3, 4] = 7.
+</code></pre>
+<a class="header" href="./aizuna_introduction.html#quit" id="quit"><h4>,quit</h4></a>
+<p>&quot;,quit&quot; コマンド で Aizunaを終了出来ます。</p>
+<pre><code>,quit
+Console: Exit
+</code></pre>
+<p>その他のコマンドの詳説は<a href="./aizuna_command.html">Aizuna コマンド</a>を参照してください。</p>
+
+                </div>
+
+                <!-- Mobile navigation buttons -->
+                
+                    <a rel="prev" href="./aizuna.html" class="mobile-nav-chapters previous" title="Previous chapter">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="./aizuna_term.html" class="mobile-nav-chapters next" title="Next chapter">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+
+            </div>
+
+            
+                <a href="./aizuna.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            
+
+            
+                <a href="./aizuna_term.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if ($(".fa").css("font-family") !== "FontAwesome") {
+                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            }
+        </script>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

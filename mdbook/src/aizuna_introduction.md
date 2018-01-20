@@ -7,7 +7,7 @@
 #### [Rust][Rust] nightly 環境の準備
 [Rust][Rust]を参照して開発環境(`rustup`, `cargo`)を準備してください。
 
-nightly toolchaine をインストールします。
+nightly toolchain をインストールします。
 
 ```shell
 rustup install nightly

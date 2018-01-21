@@ -88,14 +88,14 @@
                 <div id="content" class="content">
                     <a class="header" href="./shinen_config.html#shinen-設定" id="shinen-設定"><h1>ShinEn 設定</h1></a>
 <a class="header" href="./shinen_config.html#設定ファイル" id="設定ファイル"><h2>設定ファイル</h2></a>
-<p>ルートフォルダに存在する<code>config.toml</code>に設定を記述する必要があります。</p>
+<p><a href="./aizuna_config.html#aizuna-%E3%83%AB%E3%83%BC%E3%83%88%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA">Aizuna 設定 ルートディレクトリ</a>に存在する<code>config.toml</code>に設定を記述する必要があります。</p>
 <pre><code class="language-toml">[rules.shinen]
-serdever        = 0
-enable          = false
-prefix          = &quot;,&quot;
+serdever    = 0
+enable      = false
+prefix      = &quot;,&quot;
 [rules.shinen.config]
-serdever        = 0
-root            = &quot;SHINEN_ROOT_PATH&quot;
+serdever    = 0
+root        = &quot;SHINEN_ROOT_PATH&quot;
 </code></pre>
 <a class="header" href="./shinen_config.html#rules識別名config" id="rules識別名config"><h5>[rules.${識別名}.config]</h5></a>
 <hr />
@@ -103,8 +103,6 @@ root            = &quot;SHINEN_ROOT_PATH&quot;
 <p>ShinEnのファイルを保存するディレクトリへのパスです。</p>
 <p>相対パスを指定した場合、Aizunaルートディレクトリからのパスとして認識されます。
 絶対パスを指定することも可能です。</p>
-<p>Aizunaルートディレクトリについては、
-<a href="./aizuna_config.html#aizuna-%E3%83%AB%E3%83%BC%E3%83%88%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA">Aizuna 設定 ルートディレクトリ</a>を参照してください。</p>
 <a class="header" href="./shinen_config.html#カード" id="カード"><h2>カード</h2></a>
 <p>『深淵』はカードを使用しますので、そのデータが必要です。</p>
 <a class="header" href="./shinen_config.html#カードデータファイル" id="カードデータファイル"><h3>カードデータファイル</h3></a>
@@ -114,9 +112,9 @@ root            = &quot;SHINEN_ROOT_PATH&quot;
     ├── basic.toml
     └── crimson.toml
 </code></pre>
-<a class="header" href="./shinen_config.html#shinen_root_pathcardsbasictom" id="shinen_root_pathcardsbasictom"><h5>{SHINEN_ROOT_PATH}/cards/basic.tom</h5></a>
+<a class="header" href="./shinen_config.html#shinen_root_pathcardsbasictoml" id="shinen_root_pathcardsbasictoml"><h5>{SHINEN_ROOT_PATH}/cards/basic.toml</h5></a>
 <p>基本のカード情報です。</p>
-<a class="header" href="./shinen_config.html#shinen_root_pathcardscrimsontom" id="shinen_root_pathcardscrimsontom"><h5>{SHINEN_ROOT_PATH}/cards/crimson.tom</h5></a>
+<a class="header" href="./shinen_config.html#shinen_root_pathcardscrimsontoml" id="shinen_root_pathcardscrimsontoml"><h5>{SHINEN_ROOT_PATH}/cards/crimson.toml</h5></a>
 <p>『血のごとく赤き 〜夢魔の占い札〜』のカード情報です</p>
 <a class="header" href="./shinen_config.html#tomlフォーマット" id="tomlフォーマット"><h3>tomlフォーマット</h3></a>
 <a class="header" href="./shinen_config.html#例" id="例"><h4>例</h4></a>

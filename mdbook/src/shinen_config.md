@@ -1,16 +1,16 @@
 # ShinEn 設定
 
 ## 設定ファイル
-ルートフォルダに存在する`config.toml`に設定を記述する必要があります。
+[Aizuna 設定 ルートディレクトリ][Aizuna 設定 ルートディレクトリ]に存在する`config.toml`に設定を記述する必要があります。
 
 ```toml
 [rules.shinen]
-serdever        = 0
-enable          = false
-prefix          = ","
+serdever    = 0
+enable      = false
+prefix      = ","
 [rules.shinen.config]
-serdever        = 0
-root            = "SHINEN_ROOT_PATH"
+serdever    = 0
+root        = "SHINEN_ROOT_PATH"
 ```
 
 ##### [rules.${識別名}.config]
@@ -21,9 +21,6 @@ ShinEnのファイルを保存するディレクトリへのパスです。
 
 相対パスを指定した場合、Aizunaルートディレクトリからのパスとして認識されます。
 絶対パスを指定することも可能です。
-
-Aizunaルートディレクトリについては、
-[Aizuna 設定 ルートディレクトリ][Aizuna 設定 ルートディレクトリ]を参照してください。
 
 ## カード
 『深淵』はカードを使用しますので、そのデータが必要です。
@@ -38,10 +35,10 @@ Aizunaルートディレクトリについては、
     └── crimson.toml
 ```
 
-##### {SHINEN_ROOT_PATH}/cards/basic.tom
+##### {SHINEN_ROOT_PATH}/cards/basic.toml
 基本のカード情報です。
 
-##### {SHINEN_ROOT_PATH}/cards/crimson.tom
+##### {SHINEN_ROOT_PATH}/cards/crimson.toml
 『血のごとく赤き 〜夢魔の占い札〜』のカード情報です
 
 ### tomlフォーマット

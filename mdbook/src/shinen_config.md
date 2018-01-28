@@ -13,7 +13,7 @@ serdever    = 0
 root        = "SHINEN_ROOT_PATH"
 ```
 
-##### [rules.${識別名}.config]
+##### [rules.{識別名}.config]
 
 ----
 ###### root =

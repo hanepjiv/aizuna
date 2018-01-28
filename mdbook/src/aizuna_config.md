@@ -42,40 +42,40 @@ Aizunaの実行プロセスはルートディレクトリに対してファイ�
 # /////////////////////////////////////////////////////////////////////////////
 # =============================================================================
 # aizuna v0.1.0
-serdever        = 0
-greeting        = "aizuna v0.1.0"
-driver          = "Thread"
+serdever    = 0
+greeting    = "aizuna v0.1.0"
+driver      = "Thread"
 fringe_stack_size   = 1048576
-path_db         = "./db"
-prefix          = ","
+path_db     = "./db"
+prefix      = ","
 # /////////////////////////////////////////////////////////////////////////////
 # =============================================================================
 [connectors.console]
-serdever        = 0
-enable          = true
-connector       = "console"
+serdever    = 0
+enable      = true
+connector   = "console"
 # =============================================================================
 [connectors.discord-00]
-serdever        = 0
-enable          = false
-connector       = "discord"
+serdever    = 0
+enable      = false
+connector   = "discord"
 [connectors.discord-00.config]
-serdever        = 0
-token           = "DISCORD_BOT_TOKEN"
+serdever    = 0
+token       = "DISCORD_BOT_TOKEN"
 # /////////////////////////////////////////////////////////////////////////////
 # =============================================================================
 [rules.shinen]
-serdever        = 0
-enable          = false
-prefix          = ","
+serdever    = 0
+enable      = false
+prefix      = ","
 [rules.shinen.config]
-serdever        = 0
-root            = "SHINEN_ROOT_PATH"
+serdever    = 0
+root        = "SHINEN_ROOT_PATH"
 # /////////////////////////////////////////////////////////////////////////////
 # =============================================================================
 [admin]
-console         = [".*"]
-discord-00      = ["DISCORD_USER_ID_00", "DISCORD_USER_ID_01"]
+console     = [".*"]
+discord-00  = ["DISCORD_USER_ID_00", "DISCORD_USER_ID_01"]
 ```
 
 ### serdever =
@@ -146,22 +146,22 @@ aizuna-2d6
 
 ```toml
 [connectors.console]
-serdever        = 0
-enable          = true
-connector       = "console"
+serdever    = 0
+enable      = true
+connector   = "console"
 ```
 
 ```toml
 [connectors.discord-00]
-serdever        = 0
-enable          = false
-connector       = "discord"
+serdever    = 0
+enable      = false
+connector   = "discord"
 [connectors.discord-00.config]
-serdever        = 0
-token           = "DISCORD_BOT_TOKEN"
+serdever    = 0
+token       = "DISCORD_BOT_TOKEN"
 ```
 
-`[connectors.${識別名}]`のように記述することでコネクタの設定を開始します。
+`[connectors.{識別名}]`のように記述することでコネクタの設定を開始します。
 
 識別名はユーザの判別に使用され、同一のコネクタ識別名を持つユーザ同士のみがセッションを共有できます。
 **セッションを作成したコネクタの識別名を書き換えてしまうと、
@@ -190,7 +190,7 @@ token           = "DISCORD_BOT_TOKEN"
 > Aizunaは全てのコネクタが終了するまで、プロセスを終了しません。[,quit][quit]を参照してください。
 
 ----
-##### [connectors.${識別名}.config]
+##### [connectors.{識別名}.config]
 
 コネクタによっては追加の設定が必要となります。
 
@@ -207,15 +207,15 @@ Aizunaで使用するゲームのルールを設定します。
 
 ```toml
 [rules.shinen]
-serdever        = 0
-enable          = false
-prefix          = ","
+serdever    = 0
+enable      = false
+prefix      = ","
 [rules.shinen.config]
-serdever        = 0
-root            = "SHINEN_ROOT_PATH"
+serdever    = 0
+root        = "SHINEN_ROOT_PATH"
 ```
 
-`[rules.${識別名}]`のように記述することでルールの設定を開始します。
+`[rules.{識別名}]`のように記述することでルールの設定を開始します。
 
 ----
 ##### enable =
@@ -230,7 +230,7 @@ root            = "SHINEN_ROOT_PATH"
 コマンドでルールを識別する接頭辞を示す文字列です。
 
 ----
-##### [rules.${識別名}.config]
+##### [rules.{識別名}.config]
 
 ルールによっては追加の設定が必要となります。
 
@@ -243,7 +243,7 @@ root            = "SHINEN_ROOT_PATH"
 コネクタ毎にAizunaの管理者として扱われるユーザを設定します。
 
 ```
-${connetor識別名} = ["${Rust正規表現}", "${Rust正規表現}"]
+{connetor識別名} = ["{Rust正規表現}", "{Rust正規表現}"]
 ```
 
 デフォルトではconsole接続が管理者として扱われます。
@@ -253,8 +253,8 @@ Discord接続はデフォルトでは無効化されています。
 
 ```toml
 [admin]
-console         = [".*"]
-discord-00      = ["DISCORD_USER_ID_00", "DISCORD_USER_ID_01"]
+console     = [".*"]
+discord-00  = ["DISCORD_USER_ID_00", "DISCORD_USER_ID_01"]
 ```
 
 管理者を設定していないコネクタは、[,quit][quit]を使用できません。

@@ -9,15 +9,15 @@
 
 ```
 [connectors.discord-00]
-serdever            = 0
-enable              = false
-connector           = "discord"
+serdever        = 0
+enable          = false
+connector       = "discord"
 [connectors.discord-00.config]
-serdever            = 0
-token               = "DISCORD_BOT_TOKEN"
+serdever        = 0
+token           = "DISCORD_BOT_TOKEN"
 ```
 
-#### [connector.${識別名}.config]
+#### [connector.{識別名}.config]
 
 ----
 ##### token =

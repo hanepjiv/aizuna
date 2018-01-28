@@ -6,6 +6,7 @@
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
 
 
         <link rel="stylesheet" href="book.css">
@@ -34,58 +35,91 @@
             }
         </script>
 
-        <!-- Fetch JQuery from CDN but have a local fallback -->
-        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script>
-            if (typeof jQuery == 'undefined') {
-                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
-            }
-        </script>
-
-        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
-        <script src="store.js"></script>
-
     </head>
     <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
             if (theme === null || theme === undefined) { theme = 'light'; }
-            $('body').removeClass().addClass(theme);
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
-            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
-            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
         </script>
 
-        <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li><a href="./aizuna.html" class="active"><strong>1.</strong> Aizuna 0.1</a></li><li><ul class="section"><li><a href="./aizuna_introduction.html"><strong>1.1.</strong> Aizuna イントロダクション</a></li><li><a href="./aizuna_term.html"><strong>1.2.</strong> Aizuna 用語</a></li><li><a href="./aizuna_config.html"><strong>1.3.</strong> Aizuna 設定</a></li><li><a href="./aizuna_command.html"><strong>1.4.</strong> Aizuna コマンド</a></li><li><a href="./aizuna_thread.html"><strong>1.5.</strong> Aizuna スレッドとコルーチン</a></li></ul></li><li><strong>2.</strong> Connectors</li><li><ul class="section"><li><a href="./discord.html"><strong>2.1.</strong> Discord</a></li></ul></li><li><strong>3.</strong> Rules</li><li><ul class="section"><li><a href="./shinen.html"><strong>3.1.</strong> ShinEn ご注意</a></li><li><ul class="section"><li><a href="./shinen_term.html"><strong>3.1.1.</strong> ShinEn 用語</a></li><li><a href="./shinen_config.html"><strong>3.1.2.</strong> ShinEn 設定</a></li><li><a href="./shinen_command.html"><strong>3.1.3.</strong> ShinEn コマンド</a></li></ul></li></ul></li><li><a href="./faq.html"><strong>4.</strong> FAQ</a></li></ul>
-        </div>
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li><a href="aizuna.html" class="active"><strong aria-hidden="true">1.</strong> Aizuna 0.1</a></li><li><ol class="section"><li><a href="aizuna_introduction.html"><strong aria-hidden="true">1.1.</strong> Aizuna イントロダクション</a></li><li><a href="aizuna_term.html"><strong aria-hidden="true">1.2.</strong> Aizuna 用語</a></li><li><a href="aizuna_config.html"><strong aria-hidden="true">1.3.</strong> Aizuna 設定</a></li><li><a href="aizuna_command.html"><strong aria-hidden="true">1.4.</strong> Aizuna コマンド</a></li><li><a href="aizuna_thread.html"><strong aria-hidden="true">1.5.</strong> Aizuna スレッドとコルーチン</a></li></ol></li><li><a href="connectors.html"><strong aria-hidden="true">2.</strong> Connectors</a></li><li><ol class="section"><li><a href="discord.html"><strong aria-hidden="true">2.1.</strong> Discord</a></li></ol></li><li><a href="rules.html"><strong aria-hidden="true">3.</strong> Rules</a></li><li><ol class="section"><li><a href="shinen.html"><strong aria-hidden="true">3.1.</strong> ShinEn ご注意</a></li><li><ol class="section"><li><a href="shinen_term.html"><strong aria-hidden="true">3.1.1.</strong> ShinEn 用語</a></li><li><a href="shinen_config.html"><strong aria-hidden="true">3.1.2.</strong> ShinEn 設定</a></li><li><a href="shinen_command.html"><strong aria-hidden="true">3.1.3.</strong> ShinEn コマンド</a></li></ol></li></ol></li><li><a href="faq.html"><strong aria-hidden="true">4.</strong> FAQ</a></li></ol>
+        </nav>
 
         <div id="page-wrapper" class="page-wrapper">
 
-            <div class="page" tabindex="-1">
+            <div class="page">
                 
                 <div id="menu-bar" class="menu-bar">
-                    <div class="left-buttons">
-                        <i id="sidebar-toggle" class="fa fa-bars" title="Toggle sidebar"></i>
-                        <i id="theme-toggle" class="fa fa-paint-brush" title="Change theme"></i>
-                    </div>
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
 
-                    <h1 class="menu-title"></h1>
+                        <h1 class="menu-title"></h1>
 
-                    <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
                 <div id="content" class="content">
-                    <a class="header" href="./aizuna.html#aizuna-01" id="aizuna-01"><h1>Aizuna 0.1</h1></a>
+                    <main>
+                        <a class="header" href="aizuna.html#aizuna-01" id="aizuna-01"><h1>Aizuna 0.1</h1></a>
 <ul>
 <li><a href="https://travis-ci.org/hanepjiv/aizuna"><img src="https://travis-ci.org/hanepjiv/aizuna.svg?branch=master" alt="Build Status" /></a></li>
 </ul>
@@ -98,7 +132,7 @@
 <p><a href="https://www.rust-lang.org">Rust</a> nightlyで記述されています。</p>
 <p>Aizuna 0.1 では チャットサービスの <a href="https://discordapp.com/">Discord</a> を対象として動作します。</p>
 <p><img src="./images/screenshot00.png" alt="screenshot00" /></p>
-<a class="header" href="./aizuna.html#author" id="author"><h5>Author</h5></a>
+<a class="header" href="aizuna.html#author" id="author"><h5>Author</h5></a>
 <ul>
 <li>hanepjiv
 <ul>
@@ -108,14 +142,14 @@
 </ul>
 </li>
 </ul>
-<a class="header" href="./aizuna.html#repository" id="repository"><h5>Repository</h5></a>
+<a class="header" href="aizuna.html#repository" id="repository"><h5>Repository</h5></a>
 <p><a href="https://github.com/hanepjiv/aizuna.git">https://github.com/hanepjiv/aizuna.git</a></p>
-<a class="header" href="./aizuna.html#license" id="license"><h5>License</h5></a>
+<a class="header" href="aizuna.html#license" id="license"><h5>License</h5></a>
 <ul>
 <li>MIT</li>
 <li>Apache-2.0</li>
 </ul>
-<a class="header" href="./aizuna.html#機能" id="機能"><h3>機能</h3></a>
+<a class="header" href="aizuna.html#機能" id="機能"><h3>機能</h3></a>
 <ul>
 <li>ユーザ管理</li>
 <li>セッション管理</li>
@@ -126,55 +160,64 @@
 </ul>
 </li>
 </ul>
-<a class="header" href="./aizuna.html#接続" id="接続"><h4>接続</h4></a>
+<a class="header" href="aizuna.html#接続" id="接続"><h4>接続</h4></a>
 <p>Aizuna 0.1 では 下記の接続で動作します。</p>
 <ul>
 <li>デバッグ コンソール</li>
 <li><a href="https://discordapp.com/">Discord</a></li>
 </ul>
-<a class="header" href="./aizuna.html#動作環境" id="動作環境"><h3>動作環境</h3></a>
+<a class="header" href="aizuna.html#動作環境" id="動作環境"><h3>動作環境</h3></a>
 <ul>
 <li><a href="https://www.rust-lang.org">Rust</a> nightly</li>
 </ul>
-<a class="header" href="./aizuna.html#動作確認環境" id="動作確認環境"><h4>動作確認環境</h4></a>
+<a class="header" href="aizuna.html#動作確認環境" id="動作確認環境"><h4>動作確認環境</h4></a>
 <ul>
 <li>Linux(libc)</li>
 </ul>
-<a class="header" href="./aizuna.html#依存ライブラリ" id="依存ライブラリ"><h4>依存ライブラリ</h4></a>
+<a class="header" href="aizuna.html#依存ライブラリ" id="依存ライブラリ"><h4>依存ライブラリ</h4></a>
 <p><a href="https://github.com/hanepjiv/aizuna/blob/master/Cargo.toml">Cargo.toml</a>を参照してくだささい。</p>
 
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+                            <a rel="next" href="aizuna_introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
                 </div>
+            </div>
 
-                <!-- Mobile navigation buttons -->
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
 
                 
-                    <a rel="next" href="./aizuna_introduction.html" class="mobile-nav-chapters next" title="Next chapter">
+                    <a href="aizuna_introduction.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
-
-            </div>
-
-            
-
-            
-                <a href="./aizuna_introduction.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
-                    <i class="fa fa-angle-right"></i>
-                </a>
-            
+            </nav>
 
         </div>
 
 
         <!-- Local fallback for Font Awesome -->
         <script>
-            if ($(".fa").css("font-family") !== "FontAwesome") {
-                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
             }
         </script>
 
-        <!-- Livereload script (if served using the cli tool) -->
         
 
         

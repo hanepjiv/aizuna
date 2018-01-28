@@ -23,7 +23,7 @@ coroutine-fringe        = ["coroutine", "fringe"]
 bitflags                = { default-features = false, version = "^1.0.1" }
 discord                 = { default-features = false, version = "^0.8.0" }
 env_logger              = { default-features = false, version = "^0.5.3" }
-getopts                 = { default-features = false, version = "^0.2.16" }
+getopts                 = { default-features = false, version = "^0.2.17" }
 log                     = { default-features = false, version = "^0.4.1" }
 rand                    = { default-features = true, version = "^0.4.2" }
 regex                   = { default-features = false, version = "^0.2.5" }

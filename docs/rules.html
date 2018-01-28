@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>ShinEn 用語 - </title>
+        <title>Rules - </title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -74,7 +74,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="aizuna.html"><strong aria-hidden="true">1.</strong> Aizuna 0.1</a></li><li><ol class="section"><li><a href="aizuna_introduction.html"><strong aria-hidden="true">1.1.</strong> Aizuna イントロダクション</a></li><li><a href="aizuna_term.html"><strong aria-hidden="true">1.2.</strong> Aizuna 用語</a></li><li><a href="aizuna_config.html"><strong aria-hidden="true">1.3.</strong> Aizuna 設定</a></li><li><a href="aizuna_command.html"><strong aria-hidden="true">1.4.</strong> Aizuna コマンド</a></li><li><a href="aizuna_thread.html"><strong aria-hidden="true">1.5.</strong> Aizuna スレッドとコルーチン</a></li></ol></li><li><a href="connectors.html"><strong aria-hidden="true">2.</strong> Connectors</a></li><li><ol class="section"><li><a href="discord.html"><strong aria-hidden="true">2.1.</strong> Discord</a></li></ol></li><li><a href="rules.html"><strong aria-hidden="true">3.</strong> Rules</a></li><li><ol class="section"><li><a href="shinen.html"><strong aria-hidden="true">3.1.</strong> ShinEn ご注意</a></li><li><ol class="section"><li><a href="shinen_term.html" class="active"><strong aria-hidden="true">3.1.1.</strong> ShinEn 用語</a></li><li><a href="shinen_config.html"><strong aria-hidden="true">3.1.2.</strong> ShinEn 設定</a></li><li><a href="shinen_command.html"><strong aria-hidden="true">3.1.3.</strong> ShinEn コマンド</a></li></ol></li></ol></li><li><a href="faq.html"><strong aria-hidden="true">4.</strong> FAQ</a></li></ol>
+            <ol class="chapter"><li><a href="aizuna.html"><strong aria-hidden="true">1.</strong> Aizuna 0.1</a></li><li><ol class="section"><li><a href="aizuna_introduction.html"><strong aria-hidden="true">1.1.</strong> Aizuna イントロダクション</a></li><li><a href="aizuna_term.html"><strong aria-hidden="true">1.2.</strong> Aizuna 用語</a></li><li><a href="aizuna_config.html"><strong aria-hidden="true">1.3.</strong> Aizuna 設定</a></li><li><a href="aizuna_command.html"><strong aria-hidden="true">1.4.</strong> Aizuna コマンド</a></li><li><a href="aizuna_thread.html"><strong aria-hidden="true">1.5.</strong> Aizuna スレッドとコルーチン</a></li></ol></li><li><a href="connectors.html"><strong aria-hidden="true">2.</strong> Connectors</a></li><li><ol class="section"><li><a href="discord.html"><strong aria-hidden="true">2.1.</strong> Discord</a></li></ol></li><li><a href="rules.html" class="active"><strong aria-hidden="true">3.</strong> Rules</a></li><li><ol class="section"><li><a href="shinen.html"><strong aria-hidden="true">3.1.</strong> ShinEn ご注意</a></li><li><ol class="section"><li><a href="shinen_term.html"><strong aria-hidden="true">3.1.1.</strong> ShinEn 用語</a></li><li><a href="shinen_config.html"><strong aria-hidden="true">3.1.2.</strong> ShinEn 設定</a></li><li><a href="shinen_command.html"><strong aria-hidden="true">3.1.3.</strong> ShinEn コマンド</a></li></ol></li></ol></li><li><a href="faq.html"><strong aria-hidden="true">4.</strong> FAQ</a></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -120,57 +120,23 @@
 
                 <div id="content" class="content">
                     <main>
-                        <a class="header" href="shinen_term.html#shinen-用語" id="shinen-用語"><h1>ShinEn 用語</h1></a>
-<p>Aizuna ShinEnで使用される用語を解説します。</p>
-<p>その他の用語については、<a href="./aizuna_term.html">Aizuna 用語</a>を参照してください。</p>
-<a class="header" href="shinen_term.html#shinenセッション" id="shinenセッション"><h4>ShinEnセッション</h4></a>
-<p>ShinEnセッションとは、下記の情報を保持する構造を差します。</p>
+                        <a class="header" href="rules.html#rules" id="rules"><h1>Rules</h1></a>
 <ul>
-<li>Uuid</li>
-<li>場札
-<ul>
-<li>山札</li>
-<li>捨て札</li>
+<li><a href="./shinen.html">ShinEn ご注意</a></li>
 </ul>
-</li>
-<li>プレイヤー(複数)</li>
-<li>参加ユーザの現在のプレイヤー</li>
-</ul>
-<p>項目の一部は<a href="./shinen_command.html">ShinEn コマンド</a>によって、変更できます。</p>
-<p>ShinEn セッションは<a href="./aizuna_term.html#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">Aizuna セッション</a>の構造の一部として扱われます。
-よって所有者やメンバーやタイトル等を
-<a href="./aizuna_term.html#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">Aizuna セッション</a>の機能によって変更できます。</p>
-<a class="header" href="shinen_term.html#プレイヤー" id="プレイヤー"><h4>プレイヤー</h4></a>
-<p>プレイヤーとは下記の情報を保持する構造を差します。</p>
-<ul>
-<li>Uuid</li>
-<li>所有ユーザUuid</li>
-<li>プレイヤー名</li>
-<li>手札</li>
-</ul>
-<p>項目の一部は<a href="./shinen_command.html">ShinEn コマンド</a>によって、変更できます。</p>
-<p><a href="./shinen_term.html#shinen%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">ShinEn セッション</a>は複数のプレイヤーを保持します。</p>
-<p><a href="./aizuna_term.html#%E3%83%A6%E3%83%BC%E3%82%B6">Aizuna ユーザ</a>はセッション内で複数のプレイヤーを所持することができます。</p>
-<a class="header" href="shinen_term.html#ユーザの現在のプレイヤー" id="ユーザの現在のプレイヤー"><h5>ユーザの現在のプレイヤー</h5></a>
-<p>ユーザの現在のプレイヤーとは、一部のコマンドにおいて、暗黙の内に操作対象となるプレイヤーを差します。</p>
-<p><a href="./shinen_command.html#player-default">,,player default</a> によって変更できます。</p>
-<p>ユーザの現在のプレイヤーは <a href="./shinen_command.html#player-list">,,player list</a> で <strong>*</strong> で表示されます。</p>
-<a class="header" href="shinen_term.html#ユーザが所持しているプレイヤー" id="ユーザが所持しているプレイヤー"><h5>ユーザが所持しているプレイヤー</h5></a>
-<p>ユーザが所持しているプレイヤーとは現在のセッション内でユーザが変更の権限を所有しているプレイヤーを差します。</p>
-<p>ユーザが所持しているプレイヤーは <a href="./shinen_command.html#player-list">,,player list</a> で <strong>o</strong> で表示されます。</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="shinen.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="discord.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="shinen_config.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="shinen.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -182,13 +148,13 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a href="shinen.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                    <a href="discord.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a href="shinen_config.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                    <a href="shinen.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

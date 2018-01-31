@@ -56,7 +56,8 @@ Aizuna 0.1 では 下記の接続で動作します。
 
 #### 依存ライブラリ
 
-[Cargo.toml](https://github.com/hanepjiv/aizuna/blob/master/Cargo.toml)を参照してくだささい。
+[Cargo.toml](https://github.com/hanepjiv/aizuna/blob/master/Cargo.toml)
+を参照してください。
 
 
 [Rust]:https://www.rust-lang.org

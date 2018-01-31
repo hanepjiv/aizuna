@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/04
-//  @date 2018/01/19
+//  @date 2018/01/31
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -26,7 +26,7 @@ use super::super::uuid_set::UuidSet;
 bitflags! {
     #[derive(Serialize, Deserialize)]
     pub struct Flags: u32 {
-    const OPEN  = 0b00000001u32 <<  0;
+        const OPEN      = 0b00000001u32 <<  0;
     }
 }
 // ============================================================================

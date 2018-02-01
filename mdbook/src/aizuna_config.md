@@ -97,9 +97,9 @@ serdeverは"serialize desserialize version"の略で、
 
 ----
 ##### driver =
-Aizunaの動作モードを下記の文字列で指定します。デフォルトは`"Tread"`です。
+Aizunaの動作モードを下記の文字列で指定します。デフォルトは`"Thread"`です。
 
-- "Tread": OSスレッドで動作します。
+- "Thread": OSスレッドで動作します。
 - "Fringe": libfringeを使用してコルーチンで動作します。
 
 詳しくは[Aizuna スレッドとコルーチン][Aizuna スレッドとコルーチン]を参照してください。

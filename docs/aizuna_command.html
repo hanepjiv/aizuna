@@ -130,11 +130,11 @@
 <pre><code>,help
 </code></pre>
 <pre><code>Aizuna v0.1.0:
- ,help          Print this message.
- ,user / ,u     Print User info.
+ ,help      Print this message.
+ ,user / ,u Print User info.
  ,session / ,s      Session controll.
  ,[0-9]*d[0-9]*     Dice roll. etc. ,2d6 / ,3d / ,d10
- ,quit / ,Q     Aizuna logout server. Need administrator's authority.
+ ,quit / ,Q Aizuna logout server. Need administrator's authority.
 </code></pre>
 <hr />
 <a class="header" href="aizuna_command.html#quit--q" id="quit--q"><h4>,quit / ,Q</h4></a>
@@ -306,6 +306,7 @@ maches[1] をサイコロの数 n 、 maches[2] をサイコロの種類 m と�
 <hr />
 <a class="header" href="aizuna_command.html#session-owner" id="session-owner"><h4>,session owner</h4></a>
 <p>現在のセッションのメンバーにセッションの所有者権限を与えます。</p>
+<p><strong>セッションの所有者権限が必要です</strong>。</p>
 <pre><code>,sesssion owner {USER_UUID}
 ,s owner {USER_UUID}
 </code></pre>
@@ -317,6 +318,7 @@ maches[1] をサイコロの数 n 、 maches[2] をサイコロの種類 m と�
 <pre><code>,sesssion waiver
 ,s waiver
 </code></pre>
+<p>セッションの所有者ではなくなりますが、メンバーとしてセッションに参加し続けます。</p>
 <hr />
 <a class="header" href="aizuna_command.html#session-invite" id="session-invite"><h4>,session invite</h4></a>
 <p>現在のセッションにメンバーを追加します。</p>

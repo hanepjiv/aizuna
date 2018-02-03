@@ -18,11 +18,11 @@ Aizunaは接頭辞(prefix: デフォルトでは",")から始まる文字列を�
 
 ```
 Aizuna v0.1.0:
- ,help          Print this message.
- ,user / ,u     Print User info.
+ ,help      Print this message.
+ ,user / ,u Print User info.
  ,session / ,s      Session controll.
  ,[0-9]*d[0-9]*     Dice roll. etc. ,2d6 / ,3d / ,d10
- ,quit / ,Q     Aizuna logout server. Need administrator's authority.
+ ,quit / ,Q Aizuna logout server. Need administrator's authority.
 ```
 
 ----
@@ -271,6 +271,8 @@ Aizuna セッションを管理します。
 #### ,session owner
 現在のセッションのメンバーにセッションの所有者権限を与えます。
 
+**セッションの所有者権限が必要です**。
+
 ```
 ,sesssion owner {USER_UUID}
 ,s owner {USER_UUID}
@@ -287,6 +289,8 @@ Aizuna セッションを管理します。
 ,sesssion waiver
 ,s waiver
 ```
+
+セッションの所有者ではなくなりますが、メンバーとしてセッションに参加し続けます。
 
 ----
 #### ,session invite

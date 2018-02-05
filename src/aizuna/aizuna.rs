@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/01/28
+//  @date 2018/02/05
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -22,7 +22,7 @@ use std::cell::RefCell;
 #[cfg(feature = "coroutine-fringe")]
 use std::collections::VecDeque;
 // ----------------------------------------------------------------------------
-use rusty_leveldb::{CompressionType, Options, DB};
+use rusty_leveldb::{CompressionType, Options, WriteBatch, DB};
 // ----------------------------------------------------------------------------
 use super::connector::{Connector, ResRec};
 use super::rule::RuleImpl;
@@ -39,6 +39,9 @@ pub enum Driver {
     Fringe,
 }
 // ////////////////////////////////////////////////////////////////////////////
+// ============================================================================
+const AIZUNA_DB_CURRENT: i32 = 0i32;
+const AIZUNA_DB_AGE: i32 = 0i32;
 // ============================================================================
 /// struct Aizuna
 pub struct Aizuna {
@@ -98,15 +101,50 @@ impl Aizuna {
             connectors: connectors,
             rules: rules.into_iter().collect::<BTreeMap<_, _>>(),
             dice: Dice::new()?,
-            db: {
-                let mut opt = Options::default();
-                opt.compression_type = CompressionType::CompressionSnappy;
-                match DB::open(path_db, opt) {
-                    Ok(x) => x,
-                    Err(x) => return Err(Error::LevelDB(x)),
-                }
-            },
+            db: Aizuna::new_db(path_db)?,
         })
+    }
+    // ========================================================================
+    /// fn new_db
+    fn new_db(path_db: &str) -> Result<DB> {
+        let mut opt = Options::default();
+        opt.compression_type = CompressionType::CompressionSnappy;
+        let mut db = match DB::open(path_db, opt) {
+            Ok(x) => x,
+            Err(x) => return Err(Error::LevelDB(x)),
+        };
+        if let Some(ref x) = db.get(b"aizuna-current") {
+            Aizuna::db_migrate(db, ::serde_json::from_slice::<i32>(x)?)
+        } else {
+            let mut batch = WriteBatch::new();
+            batch.put(
+                b"aizuna-current",
+                &::serde_json::to_vec(&AIZUNA_DB_CURRENT)?,
+            );
+            let _ = db.write(batch, false)?;
+            Ok(db)
+        }
+    }
+    // ------------------------------------------------------------------------
+    /// fn db_migrate
+    fn db_migrate(db: DB, current: i32) -> Result<DB> {
+        if current < (AIZUNA_DB_CURRENT - AIZUNA_DB_AGE)
+            || AIZUNA_DB_CURRENT < current
+        {
+            return Err(Error::AizunaDBVer(
+                current,
+                AIZUNA_DB_CURRENT,
+                AIZUNA_DB_AGE,
+            ));
+        }
+        match current {
+            0 => Ok(db),
+            _ => Err(Error::AizunaDBVer(
+                current,
+                AIZUNA_DB_CURRENT,
+                AIZUNA_DB_AGE,
+            )),
+        }
     }
     // ========================================================================
     /// fn on_message

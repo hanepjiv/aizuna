@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/01/09
+//  @date 2018/02/05
 
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
@@ -62,6 +62,8 @@ pub enum Error {
     Connector(String),
     /// Aizuna
     Aizuna(String),
+    /// AizunaDBVer
+    AizunaDBVer(i32, i32, i32),
 }
 // ============================================================================
 impl From<::std::option::NoneError> for Error {
@@ -194,6 +196,7 @@ impl ::std::error::Error for Error {
             Error::NoConfig => "::aizuna::Error::NoConfig",
             Error::Connector(_) => "::aizuna::Error::Connector",
             Error::Aizuna(_) => "::aizuna::Error::Aizuna",
+            Error::AizunaDBVer(_, _, _) => "::aizuna::Error::AizunaDBVer",
         }
     }
     // ========================================================================
@@ -223,6 +226,7 @@ impl ::std::error::Error for Error {
             Error::NoConfig => None,
             Error::Connector(_) => None,
             Error::Aizuna(_) => None,
+            Error::AizunaDBVer(_, _, _) => None,
         }
     }
 }

@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/02/05
+//  @date 2018/02/06
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -40,6 +40,7 @@ pub enum Driver {
 }
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
+const AIZUNA_DB_VERSION_KEY: &'static [u8] = b"aizuna-db-version";
 const AIZUNA_DB_CURRENT: i32 = 0i32;
 const AIZUNA_DB_AGE: i32 = 0i32;
 // ============================================================================
@@ -113,12 +114,12 @@ impl Aizuna {
             Ok(x) => x,
             Err(x) => return Err(Error::LevelDB(x)),
         };
-        if let Some(ref x) = db.get(b"aizuna-current") {
+        if let Some(ref x) = db.get(AIZUNA_DB_VERSION_KEY) {
             Aizuna::db_migrate(db, ::serde_json::from_slice::<i32>(x)?)
         } else {
             let mut batch = WriteBatch::new();
             batch.put(
-                b"aizuna-current",
+                AIZUNA_DB_VERSION_KEY,
                 &::serde_json::to_vec(&AIZUNA_DB_CURRENT)?,
             );
             let _ = db.write(batch, false)?;
@@ -127,20 +128,20 @@ impl Aizuna {
     }
     // ------------------------------------------------------------------------
     /// fn db_migrate
-    fn db_migrate(db: DB, current: i32) -> Result<DB> {
-        if current < (AIZUNA_DB_CURRENT - AIZUNA_DB_AGE)
-            || AIZUNA_DB_CURRENT < current
+    fn db_migrate(db: DB, version: i32) -> Result<DB> {
+        if version < (AIZUNA_DB_CURRENT - AIZUNA_DB_AGE)
+            || AIZUNA_DB_CURRENT < version
         {
             return Err(Error::AizunaDBVer(
-                current,
+                version,
                 AIZUNA_DB_CURRENT,
                 AIZUNA_DB_AGE,
             ));
         }
-        match current {
+        match version {
             0 => Ok(db),
             _ => Err(Error::AizunaDBVer(
-                current,
+                version,
                 AIZUNA_DB_CURRENT,
                 AIZUNA_DB_AGE,
             )),

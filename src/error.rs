@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/02/05
+//  @date 2018/02/18
 
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
@@ -179,7 +179,7 @@ impl ::std::error::Error for Error {
             Error::ParseInt(ref e) => e.description(),
             Error::SyncPoison(_) => "::aizuna::Error::SyncPoison",
             Error::Utf8(ref e) => e.description(),
-            Error::UuidParse(ref e) => e.description(),
+            Error::UuidParse(_) => "::aizuna::Error::UuidParse",
             Error::Regex(ref e) => e.description(),
             Error::GetOpts(ref e) => e.description(),
             Error::SerdeJSON(ref e) => e.description(),
@@ -209,7 +209,7 @@ impl ::std::error::Error for Error {
             Error::ParseInt(ref e) => Some(e),
             Error::SyncPoison(_) => None,
             Error::Utf8(ref e) => Some(e),
-            Error::UuidParse(ref e) => Some(e),
+            Error::UuidParse(_) => None,
             Error::Regex(ref e) => Some(e),
             Error::GetOpts(ref e) => Some(e),
             Error::SerdeJSON(ref e) => Some(e),

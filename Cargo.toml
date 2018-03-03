@@ -22,15 +22,15 @@ coroutine-fringe        = ["coroutine", "fringe"]
 [dependencies]
 bitflags                = { default-features = false, version = "^1.0.1" }
 discord                 = { default-features = false, version = "^0.8.0" }
-env_logger              = { default-features = false, version = "^0.5.3" }
+env_logger              = { default-features = false, version = "^0.5.4" }
 getopts                 = { default-features = false, version = "^0.2.17" }
 log                     = { default-features = false, version = "^0.4.1" }
 rand                    = { default-features = true, version = "^0.4.2" }
 regex                   = { default-features = false, version = "^0.2.6" }
-rusty-leveldb           = { default-features = false, version = "^0.1.6" }
+rusty-leveldb           = { default-features = false, version = "^0.2.1" }
 serde                   = { default-features = false, version = "^1.0.27" }
 serde_derive            = { default-features = false, version = "^1.0.27" }
-serde_json              = { default-features = false, version = "^1.0.9" }
+serde_json              = { default-features = false, version = "^1.0.10" }
 toml                    = { default-features = false, version = "^0.4.5" }
 # -----------------------------------------------------------------------------
 elicit                   = { default-features = false, git = "https://github.com/hanepjiv/elicit-rs.git" }

@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/02/06
+//  @date 2018/03/14
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -40,7 +40,7 @@ pub enum Driver {
 }
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
-const AIZUNA_DB_VERSION_KEY: &'static [u8] = b"aizuna-db-version";
+const AIZUNA_DB_VERSION_KEY: &[u8] = b"aizuna-db-version";
 const AIZUNA_DB_CURRENT: i32 = 0i32;
 const AIZUNA_DB_AGE: i32 = 0i32;
 // ============================================================================
@@ -93,13 +93,15 @@ impl Aizuna {
             )));
         }
         let path_db = PathBuf::from(config.as_path_db());
-        let path_db = path_db.to_str().ok_or(Error::Aizuna(format!(
-            "failed get path_db: {:?}",
-            config.as_path_db()
-        )))?;
+        let path_db = path_db.to_str().ok_or_else(|| {
+            Error::Aizuna(format!(
+                "failed get path_db: {:?}",
+                config.as_path_db()
+            ))
+        })?;
         Ok(Aizuna {
-            config: config,
-            connectors: connectors,
+            config,
+            connectors,
             rules: rules.into_iter().collect::<BTreeMap<_, _>>(),
             dice: Dice::new()?,
             db: Aizuna::new_db(path_db)?,
@@ -224,7 +226,7 @@ impl Aizuna {
             // block for res_sen scope.
             let (res_sen, res_rec) = ::std::sync::mpsc::channel();
             let mut handles = Vec::default();
-            for x in self.connectors.iter() {
+            for x in &self.connectors {
                 handles.push(x.spawn(res_sen.clone())?);
             }
             (res_rec, handles)
@@ -327,8 +329,8 @@ impl Aizuna {
     #[cfg(not(feature = "coroutine"))]
     /// fn drive
     pub fn drive(mut self) -> Result<()> {
-        match self.config.as_driver() {
-            &Driver::Thread => self.spawn(),
+        match *self.config.as_driver() {
+            Driver::Thread => self.spawn(),
             _ => Err(Error::Aizuna(format!(
                 "unsupported driver: {:?}",
                 self.config.as_driver()

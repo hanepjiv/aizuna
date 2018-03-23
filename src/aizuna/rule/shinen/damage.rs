@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/19
-//  @date 2017/12/19
+//  @date 2018/03/03
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -47,16 +47,16 @@ impl Damage {
     /// as_str
     pub fn as_str(&self) -> &str {
         match *self {
-            Damage::Impact => &"衝撃",
-            Damage::Staging => &"演出",
-            Damage::Arms => &"両腕",
-            Damage::Body => &"胴体",
-            Damage::Legs => &"脚部",
-            Damage::Penetration => &"貫通",
-            Damage::Armor => &"防具",
-            Damage::Weapon => &"武器",
-            Damage::Head => &"頭部",
-            Damage::Whole => &"全体",
+            Damage::Impact => "衝撃",
+            Damage::Staging => "演出",
+            Damage::Arms => "両腕",
+            Damage::Body => "胴体",
+            Damage::Legs => "脚部",
+            Damage::Penetration => "貫通",
+            Damage::Armor => "防具",
+            Damage::Weapon => "武器",
+            Damage::Head => "頭部",
+            Damage::Whole => "全体",
             Damage::Custum(ref src) => src.as_str(),
         }
     }
@@ -77,7 +77,7 @@ impl FromStr for Damage {
             "武器" => Ok(Damage::Weapon),
             "頭部" => Ok(Damage::Head),
             "全体" => Ok(Damage::Whole),
-            x @ _ => Ok(Damage::Custum(String::from(x))),
+            x => Ok(Damage::Custum(String::from(x))),
         }
     }
 }

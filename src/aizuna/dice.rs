@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/01
-//  @date 2018/01/11
+//  @date 2018/02/21
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -39,7 +39,7 @@ impl Dice {
         let mut rng = ::rand::thread_rng();
         for i in 0..n {
             v.push(range.ind_sample(&mut rng));
-            ret += v[i as usize] as i64;
+            ret += i64::from(v[i as usize]);
         }
         (n, m, v, ret)
     }
@@ -56,9 +56,9 @@ impl Dice {
     where
         S: AsRef<str>,
     {
-        let caps = self.regex.captures(src.as_ref()).ok_or(
-            Error::InvalidArg(format!("Dice::parse: {}: caps", src.as_ref())),
-        )?;
+        let caps = self.regex.captures(src.as_ref()).ok_or_else(|| {
+            Error::InvalidArg(format!("Dice::parse: {}: caps", src.as_ref()))
+        })?;
         Ok(Dice::roll(
             caps.get(1)
                 .map(|x| x.as_str().parse().unwrap_or(1))

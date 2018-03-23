@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/04
-//  @date 2018/01/31
+//  @date 2018/03/14
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -26,7 +26,7 @@ use super::super::uuid_set::UuidSet;
 bitflags! {
     #[derive(Serialize, Deserialize)]
     pub struct Flags: u32 {
-        const OPEN      = 0b00000001u32 <<  0;
+    const OPEN  = 0b0000_0001u32;
     }
 }
 // ============================================================================
@@ -156,7 +156,7 @@ impl SessionImpl {
             member: UuidSet::default(),
             title: String::from("title"),
             flags: Flags::default(),
-            kind: kind,
+            kind,
         }
     }
     // ========================================================================
@@ -320,9 +320,11 @@ mod serialize {
             }
             Ok(super::SessionImpl {
                 uuid: self.uuid
-                    .ok_or(Error::MissingField(String::from(
-                        "SessionImpl::serialize::uuid",
-                    )))?
+                    .ok_or_else(|| {
+                        Error::MissingField(String::from(
+                            "SessionImpl::serialize::uuid",
+                        ))
+                    })?
                     .into_owned(),
                 utc: self.utc.map_or(Utc::now(), Cow::into_owned),
                 owners: self.owners
@@ -331,11 +333,13 @@ mod serialize {
                     .map_or(UuidSet::default(), Cow::into_owned),
                 title: self.title
                     .map_or(String::from("title"), Cow::into_owned),
-                flags: self.flags.unwrap_or(Flags::default()),
+                flags: self.flags.unwrap_or_default(),
                 kind: self.kind
-                    .ok_or(Error::MissingField(String::from(
-                        "SessionImpl::serialize::kind",
-                    )))?
+                    .ok_or_else(|| {
+                        Error::MissingField(String::from(
+                            "SessionImpl::serialize::kind",
+                        ))
+                    })?
                     .into_owned(),
             })
         }

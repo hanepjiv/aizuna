@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/25
-//  @date 2018/01/17
+//  @date 2018/03/14
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -95,7 +95,7 @@ impl ShinEn {
             config.root = ret
         };
         let mut shinen = ShinEn {
-            config: config,
+            config,
             cards: CardMap::default(),
         };
         let _ = shinen.reload_cards()?;
@@ -264,10 +264,12 @@ impl ShinEn {
     {
         shinen_session
             .as_default_player(bhv.user.as_uuid())
-            .ok_or(Ok(bhv.whisper(format!(
-                "{} player not found.",
-                label.as_ref(),
-            ))))
+            .ok_or_else(|| {
+                Ok(bhv.whisper(format!(
+                    "{} player not found.",
+                    label.as_ref(),
+                )))
+            })
     }
     // ------------------------------------------------------------------------
     fn default_player_mut<'a, S0>(
@@ -281,10 +283,11 @@ impl ShinEn {
     {
         shinen_session
             .as_default_player_mut(bhv.user.as_uuid())
-            .ok_or(Ok(bhv.whisper(format!(
-                "{}player not found.",
-                label.as_ref(),
-            ))))
+            .ok_or_else(|| {
+                Ok(bhv.whisper(
+                    format!("{}player not found.", label.as_ref(),),
+                ))
+            })
     }
     // ========================================================================
     fn parse_player_uuid_str<'a, S0, S1>(
@@ -299,13 +302,13 @@ impl ShinEn {
         S1: AsRef<str>,
     {
         if let Ok(uuid) = Uuid::parse_str(uuid_str.as_ref()) {
-            match shinen_session.as_players().get(&uuid).ok_or(Ok(
-                bhv.whisper(format!(
+            match shinen_session.as_players().get(&uuid).ok_or_else(|| {
+                Ok(bhv.whisper(format!(
                     "{}player not found {}.",
                     label.as_ref(),
                     uuid
-                )),
-            )) {
+                )))
+            }) {
                 x @ Err(_) => return x,
                 Ok(x) => Ok(x),
             }
@@ -344,7 +347,7 @@ impl ShinEn {
         };
 
         let current_player =
-            self.default_player(bhv, &label, &shinen_session).ok();
+            self.default_player(bhv, &label, shinen_session).ok();
 
         let mut ret = String::from(label);
         for (k, v) in shinen_session.as_players().iter() {
@@ -397,7 +400,7 @@ impl ShinEn {
 
             if matches.free.len() < 2 || matches.free[1].is_empty() {
                 let player =
-                    match self.default_player(bhv, &label, &shinen_session) {
+                    match self.default_player(bhv, &label, shinen_session) {
                         Err(x) => return x,
                         Ok(x) => x,
                     };
@@ -415,7 +418,7 @@ impl ShinEn {
                     match self.parse_player_uuid_str(
                         bhv,
                         &label,
-                        &shinen_session,
+                        shinen_session,
                         &uuid_str,
                     ) {
                         Err(x) => return x,
@@ -430,12 +433,12 @@ impl ShinEn {
                     )));
                 }
 
-                (player.as_name().to_string(), player.as_uuid().clone())
+                (player.as_name().to_string(), *player.as_uuid())
             };
 
             let _ = shinen_session.insert_default_player(
                 bhv.user.as_uuid().clone(),
-                player_uuid.clone(),
+                player_uuid,
             );
 
             (player_name, player_uuid)
@@ -478,15 +481,13 @@ impl ShinEn {
             let roll = if matches.free.len() < 2 || matches.free[1].is_empty()
             {
                 PlayerType::Player
+            } else if let Ok(x) = matches.free[1].parse::<PlayerType>() {
+                x
             } else {
-                if let Ok(x) = matches.free[1].parse::<PlayerType>() {
-                    x
-                } else {
-                    return Ok(bhv.whisper(format!(
-                        "{}unsupported player type {}.",
-                        label, matches.free[1]
-                    )));
-                }
+                return Ok(bhv.whisper(format!(
+                    "{}unsupported player type {}.",
+                    label, matches.free[1]
+                )));
             };
 
             let player_uuid = {
@@ -503,7 +504,7 @@ impl ShinEn {
                 player_uuid,
                 Player::new(
                     player_uuid,
-                    bhv.user.as_uuid().clone(),
+                    *bhv.user.as_uuid(),
                     bhv.user.as_author_name(),
                     roll,
                 ),
@@ -575,7 +576,7 @@ impl ShinEn {
 
                 (
                     String::from(player.as_name()),
-                    player.as_uuid().clone(),
+                    *player.as_uuid(),
                     player.as_hand().clone(),
                 )
             };
@@ -668,7 +669,7 @@ impl ShinEn {
                 return Ok(bhv.whisper(format!("{}player not found.", label)));
             };
 
-            let prev_user_uuid = player.as_user_uuid().clone();
+            let prev_user_uuid = *player.as_user_uuid();
 
             if target_user_uuid == prev_user_uuid {
                 return Ok(bhv.whisper(format!("{}same user.", label)));
@@ -678,7 +679,7 @@ impl ShinEn {
 
             (
                 String::from(player.as_name()),
-                player.as_uuid().clone(),
+                *player.as_uuid(),
                 prev_user_uuid,
             )
         };
@@ -744,11 +745,7 @@ impl ShinEn {
             let prev_name = String::from(player.as_name());
             let _ = player.set_name(matches.free[1].as_str());
 
-            (
-                prev_name,
-                String::from(player.as_name()),
-                player.as_uuid().clone(),
-            )
+            (prev_name, String::from(player.as_name()), *player.as_uuid())
         };
 
         let mut batch = WriteBatch::new();
@@ -808,7 +805,7 @@ impl ShinEn {
                 return Ok(bhv.whisper(format!("{}player not owned.", label)));
             }
 
-            let prev_type = player.as_player_type().clone();
+            let prev_type = *player.as_player_type();
             if let Ok(x) = matches.free[1].as_str().parse::<PlayerType>() {
                 let _ = player.set_player_type(x);
             } else {
@@ -817,9 +814,9 @@ impl ShinEn {
 
             (
                 prev_type,
-                player.as_player_type().clone(),
+                *player.as_player_type(),
                 String::from(player.as_name()),
-                player.as_uuid().clone(),
+                *player.as_uuid(),
             )
         };
 
@@ -936,11 +933,11 @@ impl ShinEn {
                 return Ok(bhv.whisper(format!("{}Inner Error.", label)));
             };
 
-            let player =
-                match self.default_player(bhv, &label, &shinen_session) {
-                    Err(x) => return x,
-                    Ok(x) => x,
-                };
+            let player = match self.default_player(bhv, &label, shinen_session)
+            {
+                Err(x) => return x,
+                Ok(x) => x,
+            };
 
             if bhv.user.as_uuid() != player.as_user_uuid() {
                 return Ok(bhv.whisper(format!("{}player not owned.", label)));
@@ -977,11 +974,7 @@ impl ShinEn {
                 card.pretty()
             };
 
-            (
-                String::from(player.as_name()),
-                player.as_uuid().clone(),
-                ret,
-            )
+            (String::from(player.as_name()), *player.as_uuid(), ret)
         };
 
         Ok(bhv.whisper(format!(
@@ -1011,15 +1004,13 @@ impl ShinEn {
 
         let n = if matches.free.len() < 1 || matches.free[0].is_empty() {
             1
+        } else if let Ok(x) = matches.free[0].parse::<usize>() {
+            x
         } else {
-            if let Ok(x) = matches.free[0].parse::<usize>() {
-                x
-            } else {
-                return Ok(bhv.whisper(format!(
-                    "{}failed parse number. {}",
-                    label, matches.free[0]
-                )));
-            }
+            return Ok(bhv.whisper(format!(
+                "{}failed parse number. {}",
+                label, matches.free[0]
+            )));
         };
 
         let (player_name, player_uuid, hand) = {
@@ -1056,7 +1047,7 @@ impl ShinEn {
                 return Ok(bhv.whisper(format!("{}player not owned.", label)));
             }
 
-            for i in cards.iter() {
+            for i in &cards {
                 player.as_hand_mut().push_back(i.to_string());
             }
 
@@ -1069,11 +1060,7 @@ impl ShinEn {
                 )));
             };
 
-            (
-                String::from(player.as_name()),
-                player.as_uuid().clone(),
-                hand,
-            )
+            (String::from(player.as_name()), *player.as_uuid(), hand)
         };
 
         let mut batch = WriteBatch::new();
@@ -1168,7 +1155,7 @@ impl ShinEn {
 
             (
                 String::from(player.as_name()),
-                player.as_uuid().clone(),
+                *player.as_uuid(),
                 card_name,
                 hand,
             )
@@ -1249,7 +1236,7 @@ impl ShinEn {
 
         Ok((
             String::from(player.as_name()),
-            player.as_uuid().clone(),
+            *player.as_uuid(),
             card_name.clone(),
             hand,
         ))
@@ -1427,15 +1414,13 @@ impl ShinEn {
         }
         let n = if matches.free.len() < 1 || matches.free[0].is_empty() {
             1
+        } else if let Ok(x) = matches.free[0].parse::<usize>() {
+            x
         } else {
-            if let Ok(x) = matches.free[0].parse::<usize>() {
-                x
-            } else {
-                return Ok(bhv.whisper(format!(
-                    "{}failed parse number. {}",
-                    label, matches.free[0]
-                )));
-            }
+            return Ok(bhv.whisper(format!(
+                "{}failed parse number. {}",
+                label, matches.free[0]
+            )));
         };
 
         let (player_name, player_uuid, cards) = {
@@ -1464,7 +1449,7 @@ impl ShinEn {
                     )));
                 }
 
-                (String::from(player.as_name()), player.as_uuid().clone())
+                (String::from(player.as_name()), *player.as_uuid())
             };
 
             let mut cards = Deck::default();

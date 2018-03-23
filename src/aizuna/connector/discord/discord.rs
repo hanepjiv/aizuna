@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/01/15
+//  @date 2018/03/03
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -53,8 +53,8 @@ impl Discord {
     // ========================================================================
     /// fn on_listen
     fn on_listen(
-        id: &String,
-        label: &String,
+        id: &str,
+        label: &str,
         state: &mut ::discord::State,
         result: ::discord::Result<::discord::model::Event>,
     ) -> Responce {
@@ -65,7 +65,7 @@ impl Discord {
                 if let MessageCreate(m) = x {
                     debug!("{}Says: {}: {}", label, m.author.name, m.content);
                     Responce::Message(MessageAelicit::new(
-                        DiscordMessage::new(id.clone(), m),
+                        DiscordMessage::new(id.to_string(), m),
                     ))
                 } else {
                     Responce::Yield
@@ -77,8 +77,8 @@ impl Discord {
     #[cfg(feature = "coroutine")]
     /// fn on_listen_async
     fn on_listen_async(
-        id: &String,
-        label: &String,
+        id: &str,
+        label: &str,
         state: &mut ::discord::State,
         receiver: &Receiver,
     ) -> Responce {
@@ -93,7 +93,7 @@ impl Discord {
     // ========================================================================
     /// fn on_quit
     fn on_quit(
-        label: &String,
+        label: &str,
         discord: &::discord::Discord,
         msg: &MessageAelicit,
     ) -> Result<::discord::model::Message> {
@@ -112,10 +112,10 @@ impl Discord {
     // ========================================================================
     /// fn on_send
     fn on_send(
-        label: &String,
+        label: &str,
         discord: &::discord::Discord,
         msg: &MessageAelicit,
-        s: &String,
+        s: &str,
     ) -> Responce {
         if let Err(x) = msg.with(|x| {
             if let Some(m) =
@@ -124,8 +124,7 @@ impl Discord {
                 discord
                     .send_message(
                         m.channel_id,
-                        format!("{}\n\t{}", s.as_str(), m.author.mention())
-                            .as_str(),
+                        format!("{}\n\t{}", s, m.author.mention()).as_str(),
                         "",
                         false,
                     )
@@ -143,8 +142,8 @@ impl Discord {
     /// fn on_whisper_
     fn on_whisper_(
         discord: &::discord::Discord,
-        user_id: &String,
-        s: &String,
+        user_id: &str,
+        s: &str,
     ) -> Result<Responce> {
         if s.is_empty() {
             return Ok(Responce::Yield);
@@ -156,7 +155,7 @@ impl Discord {
                     .create_private_channel(user_id)
                     .map_err(Error::Discord)?
                     .id,
-                format!("{}\n\t{}", s.as_str(), user_id.mention()).as_str(),
+                format!("{}\n\t{}", s, user_id.mention()).as_str(),
                 "",
                 false,
             )
@@ -166,10 +165,10 @@ impl Discord {
     // ------------------------------------------------------------------------
     /// fn on_whisper
     fn on_whisper(
-        _label: &String,
+        _label: &str,
         discord: &::discord::Discord,
         vs: &BTreeSet<String>,
-        s: &String,
+        s: &str,
     ) -> Responce {
         if s.is_empty() {
             return Responce::Yield;
@@ -184,14 +183,14 @@ impl Discord {
     // ------------------------------------------------------------------------
     /// fn on_send_whisper_mine
     fn on_send_whisper_mine(
-        label: &String,
+        label: &str,
         discord: &::discord::Discord,
         send: &(MessageAelicit, String),
         whisper: &(BTreeSet<String>, String),
         mine: &(String, String),
     ) -> Responce {
-        let _ = Discord::on_send(&label, &discord, &send.0, &send.1);
-        let _ = Discord::on_whisper(&label, &discord, &whisper.0, &whisper.1);
+        let _ = Discord::on_send(label, discord, &send.0, &send.1);
+        let _ = Discord::on_whisper(label, discord, &whisper.0, &whisper.1);
         if let Err(x) = Discord::on_whisper_(discord, &mine.0, &mine.1) {
             return Responce::Error(x);
         }
@@ -227,7 +226,7 @@ impl Discord {
                         })
                         .count()
                 })
-                .fold(0, |v, s| v + s);
+                .sum();
             println!(
                 "{}Ready: {}: {} servers with {} text channels",
                 label,
@@ -301,7 +300,7 @@ impl Connector for Discord {
                     Err(_) => break,
                     Ok(Command::Quit(ref x)) => {
                         debug!("Command::Quit");
-                        if let &Some(ref msg) = x {
+                        if let Some(ref msg) = *x {
                             let _ = Discord::on_quit(&label, &discord, msg)?;
                         }
                         break;

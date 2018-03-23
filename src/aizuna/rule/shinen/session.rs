@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2018/01/17
+//  @date 2018/03/03
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -86,7 +86,7 @@ impl Session {
     /// fn new
     pub fn new(pile: Deck) -> Self {
         Session {
-            pile: pile,
+            pile,
             discard: Deck::default(),
             players: PlayerMap::default(),
             default_player: DefaultPlayerMap::default(),

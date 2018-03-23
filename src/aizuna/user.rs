@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/25
-//  @date 2018/01/17
+//  @date 2018/03/03
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -82,7 +82,7 @@ impl<'a> User<'a> {
             connector_id: Cow::Borrowed(connector_id.as_ref()),
             author_id: Cow::Borrowed(author_id.as_ref()),
             author_name: Cow::Borrowed(author_name.as_ref()),
-            admin: admin,
+            admin,
         }
     }
     // ========================================================================
@@ -180,10 +180,6 @@ mod serialize {
         author_name: Option<Cow<'a, str>>,
         /// alias
         alias: Option<Cow<'a, BTreeSet<String>>>,
-        /* NOT SERIALIZE
-        /// admin
-        admin: Option<bool>,
-         */
     }
     // ========================================================================
     impl<'a> User<'a> {
@@ -191,30 +187,36 @@ mod serialize {
         /// into
         pub fn into(self) -> Result<super::User<'a>> {
             debug!("User::serialize::into");
-            if self.serdever < (CURRENT - AGE) || CURRENT < self.serdever {
+            if (self.serdever < (CURRENT - AGE)) || (CURRENT < self.serdever) {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));
             }
-            let connector_id = self.connector_id.ok_or(Error::MissingField(
-                String::from("::aizuna::User::serialize::connector?id"),
-            ))?;
-            let author_id = self.author_id.ok_or(Error::MissingField(
-                String::from("::aizuna::User::serialize::author_id"),
-            ))?;
-            let author_name = self.author_name.ok_or(Error::MissingField(
-                String::from("::aizuna::User::serialize::author_name"),
-            ))?;
+            let connector_id = self.connector_id.ok_or_else(|| {
+                Error::MissingField(String::from(
+                    "::aizuna::User::serialize::connector?id",
+                ))
+            })?;
+            let author_id = self.author_id.ok_or_else(|| {
+                Error::MissingField(String::from(
+                    "::aizuna::User::serialize::author_id",
+                ))
+            })?;
+            let author_name = self.author_name.ok_or_else(|| {
+                Error::MissingField(String::from(
+                    "::aizuna::User::serialize::author_name",
+                ))
+            })?;
             Ok(super::User {
-                // uuid: ::std::str::FromStr::from_str(self.uuid.as_str())?,
                 uuid: self.uuid
-                    .ok_or(Error::MissingField(String::from(
-                        "::aizuna::User::serialize::uuid",
-                    )))?
+                    .ok_or_else(|| {
+                        Error::MissingField(String::from(
+                            "::aizuna::User::serialize::uuid",
+                        ))
+                    })?
                     .into_owned(),
-                connector_id: connector_id,
-                author_id: author_id,
-                author_name: author_name,
+                connector_id,
+                author_id,
+                author_name,
                 alias: self.alias.map(Cow::into_owned).unwrap_or_default(),
-                // admin: if let Some(x) = self.admin { x } else { false },
                 admin: false,
             })
         }
@@ -230,7 +232,6 @@ mod serialize {
                 author_id: Some(src.author_id.clone()),
                 author_name: Some(src.author_name.clone()),
                 alias: Some(Cow::Borrowed(&src.alias)),
-                // admin: Some(src.admin),
             }
         }
     }

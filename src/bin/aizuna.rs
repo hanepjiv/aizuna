@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/06
-//  @date 2018/01/19
+//  @date 2018/02/21
 
 // ////////////////////////////////////////////////////////////////////////////
 // attribute  =================================================================
@@ -47,7 +47,7 @@ use self::error::Result;
 mod error;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
-const AIZUNA_VERSTR: &'static str =
+const AIZUNA_VERSTR: &str =
     concat!(module_path!(), " v", env!("CARGO_PKG_VERSION"));
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
@@ -85,7 +85,7 @@ fn app() -> Result<()> {
         return Ok(print_usage(&opts));
     }
     let path_root = matches.opt_str("R").map(PathBuf::from).unwrap_or({
-        let mut ret = PathBuf::from(env::home_dir()?);
+        let mut ret = env::home_dir()?;
         ret.push(".config");
         ret.push("aizuna");
         ret

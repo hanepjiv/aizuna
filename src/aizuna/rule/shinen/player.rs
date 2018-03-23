@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2018/01/15
+//  @date 2018/03/03
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -154,7 +154,7 @@ impl Player {
             uuid: Uuid::from(uuid),
             user_uuid: Uuid::from(user_uuid),
             name: String::from(name),
-            player_type: player_type,
+            player_type,
             hand: Hand::default(),
         }
     }
@@ -278,20 +278,26 @@ mod serialize {
             }
             Ok(super::Player {
                 uuid: self.uuid
-                    .ok_or(Error::MissingField(String::from(
-                        "::shinen::Player::serialize::uuid",
-                    )))?
+                    .ok_or_else(|| {
+                        Error::MissingField(String::from(
+                            "::shinen::Player::serialize::uuid",
+                        ))
+                    })?
                     .into_owned(),
                 user_uuid: self.user_uuid
-                    .ok_or(Error::MissingField(String::from(
-                        "::shinen::Player::serialize::user_uuid",
-                    )))?
+                    .ok_or_else(|| {
+                        Error::MissingField(String::from(
+                            "::shinen::Player::serialize::user_uuid",
+                        ))
+                    })?
                     .into_owned(),
                 name: self.name.map_or(String::default(), Cow::into_owned),
                 player_type: self.player_type
-                    .ok_or(Error::MissingField(String::from(
-                        "::shinen::Player::serialize::player_type",
-                    )))?
+                    .ok_or_else(|| {
+                        Error::MissingField(String::from(
+                            "::shinen::Player::serialize::player_type",
+                        ))
+                    })?
                     .into_owned(),
                 hand: self.hand.map_or(Hand::default(), Cow::into_owned),
             })

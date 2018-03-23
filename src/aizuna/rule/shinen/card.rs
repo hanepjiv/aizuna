@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2018/01/16
+//  @date 2018/03/09
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -101,13 +101,13 @@ impl Card {
             color = self.color
                 .clone()
                 .map(|x| String::from(x.as_str()))
-                .unwrap_or("-".to_string()),
+                .unwrap_or_else(|| "-".to_string()),
             constellation = self.constellation
                 .clone()
                 .map(|x| String::from(x.as_str()))
-                .unwrap_or("-".to_string()),
-            value =
-                self.value.map(|x| x.to_string()).unwrap_or("-".to_string()),
+                .unwrap_or_else(|| "-".to_string()),
+            value = self.value.map(|x| x.to_string())
+                .unwrap_or_else(|| "-".to_string()),
             desc = self.desc,
             story = self.story
                 .iter()
@@ -121,11 +121,11 @@ impl Card {
             damage = self.damage
                 .clone()
                 .map(|x| String::from(x.as_str()))
-                .unwrap_or("-".to_string()),
+                .unwrap_or_else(|| "-".to_string()),
             damage_desc = self.damage_desc,
             destiny = self.destiny
                 .map(|x| x.to_string())
-                .unwrap_or("-".to_string()),
+                .unwrap_or_else(|| "-".to_string()),
         )
     }
 }
@@ -207,14 +207,18 @@ mod serialize {
             match self.serdever {
                 0 => Ok(super::Card {
                     name: self.name
-                        .ok_or(Error::MissingField(String::from(
-                            "::shinen::Card::serialize::name",
-                        )))?
+                        .ok_or_else(|| {
+                            Error::MissingField(String::from(
+                                "::shinen::Card::serialize::name",
+                            ))
+                        })?
                         .into_owned(),
                     card_set: self.card_set
-                        .ok_or(Error::MissingField(String::from(
-                            "::shinen::Card::serialize::card_set",
-                        )))?
+                        .ok_or_else(|| {
+                            Error::MissingField(String::from(
+                                "::shinen::Card::serialize::card_set",
+                            ))
+                        })?
                         .parse()?,
                     color: if let Some(x) = self.color {
                         Some(x.parse()?)
@@ -292,7 +296,7 @@ mod serialize {
                     None
                 } else {
                     let mut ret = Vec::default();
-                    for i in src.story.iter() {
+                    for i in &src.story {
                         ret.push(From::from(i.as_str()));
                     }
                     Some(ret)
@@ -306,7 +310,7 @@ mod serialize {
                     None
                 } else {
                     let mut ret = Vec::default();
-                    for x in src.action.iter() {
+                    for x in &src.action {
                         ret.push(From::from(x.as_str()));
                     }
                     Some(ret)
@@ -332,9 +336,9 @@ mod serialize {
 pub type CardMap = BTreeMap<String, Card>;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
-const PATH_CARDS: &[&'static str] = &["cards/basic.", "cards/crimson."];
-const EXTS_CARDS: &'static str = "toml";
-const EXTS_NEW_CARDS: &'static str = "new.toml";
+const PATH_CARDS: &[&str] = &["cards/basic.", "cards/crimson."];
+const EXTS_CARDS: &str = "toml";
+const EXTS_NEW_CARDS: &str = "new.toml";
 // ============================================================================
 /// import_cards
 pub fn import_cards<'a, S>(
@@ -362,9 +366,9 @@ where
         if cfg!(debug_assertions) {
             // export
             let mut destiny_map = BTreeMap::<i32, Card>::default();
-            for (_k, v) in cardset.iter() {
+            for v in cardset.values() {
                 let _ = destiny_map.insert(
-                    v.as_destiny().unwrap_or(::std::i32::MAX),
+                    v.as_destiny().unwrap_or_else(|| ::std::i32::MAX),
                     v.clone(),
                 );
             }
@@ -375,7 +379,7 @@ where
             let _ = File::create(p).and_then(|mut f| {
                 use std::io::{Error as IOError, ErrorKind as IOErrorKind,
                               Write};
-                for (_k, v) in destiny_map.iter() {
+                for v in destiny_map.values() {
                     let _ = f.write(
                         format!("[\"{}\"]\n", v.as_name()).as_bytes(),
                     )?;

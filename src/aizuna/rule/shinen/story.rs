@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/19
-//  @date 2017/12/19
+//  @date 2018/02/21
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -101,7 +101,7 @@ impl FromStr for Story {
             "運命" => Ok(Story::Destiny),
             "理解" => Ok(Story::Understanding),
             "悪夢" => Ok(Story::Nightmare),
-            x @ _ => Ok(Story::Custum(String::from(x))),
+            x => Ok(Story::Custum(String::from(x))),
         }
     }
 }

@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/19
-//  @date 2017/12/21
+//  @date 2018/02/21
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -49,7 +49,7 @@ impl FromStr for CardSet {
             "血のごとく赤き 〜夢魔の占い札〜" => {
                 Ok(CardSet::Crimson)
             }
-            x @ _ => Ok(CardSet::Custum(String::from(x))),
+            x => Ok(CardSet::Custum(String::from(x))),
         }
     }
 }

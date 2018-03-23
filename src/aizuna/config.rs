@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/01/18
+//  @date 2018/03/14
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -26,8 +26,8 @@ use super::rule::{Config as RuleConfig, RuleImpl};
 use super::rule::shinen::ShinEn;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
-const CONFIG_FILE: &'static str = "config.toml";
-const CONFIG_DEFAULT: &'static str = concat!(
+const CONFIG_FILE: &str = "config.toml";
+const CONFIG_DEFAULT: &str = concat!(
     r##"# -*- mode:toml; coding:utf-8-unix; -*-
 # /////////////////////////////////////////////////////////////////////////////
 # =============================================================================
@@ -186,8 +186,8 @@ impl Config {
             config.path_db = path_db;
         }
         Ok(Config {
-            path_root: path_root,
-            path_config: path_config,
+            path_root,
+            path_config,
             ..config
         })
     }
@@ -196,7 +196,7 @@ impl Config {
     pub fn aizuna(self) -> Result<Aizuna> {
         info!("::aizuna::Config::aizuna: {:?}", self.path_config);
         let mut connectors = Vec::<Box<Connector>>::default();
-        for (k0, v0) in self.connectors.iter() {
+        for (k0, v0) in &self.connectors {
             if !v0.enable {
                 continue;
             }
@@ -217,7 +217,7 @@ impl Config {
             }
         }
         let mut rules = BTreeMap::<String, RuleImpl>::default();
-        for (k0, v0) in self.rules.iter() {
+        for (k0, v0) in &self.rules {
             if !v0.enable {
                 continue;
             }
@@ -369,7 +369,7 @@ pub mod serialize {
                     None
                 } else {
                     let mut ret = BTreeMap::default();
-                    for (k, v) in src.admin.iter() {
+                    for (k, v) in &src.admin {
                         let mut vs = Vec::default();
                         for i in v.iter() {
                             vs.push(From::from(i.as_str()));

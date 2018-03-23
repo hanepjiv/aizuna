@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/04
-//  @date 2018/01/14
+//  @date 2018/03/15
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -129,13 +129,17 @@ mod serialize {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));
             }
             let rule = self.rule
-                .ok_or(Error::MissingField(String::from(
-                    "::aizuna::SessionKind::serialize::rule",
-                )))?
+                .ok_or_else(|| {
+                    Error::MissingField(String::from(
+                        "::aizuna::SessionKind::serialize::rule",
+                    ))
+                })?
                 .into_owned();
-            let dump = self.dump.ok_or(Error::MissingField(String::from(
-                "::aizuna::SessionKind::serialize::dump",
-            )))?;
+            let dump = self.dump.ok_or_else(|| {
+                Error::MissingField(String::from(
+                    "::aizuna::SessionKind::serialize::dump",
+                ))
+            })?;
             match rule.as_str() {
                 "shinen" => if let Ok(x) =
                     ::serde_json::from_str::<ShinEnSession>(&dump)

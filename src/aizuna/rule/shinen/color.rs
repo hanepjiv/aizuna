@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2017/12/16
+//  @date 2018/02/21
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -69,7 +69,7 @@ impl FromStr for Color {
             "青" => Ok(Color::Blue),
             "緑" => Ok(Color::Green),
             "紫" => Ok(Color::Purple),
-            x @ _ => Ok(Color::Custum(String::from(x))),
+            x => Ok(Color::Custum(String::from(x))),
         }
     }
 }

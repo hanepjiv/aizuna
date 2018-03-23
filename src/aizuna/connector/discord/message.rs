@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/04
-//  @date 2018/01/10
+//  @date 2018/03/14
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -35,11 +35,11 @@ impl DiscordMessage {
     pub fn new(connector_id: String, msg: ::discord::model::Message) -> Self {
         DiscordMessage {
             _eafsf: MessageEAFSField::default(),
-            connector_id: connector_id,
+            connector_id,
             author_id: format!("{}", msg.author.id),
             channel_id: format!("{}", msg.channel_id),
             author_mention: msg.author.mention().to_string(),
-            msg: msg,
+            msg,
         }
     }
 }

@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/18
-//  @date 2017/12/18
+//  @date 2018/02/21
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -77,7 +77,7 @@ impl FromStr for Action {
             "狂気" => Ok(Action::Madness),
             "自由" => Ok(Action::Free),
             "大失敗" => Ok(Action::Failure),
-            x @ _ => Ok(Action::Custum(String::from(x))),
+            x => Ok(Action::Custum(String::from(x))),
         }
     }
 }

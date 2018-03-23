@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/05
-//  @date 2018/01/05
+//  @date 2018/02/21
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -81,7 +81,7 @@ pub mod serialize {
             match self.serdever {
                 0 => Ok(super::Config {
                     token: if let Some(x) = self.token {
-                        String::from(x.into_owned())
+                        x.into_owned()
                     } else {
                         String::default()
                     },

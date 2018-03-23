@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/09
-//  @date 2018/01/19
+//  @date 2018/03/14
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -216,7 +216,7 @@ where
                 }
             }
         }
-        return false;
+        false
     }
     // ========================================================================
     /// fn new_user
@@ -224,16 +224,16 @@ where
         config: &Config,
         db: &mut DB,
         msg: &'a Message,
-        key_user_uuid: &String,
-        key_user: &String,
+        key_user_uuid: &str,
+        key_user: &str,
         user_uuid: &Uuid,
     ) -> Result<User<'a>> {
         let user = User::new(
-            user_uuid.clone(),
+            *user_uuid,
             msg.as_connector_id(),
             msg.as_author_id(),
             msg.as_author_name(),
-            Behavior::is_admin(&config, msg),
+            Behavior::is_admin(config, msg),
         );
         let mut batch = WriteBatch::new();
         batch.put(key_user_uuid.as_bytes(), user_uuid.to_string().as_bytes());
@@ -302,7 +302,7 @@ where
             match Behavior::get_user(label.as_ref(), db, &user_uuid) {
                 (x, Some(mut y)) => {
                     if msg.as_author_name() == y.as_author_name() {
-                        y.set_admin(Behavior::is_admin(&config, msg));
+                        y.set_admin(Behavior::is_admin(config, msg));
                         Ok(y)
                     } else {
                         Behavior::new_user(
@@ -403,10 +403,10 @@ where
         let mut opts = ::getopts::Options::new();
         let _ = opts.optopt("s", "session", "set session", "SESSION_UUID");
         Behavior {
-            db: db,
-            msg: msg,
-            inputs: inputs,
-            user: user,
+            db,
+            msg,
+            inputs,
+            user,
             options: opts,
         }
     }
@@ -683,7 +683,7 @@ Aizuna v{0}:
             };
 
         let mut list = Vec::default();
-        for v in user_sessions.iter() {
+        for v in &user_sessions {
             let key_session = Behavior::key_session(v);
             if let Some(ref x) = self.db.get(key_session.as_bytes()) {
                 let mut session = ::serde_json::from_slice::<SessionImpl>(x)?;
@@ -692,7 +692,7 @@ Aizuna v{0}:
         }
 
         user_sessions.clear();
-        for v in list.iter() {
+        for v in &list {
             let _ = user_sessions.insert(v.as_uuid().clone());
         }
         {
@@ -704,9 +704,7 @@ Aizuna v{0}:
             let _ = self.db.write(batch, false)?;
         }
 
-        list.sort_unstable_by(|ref lhs, ref rhs| {
-            rhs.as_utc().cmp(lhs.as_utc())
-        });
+        list.sort_unstable_by(|lhs, rhs| rhs.as_utc().cmp(lhs.as_utc()));
 
         let user_default_session_uuid = match self.get_uuid(
             label,
@@ -718,7 +716,7 @@ Aizuna v{0}:
         };
 
         let mut ret = String::from(label);
-        for v in list.iter() {
+        for v in &list {
             if all || v.is_open() {
                 ret += &format!(
                     "\n {} {} {} {}  {}  {}  {}",
@@ -827,7 +825,7 @@ Aizuna v{0}:
                 "{}not found {}.",
                 label, self.inputs[2]
             ))));
-            for (_, ref mut rule) in rules {
+            for ref mut rule in rules.values_mut() {
                 println!("{}, {}", self.inputs[2], rule.as_rule_name());
                 if self.inputs[2].as_bytes() == rule.as_rule_name().as_bytes()
                 {
@@ -848,7 +846,7 @@ Aizuna v{0}:
 
         let session = SessionImpl::new(
             session_uuid,
-            vec![self.user.as_uuid().clone()],
+            vec![*self.user.as_uuid()],
             session_kind,
         );
         let _ = user_sessions.insert(session_uuid);
@@ -862,7 +860,7 @@ Aizuna v{0}:
         batch.put(
             Behavior::key_user_default_session_uuid(self.user.as_uuid())
                 .as_bytes(),
-            &session_uuid.to_string().as_bytes(),
+            session_uuid.to_string().as_bytes(),
         );
         let _ = self.db.write(batch, false)?;
 
@@ -1377,7 +1375,7 @@ Aizuna v{0}:
         }
 
         let _ = session.as_member_mut().insert(self.user.as_uuid().clone());
-        /* for session_whisper. NOT Save DB. */
+        // for session_whisper. NOT Save DB.
 
         Ok({
             let s = format!(
@@ -1451,7 +1449,7 @@ Aizuna v{0}:
         &mut self,
         rules: &'a mut BTreeMap<String, RuleImpl>,
     ) -> Result<Command> {
-        for (k, mut v) in rules.into_iter() {
+        for (k, mut v) in rules.iter_mut() {
             let l = k.as_bytes().len();
             if k.as_bytes() == &(self.inputs[0].as_bytes())[..l] {
                 self.inputs[0] = String::from(unsafe {

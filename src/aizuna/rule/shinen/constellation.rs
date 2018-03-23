@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2017/12/16
+//  @date 2018/02/21
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -114,7 +114,7 @@ impl FromStr for Constellation {
             "古鏡" => Ok(Constellation::Kokyou),
             "風虎" => Ok(Constellation::Fuuko),
             "八弦琴" => Ok(Constellation::Hatigenkin),
-            x @ _ => Ok(Constellation::Custum(String::from(x))),
+            x => Ok(Constellation::Custum(String::from(x))),
         }
     }
 }

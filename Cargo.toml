@@ -28,8 +28,8 @@ log                     = { default-features = false, version = "^0.4.1" }
 rand                    = { default-features =  true, version = "^0.4.2" }
 regex                   = { default-features = false, version = "^0.2.10" }
 rusty-leveldb           = { default-features = false, version = "^0.2.2" }
-serde                   = { default-features = false, version = "^1.0.34" }
-serde_derive            = { default-features = false, version = "^1.0.34" }
+serde                   = { default-features = false, version = "^1.0.36" }
+serde_derive            = { default-features = false, version = "^1.0.36" }
 serde_json              = { default-features = false, version = "^1.0.13" }
 toml                    = { default-features = false, version = "^0.4.5" }
 # -----------------------------------------------------------------------------
@@ -38,7 +38,7 @@ elicit                  = { default-features = false, git = "https://github.com/
 # -----------------------------------------------------------------------------
 [dependencies.chrono]
 default-features        = false
-version                 = "^0.4.0"
+version                 = "^0.4.1"
 features                = ["serde"]
 # -----------------------------------------------------------------------------
 [dependencies.fringe]

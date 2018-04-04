@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="en" class="sidebar-visible">
     <head>
+        <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>ShinEn コマンド - </title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -36,6 +37,14 @@
             }
         </script>
 
+        <noscript>
+            <style type="text/css">
+                .javascript-only {
+                    display: none;
+                }
+            </style>
+        </noscript>
+
     </head>
     <body class="light">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -65,12 +74,14 @@
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
+            var html = document.querySelector('html');
             var sidebar = 'hidden';
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             }
-            document.querySelector('html').classList.add("sidebar-" + sidebar);
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
@@ -83,7 +94,7 @@
                 
                 <div id="menu-bar" class="menu-bar">
                     <div id="menu-bar-sticky-container">
-                        <div class="left-buttons">
+                        <div class="left-buttons javascript-only">
                             <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                                 <i class="fa fa-bars"></i>
                             </button>
@@ -97,9 +108,14 @@
                                 <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                                 <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                             </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
                         </div>
 
-                        <h1 class="menu-title"></h1>
+                        <h1 class="menu-title"></h1> 
 
                         <div class="right-buttons">
                             <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -108,6 +124,17 @@
                         </div>
                     </div>
                 </div>
+
+                
+                <div id="searchbar-outer" class="searchbar-outer">
+                    <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                </div>
+                <div id="searchresults-outer" class="searchresults-outer">
+                    <div class="searchresults-header" id="searchresults-header"></div>
+                    <ul id="searchresults">
+                    </ul>
+                </div>
+                
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script type="text/javascript">
@@ -127,7 +154,7 @@ ShinEnを管理するためのコマンドが定義されています。</p>
 ShinEnコマンドの接頭辞(prefix: デフォルトでは&quot;,&quot;)から始まる文字列をコマンドとして認識します。</p>
 <p>接頭辞を変更するには<a href="./aizuna_config.html">Aizuna 設定</a>及び
 <a href="./shinen_config.html">ShinEn 設定</a>を参照してください。</p>
-<a class="header" href="shinen_command.html#コマンド一覧" id="コマンド一覧"><h2>コマンド一覧</h2></a>
+<a class="header" href="shinen_command.html#aコマンド一覧" id="aコマンド一覧"><h2>コマンド一覧</h2></a>
 <hr />
 <a class="header" href="shinen_command.html#session--s" id="session--s"><h3>,,session / ,,s</h3></a>
 <p>現在のセッションの深淵セッションの情報を表示します。</p>
@@ -231,9 +258,9 @@ ShinEnコマンドの接頭辞(prefix: デフォルトでは&quot;,&quot;)から
 <p>自分の現在のプレイヤーに表示されます。</p>
 <a class="header" href="shinen_command.html#o" id="o"><h6>o</h6></a>
 <p>自分が所持しているプレイヤーに表示されます。</p>
-<a class="header" href="shinen_command.html#数字" id="数字"><h6>数字</h6></a>
+<a class="header" href="shinen_command.html#a数字" id="a数字"><h6>数字</h6></a>
 <p>プレイヤーの手札の枚数。</p>
-<a class="header" href="shinen_command.html#文字列" id="文字列"><h6>文字列</h6></a>
+<a class="header" href="shinen_command.html#a文字列" id="a文字列"><h6>文字列</h6></a>
 <p>プレイヤーの名前。</p>
 <a class="header" href="shinen_command.html#xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" id="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"><h6>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</h6></a>
 <p>プレイヤーのUuid。</p>
@@ -425,6 +452,15 @@ Player / GameMaster の違いで機能が制限される等の相違はありま
 
         
 
+        
+
+        
+        <script src="searchindex.js" type="text/javascript" charset="utf-8"></script>
+        
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
         
 
         

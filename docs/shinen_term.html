@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="en" class="sidebar-visible">
     <head>
+        <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>ShinEn 用語 - </title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -36,6 +37,14 @@
             }
         </script>
 
+        <noscript>
+            <style type="text/css">
+                .javascript-only {
+                    display: none;
+                }
+            </style>
+        </noscript>
+
     </head>
     <body class="light">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -65,12 +74,14 @@
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
+            var html = document.querySelector('html');
             var sidebar = 'hidden';
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             }
-            document.querySelector('html').classList.add("sidebar-" + sidebar);
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
@@ -83,7 +94,7 @@
                 
                 <div id="menu-bar" class="menu-bar">
                     <div id="menu-bar-sticky-container">
-                        <div class="left-buttons">
+                        <div class="left-buttons javascript-only">
                             <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                                 <i class="fa fa-bars"></i>
                             </button>
@@ -97,9 +108,14 @@
                                 <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                                 <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                             </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
                         </div>
 
-                        <h1 class="menu-title"></h1>
+                        <h1 class="menu-title"></h1> 
 
                         <div class="right-buttons">
                             <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -108,6 +124,17 @@
                         </div>
                     </div>
                 </div>
+
+                
+                <div id="searchbar-outer" class="searchbar-outer">
+                    <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                </div>
+                <div id="searchresults-outer" class="searchresults-outer">
+                    <div class="searchresults-header" id="searchresults-header"></div>
+                    <ul id="searchresults">
+                    </ul>
+                </div>
+                
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script type="text/javascript">
@@ -140,7 +167,7 @@
 <p>ShinEn セッションは<a href="./aizuna_term.html#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">Aizuna セッション</a>の構造の一部として扱われます。
 よって所有者やメンバーやタイトル等を
 <a href="./aizuna_term.html#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">Aizuna セッション</a>の機能によって変更できます。</p>
-<a class="header" href="shinen_term.html#プレイヤー" id="プレイヤー"><h4>プレイヤー</h4></a>
+<a class="header" href="shinen_term.html#aプレイヤー" id="aプレイヤー"><h4>プレイヤー</h4></a>
 <p>プレイヤーとは下記の情報を保持する構造を差します。</p>
 <ul>
 <li>Uuid</li>
@@ -151,11 +178,11 @@
 <p>項目の一部は<a href="./shinen_command.html">ShinEn コマンド</a>によって、変更できます。</p>
 <p><a href="./shinen_term.html#shinen%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">ShinEn セッション</a>は複数のプレイヤーを保持します。</p>
 <p><a href="./aizuna_term.html#%E3%83%A6%E3%83%BC%E3%82%B6">Aizuna ユーザ</a>はセッション内で複数のプレイヤーを所持することができます。</p>
-<a class="header" href="shinen_term.html#ユーザの現在のプレイヤー" id="ユーザの現在のプレイヤー"><h5>ユーザの現在のプレイヤー</h5></a>
+<a class="header" href="shinen_term.html#aユーザの現在のプレイヤー" id="aユーザの現在のプレイヤー"><h5>ユーザの現在のプレイヤー</h5></a>
 <p>ユーザの現在のプレイヤーとは、一部のコマンドにおいて、暗黙の内に操作対象となるプレイヤーを差します。</p>
 <p><a href="./shinen_command.html#player-default">,,player default</a> によって変更できます。</p>
 <p>ユーザの現在のプレイヤーは <a href="./shinen_command.html#player-list">,,player list</a> で <strong>*</strong> で表示されます。</p>
-<a class="header" href="shinen_term.html#ユーザが所持しているプレイヤー" id="ユーザが所持しているプレイヤー"><h5>ユーザが所持しているプレイヤー</h5></a>
+<a class="header" href="shinen_term.html#aユーザが所持しているプレイヤー" id="aユーザが所持しているプレイヤー"><h5>ユーザが所持しているプレイヤー</h5></a>
 <p>ユーザが所持しているプレイヤーとは現在のセッション内でユーザが変更の権限を所有しているプレイヤーを差します。</p>
 <p>ユーザが所持しているプレイヤーは <a href="./shinen_command.html#player-list">,,player list</a> で <strong>o</strong> で表示されます。</p>
 
@@ -212,6 +239,15 @@
 
         
 
+        
+
+        
+        <script src="searchindex.js" type="text/javascript" charset="utf-8"></script>
+        
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
         
 
         

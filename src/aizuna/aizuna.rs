@@ -6,16 +6,16 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/03/14
+//  @date 2018/04/12
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
 use std::collections::BTreeMap;
 use std::iter::{FromIterator, IntoIterator};
 use std::path::PathBuf;
+use std::result::Result as StdResult;
 use std::sync::mpsc::RecvTimeoutError;
 use std::time::Duration;
-use std::result::Result as StdResult;
 // ----------------------------------------------------------------------------
 #[cfg(feature = "coroutine-fringe")]
 use std::cell::RefCell;
@@ -32,7 +32,7 @@ use super::{Behavior, Command, Config, Dice, Error, Message, MessageAelicit,
 // ============================================================================
 /// enum Driver
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
-pub enum Driver {
+pub(crate) enum Driver {
     /// Thread
     Thread,
     /// Fringe
@@ -155,20 +155,22 @@ impl Aizuna {
         &mut self,
         message: &MessageAelicit,
     ) -> Result<Option<Command>> {
-        message.with(move |msg: &Message| -> Result<Option<Command>> {
-            Behavior::on_msg(
-                &self.config,
-                &mut self.rules,
-                &self.dice,
-                &mut self.db,
-                msg,
-            )
-        })
+        message.with(
+            move |msg: &Message| -> Result<Option<Command>> {
+                Behavior::on_msg(
+                    &self.config,
+                    &mut self.rules,
+                    &self.dice,
+                    &mut self.db,
+                    msg,
+                )
+            },
+        )
     }
     // ========================================================================
     #[cfg(feature = "coroutine-fringe")]
     /// fn gen
-    pub fn gen(mut self, stack_size: usize) -> Result<()> {
+    pub(crate) fn gen(mut self, stack_size: usize) -> Result<()> {
         info!("Aizuna: Fringe");
         let mut gens = VecDeque::default();
         for x in self.connectors.iter() {
@@ -220,7 +222,7 @@ impl Aizuna {
     }
     // ========================================================================
     /// fn spawn
-    pub fn spawn(&mut self) -> Result<()> {
+    pub(crate) fn spawn(&mut self) -> Result<()> {
         info!("Aizuna: Thread");
         let (res_rec, handles) = {
             // block for res_sen scope.

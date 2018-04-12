@@ -16,7 +16,7 @@ use super::super::super::{Message, MessageAelicit, MessageEAFS,
 // ============================================================================
 /// DiscordMessage
 #[derive(Debug, Clone)]
-pub struct DiscordMessage {
+pub(crate) struct DiscordMessage {
     _eafsf: MessageEAFSField,
     connector_id: String,
     channel_id: String,
@@ -32,7 +32,7 @@ impl MessageEAFS for DiscordMessage {
 impl DiscordMessage {
     // ========================================================================
     /// new
-    pub fn new(connector_id: String, msg: ::discord::model::Message) -> Self {
+    pub(crate) fn new(connector_id: String, msg: ::discord::model::Message) -> Self {
         DiscordMessage {
             _eafsf: MessageEAFSField::default(),
             connector_id,

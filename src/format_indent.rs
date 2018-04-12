@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/12
-//  @date 2018/01/14
+//  @date 2018/04/12
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -58,13 +58,21 @@ where
         }
         let _ = write!(f, "{e:>idt0$}{{", e = "", idt0 = idt)?;
         for (k, v) in self.iter() {
-            let _ =
-                write!(f, "\n{e:>idt1$}(\n", e = "", idt1 = idt + 2usize,)?;
+            let _ = write!(
+                f,
+                "\n{e:>idt1$}(\n",
+                e = "",
+                idt1 = idt + 2usize,
+            )?;
             let _ = k.fmt_idt(f, idt + 4usize)?;
             let _ = f.write_str(",\n")?;
             let _ = v.fmt_idt(f, idt + 4usize)?;
-            let _ =
-                write!(f, ",\n{e:>idt1$}),", e = "", idt1 = idt + 2usize,)?;
+            let _ = write!(
+                f,
+                ",\n{e:>idt1$}),",
+                e = "",
+                idt1 = idt + 2usize,
+            )?;
         }
         write!(f, "\n{e:>idt0$}}}", e = "", idt0 = idt)
     }

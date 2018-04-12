@@ -11,21 +11,21 @@
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
 use std::borrow::{Borrow, Cow};
-use std::collections::BTreeMap;
 use std::cmp::Ordering;
+use std::collections::BTreeMap;
 // ----------------------------------------------------------------------------
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use uuid::Uuid;
 // ----------------------------------------------------------------------------
-use super::{Error, Result};
-use super::{CardMap, Hand};
 use super::super::super::super::FormatIndent;
+use super::{CardMap, Hand};
+use super::{Error, Result};
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// enum PlayerType
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize,
          Deserialize)]
-pub enum PlayerType {
+pub(crate) enum PlayerType {
     /// Player
     Player,
     /// GameMaster
@@ -60,7 +60,7 @@ impl ::std::str::FromStr for PlayerType {
 // ============================================================================
 /// struct Player
 #[derive(Debug, Clone, Eq)]
-pub struct Player {
+pub(crate) struct Player {
     /// uuid
     uuid: Uuid,
     /// user_uuid
@@ -139,7 +139,7 @@ impl AsRef<Uuid> for Player {
 impl Player {
     // ========================================================================
     /// fn new
-    pub fn new<U0, U1, S0>(
+    pub(crate) fn new<U0, U1, S0>(
         uuid: U0,
         user_uuid: U1,
         name: S0,
@@ -160,28 +160,28 @@ impl Player {
     }
     // ========================================================================
     /// fn as_uuid
-    pub fn as_uuid(&self) -> &Uuid {
+    pub(crate) fn as_uuid(&self) -> &Uuid {
         &self.uuid
     }
     // ========================================================================
     /// fn as_user_uuid
-    pub fn as_user_uuid(&self) -> &Uuid {
+    pub(crate) fn as_user_uuid(&self) -> &Uuid {
         &self.user_uuid
     }
     // ------------------------------------------------------------------------
     /// fn set_user_uuid
-    pub fn set_user_uuid(&mut self, uuid: Uuid) -> &mut Self {
+    pub(crate) fn set_user_uuid(&mut self, uuid: Uuid) -> &mut Self {
         self.user_uuid = uuid;
         self
     }
     // ========================================================================
     /// fn as_name
-    pub fn as_name(&self) -> &str {
+    pub(crate) fn as_name(&self) -> &str {
         &self.name
     }
     // ------------------------------------------------------------------------
     /// fn set_name
-    pub fn set_name<S0>(&mut self, name: S0) -> &mut Self
+    pub(crate) fn set_name<S0>(&mut self, name: S0) -> &mut Self
     where
         String: From<S0>,
     {
@@ -190,28 +190,28 @@ impl Player {
     }
     // ========================================================================
     /// fn as_player_type
-    pub fn as_player_type(&self) -> &PlayerType {
+    pub(crate) fn as_player_type(&self) -> &PlayerType {
         &self.player_type
     }
     // ------------------------------------------------------------------------
     /// fn set_player_type
-    pub fn set_player_type(&mut self, player_type: PlayerType) -> &mut Self {
+    pub(crate) fn set_player_type(&mut self, player_type: PlayerType) -> &mut Self {
         self.player_type = player_type;
         self
     }
     // ========================================================================
     /// fn as_hand
-    pub fn as_hand(&self) -> &Hand {
+    pub(crate) fn as_hand(&self) -> &Hand {
         &self.hand
     }
     // ------------------------------------------------------------------------
     /// fn as_hand_mut
-    pub fn as_hand_mut(&mut self) -> &mut Hand {
+    pub(crate) fn as_hand_mut(&mut self) -> &mut Hand {
         &mut self.hand
     }
     // ------------------------------------------------------------------------
     /// fn hand_to_string
-    pub fn hand_to_string(&self, cards: &CardMap) -> Option<String> {
+    pub(crate) fn hand_to_string(&self, cards: &CardMap) -> Option<String> {
         self.hand.to_string(cards)
     }
 }
@@ -253,7 +253,7 @@ mod serialize {
     // ========================================================================
     /// struct Player
     #[derive(Debug, Clone, Serialize, Deserialize)]
-    pub struct Player<'a> {
+    pub(crate) struct Player<'a> {
         /// serdever
         serdever: i32,
         /// uuid
@@ -271,7 +271,7 @@ mod serialize {
     impl<'a> Player<'a> {
         // ====================================================================
         /// into
-        pub fn into(self) -> Result<super::Player> {
+        pub(crate) fn into(self) -> Result<super::Player> {
             debug!("::shinen::Player::into");
             if self.serdever < (CURRENT - AGE) || CURRENT < self.serdever {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));
@@ -291,7 +291,8 @@ mod serialize {
                         ))
                     })?
                     .into_owned(),
-                name: self.name.map_or(String::default(), Cow::into_owned),
+                name: self.name
+                    .map_or(String::default(), Cow::into_owned),
                 player_type: self.player_type
                     .ok_or_else(|| {
                         Error::MissingField(String::from(
@@ -299,7 +300,8 @@ mod serialize {
                         ))
                     })?
                     .into_owned(),
-                hand: self.hand.map_or(Hand::default(), Cow::into_owned),
+                hand: self.hand
+                    .map_or(Hand::default(), Cow::into_owned),
             })
         }
     }
@@ -329,4 +331,4 @@ mod serialize {
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// type PlayerMap
-pub type PlayerMap = BTreeMap<Uuid, Player>;
+pub(crate) type PlayerMap = BTreeMap<Uuid, Player>;

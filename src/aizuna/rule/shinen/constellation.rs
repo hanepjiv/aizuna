@@ -17,7 +17,7 @@ use super::Error;
 // ============================================================================
 /// enum Constellation
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub enum Constellation {
+pub(crate) enum Constellation {
     /// All
     All,
     /// Kokken
@@ -53,7 +53,7 @@ pub enum Constellation {
 impl Constellation {
     // ========================================================================
     /// as_str
-    pub fn as_str(&self) -> &str {
+    pub(crate) fn as_str(&self) -> &str {
         match *self {
             Constellation::All => "全て",
             Constellation::Kokken => "黒剣",
@@ -74,7 +74,7 @@ impl Constellation {
     }
     // ========================================================================
     /// as_ruby
-    pub fn as_ruby(&self) -> &'static str {
+    pub(crate) fn as_ruby(&self) -> &'static str {
         match *self {
             Constellation::All => "",
             Constellation::Kokken => "ソダール",

@@ -28,7 +28,7 @@ struct RecvImpl {
 impl RecvImpl {
     // ========================================================================
     /// new
-    pub fn new(connection: Connection) -> Self {
+    pub(crate) fn new(connection: Connection) -> Self {
         RecvImpl {
             connection: connection,
         }
@@ -54,7 +54,7 @@ impl Recv for RecvImpl {
 // ============================================================================
 /// struct Receiver
 #[derive(Debug)]
-pub struct Receiver {
+pub(crate) struct Receiver {
     /// receiver_impl
     receiver_impl: ReceiverImpl<ResultEvent, ()>,
 }
@@ -62,19 +62,19 @@ pub struct Receiver {
 impl Receiver {
     // ========================================================================
     /// new
-    pub fn new(connection: Connection) -> Self {
+    pub(crate) fn new(connection: Connection) -> Self {
         Receiver {
             receiver_impl: ReceiverImpl::from_recv(RecvImpl::new(connection)),
         }
     }
     // ========================================================================
     /// try_recv
-    pub fn try_recv(&self) -> StdResult<ResultEvent, TryRecvError> {
+    pub(crate) fn try_recv(&self) -> StdResult<ResultEvent, TryRecvError> {
         self.receiver_impl.try_recv()
     }
     // ========================================================================
     /// disconnect
-    pub fn disconnect(
+    pub(crate) fn disconnect(
         mut self,
         discord: &::discord::Discord,
         state: &::discord::State,

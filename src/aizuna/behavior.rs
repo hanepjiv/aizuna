@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/09
-//  @date 2018/03/14
+//  @date 2018/04/12
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -19,28 +19,28 @@ use std::str::from_utf8_unchecked;
 use rusty_leveldb::{LdbIterator, WriteBatch, DB};
 use uuid::Uuid;
 // ----------------------------------------------------------------------------
+use super::rule::{Rule, RuleImpl};
 use super::{Command, Config, Dice, Error, Message, Result, Session,
             SessionImpl, User};
-use super::rule::{Rule, RuleImpl};
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// type UserSessions
-pub type UserSessions = BTreeSet<Uuid>;
+type UserSessions = BTreeSet<Uuid>;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// struct Behavior
-pub struct Behavior<'a, 'b>
+pub(crate) struct Behavior<'a, 'b>
 where
     'b: 'a,
 {
     /// db
-    pub db: &'a mut DB,
+    pub(crate) db: &'a mut DB,
     /// msg
-    pub msg: &'a Message,
+    pub(crate) msg: &'a Message,
     /// inputs
-    pub inputs: &'a mut Vec<String>,
+    pub(crate) inputs: &'a mut Vec<String>,
     /// user
-    pub user: &'a User<'b>,
+    pub(crate) user: &'a User<'b>,
     /// options
     options: ::getopts::Options,
 }
@@ -98,15 +98,18 @@ where
     }
     // ========================================================================
     /// fn send
-    pub fn send<S0>(&self, s: S0) -> Command
+    pub(crate) fn send<S0>(&self, s: S0) -> Command
     where
         String: From<S0>,
     {
-        Command::Send(self.msg.aelicit().expect("aelicit"), String::from(s))
+        Command::Send(
+            self.msg.aelicit().expect("aelicit"),
+            String::from(s),
+        )
     }
     // ------------------------------------------------------------------------
     /// fn whisper
-    pub fn whisper<S0>(&self, s: S0) -> Command
+    pub(crate) fn whisper<S0>(&self, s: S0) -> Command
     where
         S0: Into<String>,
     {
@@ -116,7 +119,7 @@ where
     }
     // ------------------------------------------------------------------------
     /// fn multi_whisper
-    pub fn multi_whisper<I, S0>(users: I, s: S0) -> Command
+    pub(crate) fn multi_whisper<I, S0>(users: I, s: S0) -> Command
     where
         I: IntoIterator<Item = String>,
         BTreeSet<String>: FromIterator<String>,
@@ -129,7 +132,7 @@ where
     }
     // ------------------------------------------------------------------------
     /// fn owners_member_author_id
-    pub fn owners_member_author_id<S0>(
+    pub(crate) fn owners_member_author_id<S0>(
         &mut self,
         label: S0,
         session: &SessionImpl,
@@ -152,7 +155,7 @@ where
     }
     // ------------------------------------------------------------------------
     /// fn session_whisper
-    pub fn session_whisper<S0, S1>(
+    pub(crate) fn session_whisper<S0, S1>(
         &mut self,
         label: S0,
         session: &SessionImpl,
@@ -169,7 +172,7 @@ where
     }
     // ------------------------------------------------------------------------
     /// fn session_send_whisper_mine
-    pub fn session_send_whisper_mine<S, S0, S1, S2>(
+    pub(crate) fn session_send_whisper_mine<S, S0, S1, S2>(
         &mut self,
         label: S,
         session: &SessionImpl,
@@ -188,12 +191,15 @@ where
         Command::SendWhisperMine(
             (self.msg.aelicit().expect("aelicit"), s0.into()),
             (whispers, s1.into()),
-            (String::from(self.user.as_author_id()), s2.into()),
+            (
+                String::from(self.user.as_author_id()),
+                s2.into(),
+            ),
         )
     }
     // ========================================================================
     /// fn need_admin
-    pub fn need_admin<F>(&self, func: F) -> Result<Command>
+    pub(crate) fn need_admin<F>(&self, func: F) -> Result<Command>
     where
         F: FnOnce() -> Result<Command>,
     {
@@ -236,14 +242,20 @@ where
             Behavior::is_admin(config, msg),
         );
         let mut batch = WriteBatch::new();
-        batch.put(key_user_uuid.as_bytes(), user_uuid.to_string().as_bytes());
-        batch.put(key_user.as_bytes(), &::serde_json::to_vec(&user)?);
+        batch.put(
+            key_user_uuid.as_bytes(),
+            user_uuid.to_string().as_bytes(),
+        );
+        batch.put(
+            key_user.as_bytes(),
+            &::serde_json::to_vec(&user)?,
+        );
         let _ = db.write(batch, false)?;
         Ok(user)
     }
     // ========================================================================
     /// fn get_user
-    pub fn get_user<S0>(
+    pub(crate) fn get_user<S0>(
         label: S0,
         db: &mut DB,
         user_uuid: &Uuid,
@@ -276,7 +288,11 @@ where
                 (key_user, Some(user))
             }
         } else {
-            eprintln!("{}db user not found. {}.", label.as_ref(), key_user);
+            eprintln!(
+                "{}db user not found. {}.",
+                label.as_ref(),
+                key_user
+            );
             (key_user, None)
         }
     }
@@ -339,7 +355,7 @@ where
     }
     // ========================================================================
     /// fn make_unique_uuid_key
-    pub fn make_unique_uuid_key<S0>(db: &mut DB, prefix: S0) -> (Uuid, String)
+    pub(crate) fn make_unique_uuid_key<S0>(db: &mut DB, prefix: S0) -> (Uuid, String)
     where
         S0: Copy,
         String: ::std::convert::From<S0>,
@@ -358,7 +374,7 @@ where
     }
     // ========================================================================
     /// fn on_msg
-    pub fn on_msg(
+    pub(crate) fn on_msg(
         config: &Config,
         rules: &mut BTreeMap<String, RuleImpl>,
         dice: &Dice,
@@ -386,11 +402,8 @@ where
 
         let user = Behavior::get_current_user(label, config, db, msg)?;
 
-        Behavior::new(db, msg, &mut inputs, &user).on_input(
-            config,
-            rules,
-            dice,
-        )
+        Behavior::new(db, msg, &mut inputs, &user)
+            .on_input(config, rules, dice)
     }
     // ========================================================================
     /// fn new
@@ -438,7 +451,9 @@ Aizuna v{0}:
         Ok(Some(match self.inputs[0].as_bytes() {
             b"help" => self.whisper(Behavior::help_msg(config.as_prefix())),
             b"quit" | b"Q" => self.need_admin(|| {
-                Ok(Command::Quit(Some(self.msg.aelicit().expect("aelicit"))))
+                Ok(Command::Quit(Some(
+                    self.msg.aelicit().expect("aelicit"),
+                )))
             })?,
             b"user" | b"u" => self.on_user()?,
             b"database" => self.on_database()?,
@@ -461,7 +476,11 @@ Aizuna v{0}:
     /// fn on_user
     fn on_user(&mut self) -> Result<Command> {
         let label = "user: ";
-        Ok(self.send(format!("{}Uuid: {}", label, self.user.as_uuid(),)))
+        Ok(self.send(format!(
+            "{}Uuid: {}",
+            label,
+            self.user.as_uuid(),
+        )))
     }
     // ========================================================================
     /// fn on_database
@@ -588,7 +607,7 @@ Aizuna v{0}:
     }
     // ========================================================================
     /// fn parse_uuid
-    pub fn parse_uuid<S0, S1>(
+    pub(crate) fn parse_uuid<S0, S1>(
         &self,
         label: S0,
         uuid_str: S1,
@@ -609,7 +628,7 @@ Aizuna v{0}:
     }
     // ========================================================================
     /// fn get_uuid
-    pub fn get_uuid<S0>(
+    pub(crate) fn get_uuid<S0>(
         &mut self,
         label: S0,
         key: &[u8],
@@ -644,7 +663,7 @@ Aizuna v{0}:
     }
     // ========================================================================
     /// fn current_session
-    pub fn current_session<S0>(
+    pub(crate) fn current_session<S0>(
         &mut self,
         label: S0,
     ) -> StdResult<(String, SessionImpl, ::getopts::Matches), Result<Command>>
@@ -856,7 +875,10 @@ Aizuna v{0}:
             key_user_sessions.as_bytes(),
             &::serde_json::to_vec(&user_sessions)?,
         );
-        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
+        batch.put(
+            key_session.as_bytes(),
+            &::serde_json::to_vec(&session)?,
+        );
         batch.put(
             Behavior::key_user_default_session_uuid(self.user.as_uuid())
                 .as_bytes(),
@@ -864,7 +886,10 @@ Aizuna v{0}:
         );
         let _ = self.db.write(batch, false)?;
 
-        Ok(self.send(format!("{}Session Uuid = {}", label, session_uuid,)))
+        Ok(self.send(format!(
+            "{}Session Uuid = {}",
+            label, session_uuid,
+        )))
     }
     // ========================================================================
     /// fn on_session_close
@@ -881,7 +906,10 @@ Aizuna v{0}:
             return Ok(self.whisper(format!("{}invalid args.", label)));
         }
 
-        if !session.as_owners().contains(self.user.as_uuid()) {
+        if !session
+            .as_owners()
+            .contains(self.user.as_uuid())
+        {
             return Ok(self.whisper(format!("{}not owned.", label)));
         }
 
@@ -891,7 +919,10 @@ Aizuna v{0}:
 
         let _ = session.close();
         let mut batch = WriteBatch::new();
-        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
+        batch.put(
+            key_session.as_bytes(),
+            &::serde_json::to_vec(&session)?,
+        );
         let _ = self.db.write(batch, false)?;
 
         Ok({
@@ -920,7 +951,10 @@ Aizuna v{0}:
             return Ok(self.whisper(format!("{}invalid args.", label)));
         }
 
-        if !session.as_owners().contains(self.user.as_uuid()) {
+        if !session
+            .as_owners()
+            .contains(self.user.as_uuid())
+        {
             return Ok(self.whisper(format!("{}not owned.", label)));
         }
 
@@ -930,7 +964,10 @@ Aizuna v{0}:
 
         let _ = session.open();
         let mut batch = WriteBatch::new();
-        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
+        batch.put(
+            key_session.as_bytes(),
+            &::serde_json::to_vec(&session)?,
+        );
         let _ = self.db.write(batch, false)?;
 
         Ok({
@@ -959,7 +996,10 @@ Aizuna v{0}:
             return Ok(self.whisper(format!("{}invalid args.", label)));
         }
 
-        if !session.as_owners().contains(self.user.as_uuid()) {
+        if !session
+            .as_owners()
+            .contains(self.user.as_uuid())
+        {
             return Ok(self.whisper(format!("{}not owned.", label)));
         }
 
@@ -1042,7 +1082,10 @@ Aizuna v{0}:
         };
 
         if let Some(x) = title {
-            if !session.as_owners().contains(self.user.as_uuid()) {
+            if !session
+                .as_owners()
+                .contains(self.user.as_uuid())
+            {
                 return Ok(self.whisper(format!("{}not owned.", label)));
             }
 
@@ -1052,8 +1095,10 @@ Aizuna v{0}:
 
             let _ = session.set_title(&x);
             let mut batch = WriteBatch::new();
-            batch
-                .put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
+            batch.put(
+                key_session.as_bytes(),
+                &::serde_json::to_vec(&session)?,
+            );
             let _ = self.db.write(batch, false)?;
         }
 
@@ -1079,7 +1124,10 @@ Aizuna v{0}:
                 Ok(x) => x,
             };
 
-        if !session.as_owners().contains(self.user.as_uuid()) {
+        if !session
+            .as_owners()
+            .contains(self.user.as_uuid())
+        {
             return Ok(self.whisper(format!("{}not owned.", label)));
         }
 
@@ -1135,7 +1183,10 @@ Aizuna v{0}:
         let _ = target_user_sessions.insert(session.as_uuid().clone());
 
         let mut batch = WriteBatch::new();
-        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
+        batch.put(
+            key_session.as_bytes(),
+            &::serde_json::to_vec(&session)?,
+        );
         batch.put(
             key_target_user_sessions.as_bytes(),
             &::serde_json::to_vec(&target_user_sessions)?,
@@ -1165,7 +1216,10 @@ Aizuna v{0}:
                 Ok(x) => x,
             };
 
-        if !session.as_owners().contains(self.user.as_uuid()) {
+        if !session
+            .as_owners()
+            .contains(self.user.as_uuid())
+        {
             return Ok(self.whisper(format!("{}not owned.", label)));
         }
 
@@ -1218,7 +1272,9 @@ Aizuna v{0}:
             self.session_whisper(&label, &session, s)
         };
 
-        let _ = session.as_member_mut().remove(target_user.as_uuid());
+        let _ = session
+            .as_member_mut()
+            .remove(target_user.as_uuid());
 
         let (key_target_user_sessions, mut target_user_sessions) =
             match self.user_sessions(label, target_user.as_uuid()) {
@@ -1228,7 +1284,10 @@ Aizuna v{0}:
         let _ = target_user_sessions.remove(session.as_uuid());
 
         let mut batch = WriteBatch::new();
-        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
+        batch.put(
+            key_session.as_bytes(),
+            &::serde_json::to_vec(&session)?,
+        );
         batch.put(
             key_target_user_sessions.as_bytes(),
             &::serde_json::to_vec(&target_user_sessions)?,
@@ -1248,7 +1307,10 @@ Aizuna v{0}:
                 Ok(x) => x,
             };
 
-        if !session.as_owners().contains(self.user.as_uuid()) {
+        if !session
+            .as_owners()
+            .contains(self.user.as_uuid())
+        {
             return Ok(self.whisper(format!("{}not owned.", label)));
         }
 
@@ -1283,21 +1345,32 @@ Aizuna v{0}:
             }
         };
 
-        if session.as_owners().contains(target_user.as_uuid()) {
+        if session
+            .as_owners()
+            .contains(target_user.as_uuid())
+        {
             return Ok(self.whisper(format!("{}already owner.", label)));
         }
 
-        if !session.as_member().contains(target_user.as_uuid()) {
+        if !session
+            .as_member()
+            .contains(target_user.as_uuid())
+        {
             return Ok(self.whisper(format!("{}not a member.", label)));
         }
 
         let _ = session
             .as_owners_mut()
             .insert(target_user.as_uuid().clone());
-        let _ = session.as_member_mut().remove(target_user.as_uuid());
+        let _ = session
+            .as_member_mut()
+            .remove(target_user.as_uuid());
 
         let mut batch = WriteBatch::new();
-        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
+        batch.put(
+            key_session.as_bytes(),
+            &::serde_json::to_vec(&session)?,
+        );
         let _ = self.db.write(batch, false)?;
 
         Ok({
@@ -1328,15 +1401,25 @@ Aizuna v{0}:
             return Ok(self.whisper(format!("{}invalid args.", label)));
         }
 
-        if !session.as_owners().contains(self.user.as_uuid()) {
+        if !session
+            .as_owners()
+            .contains(self.user.as_uuid())
+        {
             return Ok(self.whisper(format!("{}not owner.", label)));
         }
 
-        let _ = session.as_owners_mut().remove(self.user.as_uuid());
-        let _ = session.as_member_mut().insert(self.user.as_uuid().clone());
+        let _ = session
+            .as_owners_mut()
+            .remove(self.user.as_uuid());
+        let _ = session
+            .as_member_mut()
+            .insert(self.user.as_uuid().clone());
 
         let mut batch = WriteBatch::new();
-        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
+        batch.put(
+            key_session.as_bytes(),
+            &::serde_json::to_vec(&session)?,
+        );
         let _ = self.db.write(batch, false)?;
 
         Ok({
@@ -1374,7 +1457,9 @@ Aizuna v{0}:
             return Ok(self.whisper(format!("{}already member.", label)));
         }
 
-        let _ = session.as_member_mut().insert(self.user.as_uuid().clone());
+        let _ = session
+            .as_member_mut()
+            .insert(self.user.as_uuid().clone());
         // for session_whisper. NOT Save DB.
 
         Ok({
@@ -1404,11 +1489,17 @@ Aizuna v{0}:
             return Ok(self.whisper(format!("{}invalid args.", label)));
         }
 
-        if session.as_owners().contains(self.user.as_uuid()) {
+        if session
+            .as_owners()
+            .contains(self.user.as_uuid())
+        {
             return Ok(self.whisper(format!("{}still owner.", label)));
         }
 
-        if !session.as_member().contains(self.user.as_uuid()) {
+        if !session
+            .as_member()
+            .contains(self.user.as_uuid())
+        {
             return Ok(self.whisper(format!("{}not a member.", label)));
         }
 
@@ -1424,7 +1515,9 @@ Aizuna v{0}:
             self.session_whisper(&label, &session, s)
         };
 
-        let _ = session.as_member_mut().remove(self.user.as_uuid());
+        let _ = session
+            .as_member_mut()
+            .remove(self.user.as_uuid());
 
         let (key_user_sessions, mut user_sessions) =
             match self.user_sessions(label, self.user.as_uuid()) {
@@ -1434,7 +1527,10 @@ Aizuna v{0}:
         let _ = user_sessions.remove(session.as_uuid());
 
         let mut batch = WriteBatch::new();
-        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
+        batch.put(
+            key_session.as_bytes(),
+            &::serde_json::to_vec(&session)?,
+        );
         batch.put(
             key_user_sessions.as_bytes(),
             &::serde_json::to_vec(&user_sessions)?,

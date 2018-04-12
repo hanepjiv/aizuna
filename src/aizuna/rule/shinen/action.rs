@@ -17,7 +17,7 @@ use super::Error;
 // ============================================================================
 /// enum Action
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub enum Action {
+pub(crate) enum Action {
     /// Attack
     Attack,
     /// Defence
@@ -45,7 +45,7 @@ pub enum Action {
 impl Action {
     // ========================================================================
     /// as_str
-    pub fn as_str(&self) -> &str {
+    pub(crate) fn as_str(&self) -> &str {
         match *self {
             Action::Attack => "攻撃",
             Action::Defence => "防御",

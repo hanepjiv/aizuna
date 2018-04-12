@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/25
-//  @date 2018/03/03
+//  @date 2018/04/12
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -21,7 +21,7 @@ use super::{Error, Result};
 // ============================================================================
 /// struct User
 #[derive(Debug, Clone)]
-pub struct User<'a> {
+pub(crate) struct User<'a> {
     /// uuid
     uuid: Uuid,
     /// connector_id
@@ -51,7 +51,7 @@ impl<'a> Borrow<Uuid> for User<'a> {
 impl<'a> User<'a> {
     // ========================================================================
     /// fn make_id
-    pub fn make_id<S0, S1>(connector_id: S0, author_id: S1) -> String
+    pub(crate) fn make_id<S0, S1>(connector_id: S0, author_id: S1) -> String
     where
         S0: AsRef<str>,
         S1: AsRef<str>,
@@ -63,7 +63,7 @@ impl<'a> User<'a> {
     }
     // ========================================================================
     /// fn new
-    pub fn new<U, S0, S1, S2>(
+    pub(crate) fn new<U, S0, S1, S2>(
         uuid: U,
         connector_id: &'a S0,
         author_id: &'a S1,
@@ -87,27 +87,27 @@ impl<'a> User<'a> {
     }
     // ========================================================================
     /// fn as_uuid
-    pub fn as_uuid(&self) -> &Uuid {
+    pub(crate) fn as_uuid(&self) -> &Uuid {
         &self.uuid
     }
     // ========================================================================
     /// fn as_connector_id
-    pub fn as_connector_id(&self) -> &str {
+    pub(crate) fn as_connector_id(&self) -> &str {
         &self.connector_id
     }
     // ========================================================================
     /// fn as_author_id
-    pub fn as_author_id(&self) -> &str {
+    pub(crate) fn as_author_id(&self) -> &str {
         &self.author_id
     }
     // ========================================================================
     /// fn as_author_name
-    pub fn as_author_name(&self) -> &str {
+    pub(crate) fn as_author_name(&self) -> &str {
         &self.author_name
     }
     // ------------------------------------------------------------------------
     /// fn set_author_name
-    pub fn set_author_name<S0>(&mut self, author_name: &'a S0)
+    pub(crate) fn set_author_name<S0>(&mut self, author_name: &'a S0)
     where
         S0: AsRef<str> + ?Sized,
     {
@@ -115,17 +115,17 @@ impl<'a> User<'a> {
     }
     // ========================================================================
     /// fn as_alias
-    pub fn as_alias(&self) -> &BTreeSet<String> {
+    pub(crate) fn as_alias(&self) -> &BTreeSet<String> {
         &self.alias
     }
     // ========================================================================
     /// fn as_admin
-    pub fn as_admin(&self) -> &bool {
+    pub(crate) fn as_admin(&self) -> &bool {
         &self.admin
     }
     // ------------------------------------------------------------------------
     /// fn set_admin
-    pub fn set_admin(&mut self, admin: bool) {
+    pub(crate) fn set_admin(&mut self, admin: bool) {
         self.admin = admin;
     }
 }
@@ -167,7 +167,7 @@ mod serialize {
     // ========================================================================
     /// struct User
     #[derive(Debug, Clone, Serialize, Deserialize)]
-    pub struct User<'a> {
+    pub(crate) struct User<'a> {
         /// serdever
         serdever: i32,
         /// uuid
@@ -185,7 +185,7 @@ mod serialize {
     impl<'a> User<'a> {
         // ====================================================================
         /// into
-        pub fn into(self) -> Result<super::User<'a>> {
+        pub(crate) fn into(self) -> Result<super::User<'a>> {
             debug!("User::serialize::into");
             if (self.serdever < (CURRENT - AGE)) || (CURRENT < self.serdever) {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));
@@ -216,7 +216,9 @@ mod serialize {
                 connector_id,
                 author_id,
                 author_name,
-                alias: self.alias.map(Cow::into_owned).unwrap_or_default(),
+                alias: self.alias
+                    .map(Cow::into_owned)
+                    .unwrap_or_default(),
                 admin: false,
             })
         }

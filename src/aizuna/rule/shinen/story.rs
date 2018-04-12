@@ -17,7 +17,7 @@ use super::Error;
 // ============================================================================
 /// enum Story
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub enum Story {
+pub(crate) enum Story {
     /// Portent
     Portent,
     /// Origin
@@ -57,7 +57,7 @@ pub enum Story {
 impl Story {
     // ========================================================================
     /// as_str
-    pub fn as_str(&self) -> &str {
+    pub(crate) fn as_str(&self) -> &str {
         match *self {
             Story::Portent => "前兆",
             Story::Origin => "出自",

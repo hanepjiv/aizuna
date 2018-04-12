@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/04
-//  @date 2018/03/14
+//  @date 2018/04/12
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -17,15 +17,15 @@ use chrono::prelude::{DateTime, Local, Utc};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use uuid::Uuid;
 // ----------------------------------------------------------------------------
-use super::{Error, Result, SessionKind};
-use super::super::FormatIndent;
 use super::super::uuid_set::UuidSet;
+use super::super::FormatIndent;
+use super::{Error, Result, SessionKind};
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// Flags
 bitflags! {
     #[derive(Serialize, Deserialize)]
-    pub struct Flags: u32 {
+    pub(crate) struct Flags: u32 {
     const OPEN  = 0b0000_0001u32;
     }
 }
@@ -38,7 +38,9 @@ impl Default for Flags {
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// trait Session
-pub trait Session<'a>: ::std::fmt::Debug + Serialize + Deserialize<'a> {
+pub(crate) trait Session<'a>:
+    ::std::fmt::Debug + Serialize + Deserialize<'a>
+{
     // ========================================================================
     /// fn as_rule_name
     fn as_rule_name(&self) -> &str;
@@ -56,7 +58,7 @@ macro_rules! session_delegate {
 // ============================================================================
 /// struct SessionImpl
 #[derive(Debug, Clone)]
-pub struct SessionImpl {
+pub(crate) struct SessionImpl {
     /// uuid
     uuid: Uuid,
     /// owners
@@ -144,7 +146,7 @@ impl FormatIndent for SessionImpl {
 impl SessionImpl {
     // ========================================================================
     /// fn new
-    pub fn new<U, IO>(uuid: U, owners: IO, kind: SessionKind) -> Self
+    pub(crate) fn new<U, IO>(uuid: U, owners: IO, kind: SessionKind) -> Self
     where
         Uuid: From<U>,
         IO: IntoIterator<Item = Uuid>,
@@ -161,32 +163,32 @@ impl SessionImpl {
     }
     // ========================================================================
     /// fn as_uuid
-    pub fn as_uuid(&self) -> &Uuid {
+    pub(crate) fn as_uuid(&self) -> &Uuid {
         &self.uuid
     }
     // ========================================================================
     /// fn as_owners
-    pub fn as_owners(&self) -> &UuidSet {
+    pub(crate) fn as_owners(&self) -> &UuidSet {
         &self.owners
     }
     // ------------------------------------------------------------------------
     /// fn as_owners_mut
-    pub fn as_owners_mut(&mut self) -> &mut UuidSet {
+    pub(crate) fn as_owners_mut(&mut self) -> &mut UuidSet {
         &mut self.owners
     }
     // ========================================================================
     /// fn as_member
-    pub fn as_member(&self) -> &UuidSet {
+    pub(crate) fn as_member(&self) -> &UuidSet {
         &self.member
     }
     // ------------------------------------------------------------------------
     /// fn as_member_mut
-    pub fn as_member_mut(&mut self) -> &mut UuidSet {
+    pub(crate) fn as_member_mut(&mut self) -> &mut UuidSet {
         &mut self.member
     }
     // ========================================================================
     /// fn owners_member_iter
-    pub fn owners_member_iter(
+    pub(crate) fn owners_member_iter(
         &self,
     ) -> Chain<super::super::uuid_set::Iter, super::super::uuid_set::Iter>
     {
@@ -194,7 +196,7 @@ impl SessionImpl {
     }
     // ------------------------------------------------------------------------
     /// fn owners_member_contains
-    pub fn owners_member_contains<Q>(&self, x: &Q) -> bool
+    pub(crate) fn owners_member_contains<Q>(&self, x: &Q) -> bool
     where
         Uuid: Borrow<Q>,
         Q: Ord,
@@ -203,22 +205,22 @@ impl SessionImpl {
     }
     // ========================================================================
     /// fn as_utc
-    pub fn as_utc(&self) -> &DateTime<Utc> {
+    pub(crate) fn as_utc(&self) -> &DateTime<Utc> {
         &self.utc
     }
     // ------------------------------------------------------------------------
     /// fn with_local
-    pub fn with_local(&self) -> DateTime<Local> {
+    pub(crate) fn with_local(&self) -> DateTime<Local> {
         self.utc.with_timezone(&Local)
     }
     // ========================================================================
     /// fn as_title
-    pub fn as_title(&self) -> &str {
+    pub(crate) fn as_title(&self) -> &str {
         self.title.as_str()
     }
     // ------------------------------------------------------------------------
     /// fn set_title
-    pub fn set_title<S>(&mut self, title: S) -> &mut Self
+    pub(crate) fn set_title<S>(&mut self, title: S) -> &mut Self
     where
         S: AsRef<str>,
     {
@@ -227,29 +229,29 @@ impl SessionImpl {
     }
     // ========================================================================
     /// fn is_open
-    pub fn is_open(&self) -> bool {
+    pub(crate) fn is_open(&self) -> bool {
         self.flags.contains(Flags::OPEN)
     }
     // ------------------------------------------------------------------------
     /// fn open
-    pub fn open(&mut self) -> &mut Self {
+    pub(crate) fn open(&mut self) -> &mut Self {
         self.flags.insert(Flags::OPEN);
         self
     }
     // ------------------------------------------------------------------------
     /// fn close
-    pub fn close(&mut self) -> &mut Self {
+    pub(crate) fn close(&mut self) -> &mut Self {
         self.flags.remove(Flags::OPEN);
         self
     }
     // ========================================================================
     /// fn as_kind
-    pub fn as_kind(&self) -> &SessionKind {
+    pub(crate) fn as_kind(&self) -> &SessionKind {
         &self.kind
     }
     // ------------------------------------------------------------------------
     /// fn as_kind_mut
-    pub fn as_kind_mut(&mut self) -> &mut SessionKind {
+    pub(crate) fn as_kind_mut(&mut self) -> &mut SessionKind {
         &mut self.kind
     }
 }
@@ -291,7 +293,7 @@ mod serialize {
     // ========================================================================
     /// struct SessionImpl
     #[derive(Debug, Clone, Serialize, Deserialize)]
-    pub struct SessionImpl<'a> {
+    pub(crate) struct SessionImpl<'a> {
         /// serdever
         serdever: i32,
         /// uuid
@@ -313,7 +315,7 @@ mod serialize {
     impl<'a> SessionImpl<'a> {
         // ====================================================================
         /// into
-        pub fn into(self) -> Result<super::SessionImpl> {
+        pub(crate) fn into(self) -> Result<super::SessionImpl> {
             debug!("SessionImpl::serialize::into");
             if self.serdever < (CURRENT - AGE) || CURRENT < self.serdever {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));

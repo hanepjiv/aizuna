@@ -18,7 +18,7 @@ use super::{Error, Result};
 // ============================================================================
 /// struct Dice
 #[derive(Debug)]
-pub struct Dice {
+pub(crate) struct Dice {
     /// regex
     regex: Regex,
 }
@@ -26,7 +26,7 @@ pub struct Dice {
 impl Dice {
     // ========================================================================
     /// fn roll
-    pub fn roll(mut n: i32, m: i32) -> (i32, i32, Vec<i32>, i64) {
+    pub(crate) fn roll(mut n: i32, m: i32) -> (i32, i32, Vec<i32>, i64) {
         let mut v = Vec::default();
         if n < 1 || m < 1 {
             return (n, m, v, 0);
@@ -45,20 +45,25 @@ impl Dice {
     }
     // ========================================================================
     /// fn new
-    pub fn new() -> Result<Self> {
+    pub(crate) fn new() -> Result<Self> {
         Ok(Dice {
             regex: Regex::new(r"^(\d*)d(\d*)$")?,
         })
     }
     // ========================================================================
     /// fn parse
-    pub fn parse<S>(&self, src: S) -> Result<(i32, i32, Vec<i32>, i64)>
+    pub(crate) fn parse<S>(&self, src: S) -> Result<(i32, i32, Vec<i32>, i64)>
     where
         S: AsRef<str>,
     {
-        let caps = self.regex.captures(src.as_ref()).ok_or_else(|| {
-            Error::InvalidArg(format!("Dice::parse: {}: caps", src.as_ref()))
-        })?;
+        let caps = self.regex
+            .captures(src.as_ref())
+            .ok_or_else(|| {
+                Error::InvalidArg(format!(
+                    "Dice::parse: {}: caps",
+                    src.as_ref()
+                ))
+            })?;
         Ok(Dice::roll(
             caps.get(1)
                 .map(|x| x.as_str().parse().unwrap_or(1))

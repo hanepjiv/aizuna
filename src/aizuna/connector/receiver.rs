@@ -10,13 +10,13 @@
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
-use std::sync::Arc;
 use std::result::Result as StdResult;
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// trait Recv
-pub trait Recv {
+pub(crate) trait Recv {
     // ========================================================================
     /// type Generated
     type Generated: Send + 'static;
@@ -54,7 +54,7 @@ where
 {
     // ========================================================================
     /// fn new
-    pub fn new(gen: F0, exit: F1) -> Self {
+    pub(crate) fn new(gen: F0, exit: F1) -> Self {
         RecvImpl {
             on_gen: gen,
             on_exit: exit,
@@ -87,7 +87,7 @@ where
 // ============================================================================
 /// struct ReceiverImpl
 #[derive(Debug)]
-pub struct ReceiverImpl<T, R>
+pub(crate) struct ReceiverImpl<T, R>
 where
     T: Send + 'static,
     R: Send + 'static,
@@ -107,7 +107,7 @@ where
 {
     // ========================================================================
     /// fn from_recv
-    pub fn from_recv<I>(mut recv: I) -> Self
+    pub(crate) fn from_recv<I>(mut recv: I) -> Self
     where
         I: Recv<Generated = T, Return = R> + Send + 'static,
     {
@@ -129,7 +129,7 @@ where
     }
     // ========================================================================
     /// fn from_gen_exit
-    pub fn from_gen_exit<F0, F1>(gen: F0, exit: F1) -> Self
+    pub(crate) fn from_gen_exit<F0, F1>(gen: F0, exit: F1) -> Self
     where
         F0: FnMut() -> T + Send + 'static,
         F1: FnOnce() -> R + Send + 'static,
@@ -138,7 +138,7 @@ where
     }
     // ========================================================================
     /// fn from_gen
-    pub fn from_gen<F0>(gen: F0) -> ReceiverImpl<T, ()>
+    pub(crate) fn from_gen<F0>(gen: F0) -> ReceiverImpl<T, ()>
     where
         F0: FnMut() -> T + Send + 'static,
     {
@@ -146,17 +146,18 @@ where
     }
     // ========================================================================
     /// fn try_recv
-    pub fn try_recv(&self) -> StdResult<T, ::std::sync::mpsc::TryRecvError> {
+    pub(crate) fn try_recv(&self) -> StdResult<T, ::std::sync::mpsc::TryRecvError> {
         self.receiver.try_recv()
     }
     // ========================================================================
     /// fn store_active
-    pub fn store_active(&mut self, is_active: bool) {
-        self.is_active.store(is_active, Ordering::SeqCst);
+    pub(crate) fn store_active(&mut self, is_active: bool) {
+        self.is_active
+            .store(is_active, Ordering::SeqCst);
     }
     // ========================================================================
     /// fn join
-    pub fn join(self) -> ::std::thread::Result<R> {
+    pub(crate) fn join(self) -> ::std::thread::Result<R> {
         self.handle.join()
     }
 }

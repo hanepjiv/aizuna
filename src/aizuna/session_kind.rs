@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/04
-//  @date 2018/03/15
+//  @date 2018/04/12
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -14,14 +14,14 @@ use std::borrow::Cow;
 // ----------------------------------------------------------------------------
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 // ----------------------------------------------------------------------------
-use super::{Error, Result, Session};
-use super::rule::shinen::Session as ShinEnSession;
 use super::super::FormatIndent;
+use super::rule::shinen::Session as ShinEnSession;
+use super::{Error, Result, Session};
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// enum SessionKind
 #[derive(Debug, Clone)]
-pub enum SessionKind {
+pub(crate) enum SessionKind {
     /// Dummy
     Dummy,
     /// ShinEn
@@ -31,7 +31,7 @@ pub enum SessionKind {
 impl SessionKind {
     // ========================================================================
     /// fn as_shinen
-    pub fn as_shinen(&self) -> Option<&ShinEnSession> {
+    pub(crate) fn as_shinen(&self) -> Option<&ShinEnSession> {
         match *self {
             SessionKind::ShinEn(ref x) => Some(x),
             _ => None,
@@ -39,7 +39,7 @@ impl SessionKind {
     }
     // ------------------------------------------------------------------------
     /// fn as_shinen_mut
-    pub fn as_shinen_mut(&mut self) -> Option<&mut ShinEnSession> {
+    pub(crate) fn as_shinen_mut(&mut self) -> Option<&mut ShinEnSession> {
         match *self {
             SessionKind::ShinEn(ref mut x) => Some(x),
             _ => None,
@@ -111,7 +111,7 @@ mod serialize {
     // ========================================================================
     /// struct SessionKind
     #[derive(Debug, Clone, Serialize, Deserialize)]
-    pub struct SessionKind<'a> {
+    pub(crate) struct SessionKind<'a> {
         /// serdever
         serdever: i32,
         /// rule
@@ -123,7 +123,7 @@ mod serialize {
     impl<'a> SessionKind<'a> {
         // ====================================================================
         /// into
-        pub fn into(self) -> Result<super::SessionKind> {
+        pub(crate) fn into(self) -> Result<super::SessionKind> {
             debug!("::aizuna::SessionKind::serialize::serialize::into");
             if self.serdever < (CURRENT - AGE) || CURRENT < self.serdever {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));

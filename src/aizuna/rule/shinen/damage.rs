@@ -17,7 +17,7 @@ use super::Error;
 // ============================================================================
 /// enum Damage
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub enum Damage {
+pub(crate) enum Damage {
     /// Impact
     Impact,
     /// Staging
@@ -45,7 +45,7 @@ pub enum Damage {
 impl Damage {
     // ========================================================================
     /// as_str
-    pub fn as_str(&self) -> &str {
+    pub(crate) fn as_str(&self) -> &str {
         match *self {
             Damage::Impact => "衝撃",
             Damage::Staging => "演出",

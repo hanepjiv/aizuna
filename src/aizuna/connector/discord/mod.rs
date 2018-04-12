@@ -10,13 +10,13 @@
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
-pub use super::{Error, Result};
-pub use self::config::Config;
-pub use self::discord::Discord;
-pub use self::message::DiscordMessage;
+pub(crate) use self::config::Config;
+pub(crate) use self::discord::Discord;
+pub(crate) use self::message::DiscordMessage;
+pub(crate) use super::{Error, Result};
 // mod  =======================================================================
-pub mod config;
-pub mod discord;
-pub mod message;
+pub(crate) mod config;
+pub(crate) mod discord;
+pub(crate) mod message;
 #[cfg(feature = "coroutine")]
-pub mod receiver;
+pub(crate) mod receiver;

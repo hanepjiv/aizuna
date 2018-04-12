@@ -20,9 +20,9 @@ use super::{Error, Result};
 // ============================================================================
 /// struct Config
 #[derive(Debug, Clone)]
-pub struct Config {
+pub(crate) struct Config {
     /// root
-    pub root: PathBuf,
+    pub(crate) root: PathBuf,
 }
 // ============================================================================
 impl Config {}
@@ -64,7 +64,7 @@ mod serialize {
     // ========================================================================
     /// struct Config
     #[derive(Debug, Clone, Serialize, Deserialize)]
-    pub struct Config<'a> {
+    pub(crate) struct Config<'a> {
         /// serdever
         serdever: i32,
         /// root
@@ -74,7 +74,7 @@ mod serialize {
     impl<'a> Config<'a> {
         // ====================================================================
         /// into
-        pub fn into(self) -> Result<super::Config> {
+        pub(crate) fn into(self) -> Result<super::Config> {
             debug!("::aizuna::connector::Config::serialize::into");
             if self.serdever < (CURRENT - AGE) || CURRENT < self.serdever {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));

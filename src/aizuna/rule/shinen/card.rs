@@ -10,17 +10,17 @@
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
-use std::collections::VecDeque;
-use std::collections::vec_deque;
 use std::borrow::Cow;
+use std::collections::vec_deque;
 use std::collections::BTreeMap;
-use std::vec::Vec;
-use std::fmt::Debug;
+use std::collections::VecDeque;
 use std::ffi::OsStr;
+use std::fmt::Debug;
 use std::fs::File;
 use std::iter::{FromIterator, IntoIterator};
 use std::ops::{Index, IndexMut};
 use std::path::Path;
+use std::vec::Vec;
 // ----------------------------------------------------------------------------
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 // ----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ use super::{Action, CardSet, Color, Constellation, Damage, Error, Result,
 // ============================================================================
 /// struct Card
 #[derive(Debug, Clone)]
-pub struct Card {
+pub(crate) struct Card {
     /// name
     name: String,
     /// card_set
@@ -60,37 +60,37 @@ pub struct Card {
 impl Card {
     // ========================================================================
     /// as_name
-    pub fn as_name(&self) -> &str {
+    pub(crate) fn as_name(&self) -> &str {
         &self.name
     }
     // ========================================================================
     /// as_color
-    pub fn as_color(&self) -> &Option<Color> {
+    pub(crate) fn as_color(&self) -> &Option<Color> {
         &self.color
     }
     // ========================================================================
     /// as_desc
-    pub fn as_desc(&self) -> &str {
+    pub(crate) fn as_desc(&self) -> &str {
         self.desc.as_str()
     }
     // ========================================================================
     /// as_story_desc
-    pub fn as_story_desc(&self) -> &str {
+    pub(crate) fn as_story_desc(&self) -> &str {
         self.story_desc.as_str()
     }
     // ========================================================================
     /// as_damage_desc
-    pub fn as_damage_desc(&self) -> &str {
+    pub(crate) fn as_damage_desc(&self) -> &str {
         self.damage_desc.as_str()
     }
     // ========================================================================
     /// as_destiny
-    pub fn as_destiny(&self) -> &Option<i32> {
+    pub(crate) fn as_destiny(&self) -> &Option<i32> {
         &self.destiny
     }
     // ========================================================================
     /// fn pretty
-    pub fn pretty(&self) -> String {
+    pub(crate) fn pretty(&self) -> String {
         format!(
             "{name} / {card_set} / 色： {color} / 星座： {constellation} / \
              数値: {value} / 叙述: {desc} / 語り部: {story:?} {story_desc} / \
@@ -167,7 +167,7 @@ mod serialize {
     // ========================================================================
     /// struct Card
     #[derive(Debug, Clone, Serialize, Deserialize)]
-    pub struct Card<'a> {
+    pub(crate) struct Card<'a> {
         /// serdever
         serdever: i32,
         /// name
@@ -199,7 +199,7 @@ mod serialize {
     impl<'a> Card<'a> {
         // ====================================================================
         /// into
-        pub fn into(self) -> Result<super::Card> {
+        pub(crate) fn into(self) -> Result<super::Card> {
             debug!("::shinen::Card::serialize::into");
             if self.serdever < (CURRENT - AGE) || CURRENT < self.serdever {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));
@@ -231,7 +231,8 @@ mod serialize {
                         None
                     },
                     value: self.value,
-                    desc: self.desc.map_or(String::default(), Cow::into_owned),
+                    desc: self.desc
+                        .map_or(String::default(), Cow::into_owned),
                     story: if let Some(x) = self.story {
                         let mut ret = Vec::<Story>::default();
                         for i in x {
@@ -333,7 +334,7 @@ mod serialize {
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// type CardMap
-pub type CardMap = BTreeMap<String, Card>;
+pub(crate) type CardMap = BTreeMap<String, Card>;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 const PATH_CARDS: &[&str] = &["cards/basic.", "cards/crimson."];
@@ -341,7 +342,7 @@ const EXTS_CARDS: &str = "toml";
 const EXTS_NEW_CARDS: &str = "new.toml";
 // ============================================================================
 /// import_cards
-pub fn import_cards<'a, S>(
+pub(crate) fn import_cards<'a, S>(
     cards: &'a mut CardMap,
     root: &S,
 ) -> Result<&'a CardMap>
@@ -368,7 +369,8 @@ where
             let mut destiny_map = BTreeMap::<i32, Card>::default();
             for v in cardset.values() {
                 let _ = destiny_map.insert(
-                    v.as_destiny().unwrap_or_else(|| ::std::i32::MAX),
+                    v.as_destiny()
+                        .unwrap_or_else(|| ::std::i32::MAX),
                     v.clone(),
                 );
             }
@@ -406,7 +408,7 @@ where
 // ============================================================================
 /// struct Deck
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Deck(VecDeque<String>);
+pub(crate) struct Deck(VecDeque<String>);
 // ============================================================================
 impl From<Vec<String>> for Deck {
     fn from(v: Vec<String>) -> Self {
@@ -439,7 +441,7 @@ impl IndexMut<usize> for Deck {
 impl Deck {
     // ========================================================================
     /// to_string
-    pub fn to_string(&self, cards: &CardMap) -> Option<String> {
+    pub(crate) fn to_string(&self, cards: &CardMap) -> Option<String> {
         let mut ret = format!("{} cards", self.0.len());
         for (i, v) in self.0.iter().enumerate() {
             if let Some(x) = cards.get(v) {
@@ -452,7 +454,7 @@ impl Deck {
     }
     // ========================================================================
     /// shuffle
-    pub fn shuffle(&mut self) {
+    pub(crate) fn shuffle(&mut self) {
         let mut x = self.0.iter().cloned().collect::<Vec<String>>();
         use rand::{thread_rng, Rng};
         thread_rng().shuffle(&mut x[..]);
@@ -460,12 +462,15 @@ impl Deck {
     }
     // ========================================================================
     /// find
-    pub fn find(&mut self, v: &[u8]) -> Option<(usize, &String)> {
-        self.0.iter().enumerate().find(|&(_, x)| x.as_bytes() == v)
+    pub(crate) fn find(&mut self, v: &[u8]) -> Option<(usize, &String)> {
+        self.0
+            .iter()
+            .enumerate()
+            .find(|&(_, x)| x.as_bytes() == v)
     }
     // ========================================================================
     /// pick
-    pub fn pick(&mut self, v: &[u8]) -> Option<String> {
+    pub(crate) fn pick(&mut self, v: &[u8]) -> Option<String> {
         if let Some(i) = if let Some((i, _x)) = self.find(v) {
             Some(i)
         } else {
@@ -479,66 +484,66 @@ impl Deck {
     // VecDeque  //////////////////////////////////////////////////////////////
     // ========================================================================
     /// fn is_empty
-    pub fn is_empty(&self) -> bool {
+    pub(crate) fn is_empty(&self) -> bool {
         self.0.is_empty()
     }
     // ========================================================================
     /// fn len
-    pub fn len(&self) -> usize {
+    pub(crate) fn len(&self) -> usize {
         self.0.len()
     }
     // ========================================================================
     /// fn get
-    pub fn get(&self, n: usize) -> Option<&String> {
+    pub(crate) fn get(&self, n: usize) -> Option<&String> {
         self.0.get(n)
     }
     // ------------------------------------------------------------------------
     /// fn get_mut
-    pub fn get_mut(&mut self, n: usize) -> Option<&mut String> {
+    pub(crate) fn get_mut(&mut self, n: usize) -> Option<&mut String> {
         self.0.get_mut(n)
     }
     // ========================================================================
     /// fn pop_front
-    pub fn pop_front(&mut self) -> Option<String> {
+    pub(crate) fn pop_front(&mut self) -> Option<String> {
         self.0.pop_front()
     }
     // ------------------------------------------------------------------------
     /// fn pop_back
-    pub fn pop_back(&mut self) -> Option<String> {
+    pub(crate) fn pop_back(&mut self) -> Option<String> {
         self.0.pop_back()
     }
     // ========================================================================
     /// fn push_front
-    pub fn push_front(&mut self, v: String) {
+    pub(crate) fn push_front(&mut self, v: String) {
         self.0.push_front(v)
     }
     // ------------------------------------------------------------------------
     /// fn push_back
-    pub fn push_back(&mut self, v: String) {
+    pub(crate) fn push_back(&mut self, v: String) {
         self.0.push_back(v)
     }
     // ========================================================================
     /// fn remove
-    pub fn remove(&mut self, n: usize) -> Option<String> {
+    pub(crate) fn remove(&mut self, n: usize) -> Option<String> {
         self.0.remove(n)
     }
     // ========================================================================
     /// fn append
-    pub fn append(&mut self, other: &mut Self) {
+    pub(crate) fn append(&mut self, other: &mut Self) {
         self.0.append(&mut other.0)
     }
     // ========================================================================
     /// fn iter
-    pub fn iter(&self) -> vec_deque::Iter<String> {
+    pub(crate) fn iter(&self) -> vec_deque::Iter<String> {
         self.0.iter()
     }
     // ------------------------------------------------------------------------
     /// fn iter_mut
-    pub fn iter_mut(&mut self) -> vec_deque::IterMut<String> {
+    pub(crate) fn iter_mut(&mut self) -> vec_deque::IterMut<String> {
         self.0.iter_mut()
     }
 }
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// type Hand
-pub type Hand = Deck;
+pub(crate) type Hand = Deck;

@@ -17,7 +17,7 @@ use super::Error;
 // ============================================================================
 /// enum Color
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub enum Color {
+pub(crate) enum Color {
     /// All
     All,
     /// White
@@ -41,7 +41,7 @@ pub enum Color {
 impl Color {
     // ========================================================================
     /// as_str
-    pub fn as_str(&self) -> &str {
+    pub(crate) fn as_str(&self) -> &str {
         match *self {
             Color::All => "全て",
             Color::White => "白",

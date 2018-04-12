@@ -13,25 +13,46 @@
 use std::collections::BTreeSet;
 use std::thread::JoinHandle;
 // ----------------------------------------------------------------------------
-use toml::Value;
-use discord::model::UserId;
 use discord::model::Event::MessageCreate;
+use discord::model::UserId;
+use toml::Value;
 // ----------------------------------------------------------------------------
 use super::super::super::{Command, MessageAelicit, Responce};
 use super::super::{Connector, ResSen};
 use super::{Config, DiscordMessage, Error, Result};
 // ----------------------------------------------------------------------------
-#[cfg(feature = "coroutine")]
-use std::sync::mpsc::TryRecvError;
-#[cfg(feature = "coroutine")]
-use super::receiver::Receiver;
+#[cfg(feature = "coroutine-fringe")]
+#[cfg(feature = "coroutine-fringe")]
+#[cfg(feature = "coroutine-fringe")]
+#[cfg(feature = "coroutine-fringe")]
+#[cfg(feature = "coroutine-fringe")]
+#[cfg(feature = "coroutine-fringe")]
+#[cfg(feature = "coroutine-fringe")]
 #[cfg(feature = "coroutine-fringe")]
 use super::super::Generator;
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+use super::receiver::Receiver;
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+#[cfg(feature = "coroutine")]
+use std::sync::mpsc::TryRecvError;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// struct Discord
 #[derive(Debug, Clone)]
-pub struct Discord {
+pub(crate) struct Discord {
     /// id
     id: String,
     /// config
@@ -41,7 +62,7 @@ pub struct Discord {
 impl Discord {
     // ========================================================================
     /// new
-    pub fn new<S>(id: S, config: Value) -> Result<Self>
+    pub(crate) fn new<S>(id: S, config: Value) -> Result<Self>
     where
         S: AsRef<str>,
     {
@@ -63,7 +84,10 @@ impl Discord {
             Ok(x) => {
                 state.update(&x);
                 if let MessageCreate(m) = x {
-                    debug!("{}Says: {}: {}", label, m.author.name, m.content);
+                    debug!(
+                        "{}Says: {}: {}",
+                        label, m.author.name, m.content
+                    );
                     Responce::Message(MessageAelicit::new(
                         DiscordMessage::new(id.to_string(), m),
                     ))
@@ -84,9 +108,9 @@ impl Discord {
     ) -> Responce {
         match receiver.try_recv() {
             Err(TryRecvError::Empty) => Responce::Yield,
-            Err(TryRecvError::Disconnected) => Responce::Error(
-                Error::Aizuna(String::from("Discord::connect: disconnected.")),
-            ),
+            Err(TryRecvError::Disconnected) => Responce::Error(Error::Aizuna(
+                String::from("Discord::connect: disconnected."),
+            )),
             Ok(x) => Discord::on_listen(id, label, state, x),
         }
     }
@@ -98,14 +122,17 @@ impl Discord {
         msg: &MessageAelicit,
     ) -> Result<::discord::model::Message> {
         msg.with(|x| {
-            if let Some(x) =
-                x.as_any().downcast_ref::<::discord::model::Message>()
+            if let Some(x) = x.as_any()
+                .downcast_ref::<::discord::model::Message>()
             {
                 discord
                     .send_message(x.channel_id, "Aizuna Quit.", "", false)
                     .map_err(Error::Discord)
             } else {
-                Err(Error::Downcast(format!("Discord::connect: {}", label)))
+                Err(Error::Downcast(format!(
+                    "Discord::connect: {}",
+                    label
+                )))
             }
         })
     }
@@ -118,8 +145,8 @@ impl Discord {
         s: &str,
     ) -> Responce {
         if let Err(x) = msg.with(|x| {
-            if let Some(m) =
-                x.as_any().downcast_ref::<::discord::model::Message>()
+            if let Some(m) = x.as_any()
+                .downcast_ref::<::discord::model::Message>()
             {
                 discord
                     .send_message(
@@ -130,7 +157,10 @@ impl Discord {
                     )
                     .map_err(Error::Discord)
             } else {
-                Err(Error::Downcast(format!("Discord::connect: {}", label)))
+                Err(Error::Downcast(format!(
+                    "Discord::connect: {}",
+                    label
+                )))
             }
         }) {
             Responce::Error(Error::Aizuna(format!("{}{:?}", label, x)))
@@ -199,14 +229,12 @@ impl Discord {
     // ========================================================================
     fn discord(
         &self,
-    ) -> Result<
-        (
-            String,
-            ::discord::Discord,
-            ::discord::State,
-            ::discord::Connection,
-        ),
-    > {
+    ) -> Result<(
+        String,
+        ::discord::Discord,
+        ::discord::State,
+        ::discord::Connection,
+    )> {
         let label = format!("Discord({}): ", self.id);
         println!("{}Start", label);
         let discord =
@@ -247,44 +275,43 @@ impl Connector for Discord {
         let id = self.id.clone();
         let (label, discord, mut state, connection) = self.discord()?;
         let receiver = Receiver::new(connection);
-        Ok(Generator::new(stack, move |yielder, mut command| {
-            println!("Discord: Gen");
-            loop {
-                command = match command {
-                    Command::Quit(ref x) => {
-                        if let &Some(ref msg) = x {
-                            let _ = Discord::on_quit(&label, &discord, msg);
+        Ok(Generator::new(
+            stack,
+            move |yielder, mut command| {
+                println!("Discord: Gen");
+                loop {
+                    command = match command {
+                        Command::Quit(ref x) => {
+                            if let &Some(ref msg) = x {
+                                let _ =
+                                    Discord::on_quit(&label, &discord, msg);
+                            }
+                            break;
                         }
-                        break;
+                        Command::Listen => {
+                            yielder.suspend(Discord::on_listen_async(
+                                &id, &label, &mut state, &receiver,
+                            ))
+                        }
+                        Command::Send(ref msg, ref s) => yielder.suspend(
+                            Discord::on_send(&label, &discord, msg, s),
+                        ),
+                        Command::Whisper(ref vs, ref s) => yielder.suspend(
+                            Discord::on_whisper(&label, &discord, vs, s),
+                        ),
+                        Command::SendWhisperMine(
+                            ref send,
+                            ref whisper,
+                            ref mine,
+                        ) => yielder.suspend(Discord::on_send_whisper_mine(
+                            &label, &discord, send, whisper, mine,
+                        )),
                     }
-                    Command::Listen => {
-                        yielder.suspend(Discord::on_listen_async(
-                            &id,
-                            &label,
-                            &mut state,
-                            &receiver,
-                        ))
-                    }
-                    Command::Send(ref msg, ref s) => yielder
-                        .suspend(Discord::on_send(&label, &discord, msg, s)),
-                    Command::Whisper(ref vs, ref s) => yielder
-                        .suspend(Discord::on_whisper(&label, &discord, vs, s)),
-                    Command::SendWhisperMine(
-                        ref send,
-                        ref whisper,
-                        ref mine,
-                    ) => yielder.suspend(Discord::on_send_whisper_mine(
-                        &label,
-                        &discord,
-                        send,
-                        whisper,
-                        mine,
-                    )),
                 }
-            }
-            println!("{}Disconnect", label);
-            receiver.disconnect(&discord, &state);
-        }))
+                println!("{}Disconnect", label);
+                receiver.disconnect(&discord, &state);
+            },
+        ))
     }
     // ========================================================================
     fn spawn(&self, res_sen: ResSen) -> Result<JoinHandle<Result<()>>> {
@@ -339,11 +366,7 @@ impl Connector for Discord {
                         debug!("Command::SendWhisper");
                         let _ = res_sen.send((
                             Discord::on_send_whisper_mine(
-                                &label,
-                                &discord,
-                                send,
-                                whisper,
-                                mine,
+                                &label, &discord, send, whisper, mine,
                             ),
                             Some(cmd_sen.clone()),
                         ))?;

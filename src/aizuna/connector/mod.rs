@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/01/10
+//  @date 2018/04/12
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -14,48 +14,48 @@ use std::fmt::Debug;
 use std::sync::mpsc::{Receiver, Sender};
 use std::thread::JoinHandle;
 // ----------------------------------------------------------------------------
-pub use super::{Command, Error, Responce, Result};
+pub(crate) use super::{Command, Error, Responce, Result};
 // ----------------------------------------------------------------------------
-pub use self::config::Config;
-pub use self::console::Console;
-pub use self::discord::Discord;
+pub(crate) use self::config::Config;
+pub(crate) use self::console::Console;
+pub(crate) use self::discord::Discord;
 #[cfg(feature = "coroutine")]
 use self::receiver::{ReceiverImpl, Recv};
 // mod  =======================================================================
-pub mod config;
-pub mod console;
-pub mod discord;
+pub(crate) mod config;
+pub(crate) mod console;
+pub(crate) mod discord;
 #[cfg(feature = "coroutine")]
-pub mod receiver;
+pub(crate) mod receiver;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 // Fringe
 // ============================================================================
 #[cfg(feature = "coroutine-fringe")]
 /// type Generator
-pub type Generator =
+pub(crate) type Generator =
     ::fringe::generator::Generator<Command, Responce, ::fringe::OsStack>;
 // ============================================================================
 #[cfg(feature = "coroutine-fringe")]
 /// Yielder
-pub type Yielder = ::fringe::generator::Yielder<Command, Responce>;
+pub(crate) type Yielder = ::fringe::generator::Yielder<Command, Responce>;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 // Thread
 // ============================================================================
 /// type CmdSen
-pub type CmdSen = Sender<Command>;
+pub(crate) type CmdSen = Sender<Command>;
 // ----------------------------------------------------------------------------
 /*
 /// type CmdRec
-pub type CmdRec = Receiver<Command>;
+pub(crate) type CmdRec = Receiver<Command>;
 */
 // ============================================================================
 /// type ResSen
-pub type ResSen = Sender<(Responce, Option<CmdSen>)>;
+pub(crate) type ResSen = Sender<(Responce, Option<CmdSen>)>;
 // ----------------------------------------------------------------------------
 /// type ResRec
-pub type ResRec = Receiver<(Responce, Option<CmdSen>)>;
+pub(crate) type ResRec = Receiver<(Responce, Option<CmdSen>)>;
 // ============================================================================
 /// trait Connector
 pub trait Connector: Debug {

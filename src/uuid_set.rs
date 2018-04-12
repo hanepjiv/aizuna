@@ -15,7 +15,7 @@ use uuid::Uuid;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// type Iter
-pub type Iter<'a> = ::std::collections::btree_set::Iter<'a, Uuid>;
+pub(crate) type Iter<'a> = ::std::collections::btree_set::Iter<'a, Uuid>;
 // ============================================================================
 /// type UuidSet
-pub type UuidSet = BTreeSet<Uuid>;
+pub(crate) type UuidSet = BTreeSet<Uuid>;

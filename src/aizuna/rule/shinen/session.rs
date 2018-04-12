@@ -11,15 +11,15 @@
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
 use std::borrow::{Borrow, Cow};
-use std::collections::BTreeMap;
 use std::cmp::Ord;
+use std::collections::BTreeMap;
 // ----------------------------------------------------------------------------
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use uuid::Uuid;
 // ----------------------------------------------------------------------------
-use super::{Deck, Error, Player, PlayerMap, Result};
-use super::super::super::Session as AizunaSession;
 use super::super::super::super::FormatIndent;
+use super::super::super::Session as AizunaSession;
+use super::{Deck, Error, Player, PlayerMap, Result};
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// type DefaultPlayerMap
@@ -28,7 +28,7 @@ type DefaultPlayerMap = BTreeMap<Uuid, Uuid>;
 // ============================================================================
 /// struct Session
 #[derive(Debug, Clone)]
-pub struct Session {
+pub(crate) struct Session {
     /// pile
     pile: Deck,
     /// discard
@@ -84,7 +84,7 @@ impl<'a> AizunaSession<'a> for Session {
 impl Session {
     // ========================================================================
     /// fn new
-    pub fn new(pile: Deck) -> Self {
+    pub(crate) fn new(pile: Deck) -> Self {
         Session {
             pile,
             discard: Deck::default(),
@@ -94,32 +94,32 @@ impl Session {
     }
     // ========================================================================
     /// fn as_pile
-    pub fn as_pile(&self) -> &Deck {
+    pub(crate) fn as_pile(&self) -> &Deck {
         &self.pile
     }
     // ========================================================================
     /// fn as_discard
-    pub fn as_discard(&self) -> &Deck {
+    pub(crate) fn as_discard(&self) -> &Deck {
         &self.discard
     }
     // ------------------------------------------------------------------------
     /// fn as_discard_mut
-    pub fn as_discard_mut(&mut self) -> &mut Deck {
+    pub(crate) fn as_discard_mut(&mut self) -> &mut Deck {
         &mut self.discard
     }
     // ========================================================================
     /// fn as_players
-    pub fn as_players(&self) -> &PlayerMap {
+    pub(crate) fn as_players(&self) -> &PlayerMap {
         &self.players
     }
     // ------------------------------------------------------------------------
     /// fn as_players_mut
-    pub fn as_players_mut(&mut self) -> &mut PlayerMap {
+    pub(crate) fn as_players_mut(&mut self) -> &mut PlayerMap {
         &mut self.players
     }
     // ========================================================================
     /// fn default_player
-    pub fn as_default_player<Q>(&self, user: &Q) -> Option<&Player>
+    pub(crate) fn as_default_player<Q>(&self, user: &Q) -> Option<&Player>
     where
         Q: Ord + ?Sized,
         Uuid: Borrow<Q>,
@@ -132,7 +132,7 @@ impl Session {
     }
     // ------------------------------------------------------------------------
     /// fn default_player_mut
-    pub fn as_default_player_mut<Q>(&mut self, user: &Q) -> Option<&mut Player>
+    pub(crate) fn as_default_player_mut<Q>(&mut self, user: &Q) -> Option<&mut Player>
     where
         Q: Ord + ?Sized,
         Uuid: Borrow<Q>,
@@ -145,7 +145,7 @@ impl Session {
     }
     // ------------------------------------------------------------------------
     /// fn insert_default_player
-    pub fn insert_default_player(
+    pub(crate) fn insert_default_player(
         &mut self,
         key: Uuid,
         val: Uuid,
@@ -154,23 +154,23 @@ impl Session {
     }
     // ========================================================================
     /// fn shuffle
-    pub fn shuffle(&mut self) {
+    pub(crate) fn shuffle(&mut self) {
         self.pile.shuffle()
     }
     // ------------------------------------------------------------------------
     /// fn tsukimachi
-    pub fn tsukimachi(&mut self) {
+    pub(crate) fn tsukimachi(&mut self) {
         self.pile.append(&mut self.discard);
         self.pile.shuffle()
     }
     // ------------------------------------------------------------------------
     /// fn draw
-    pub fn draw(&mut self) -> Option<String> {
+    pub(crate) fn draw(&mut self) -> Option<String> {
         self.pile.pop_front()
     }
     // ------------------------------------------------------------------------
     /// fn pick
-    pub fn pick(&mut self, v: &[u8]) -> Option<String> {
+    pub(crate) fn pick(&mut self, v: &[u8]) -> Option<String> {
         if let Some(x) = self.discard.pick(v) {
             Some(x)
         } else if let Some(x) = self.pile.pick(v) {
@@ -181,12 +181,12 @@ impl Session {
     }
     // ------------------------------------------------------------------------
     /// fn discard
-    pub fn discard(&mut self, c: String) {
+    pub(crate) fn discard(&mut self, c: String) {
         self.discard.push_front(c)
     }
     // ------------------------------------------------------------------------
     /// fn totop
-    pub fn totop(&mut self, c: String) {
+    pub(crate) fn totop(&mut self, c: String) {
         self.pile.push_front(c)
     }
 }
@@ -228,7 +228,7 @@ mod serialize {
     // ========================================================================
     /// struct Session
     #[derive(Debug, Clone, Serialize, Deserialize)]
-    pub struct Session<'a> {
+    pub(crate) struct Session<'a> {
         /// serdever
         serdever: i32,
         /// pile
@@ -244,14 +244,16 @@ mod serialize {
     impl<'a> Session<'a> {
         // ====================================================================
         /// into
-        pub fn into(self) -> Result<super::Session> {
+        pub(crate) fn into(self) -> Result<super::Session> {
             debug!("Session::into");
             if self.serdever < (CURRENT - AGE) || CURRENT < self.serdever {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));
             }
             Ok(super::Session {
-                pile: self.pile.map_or(Deck::default(), Cow::into_owned),
-                discard: self.discard.map_or(Deck::default(), Cow::into_owned),
+                pile: self.pile
+                    .map_or(Deck::default(), Cow::into_owned),
+                discard: self.discard
+                    .map_or(Deck::default(), Cow::into_owned),
                 players: self.players
                     .map_or(PlayerMap::default(), Cow::into_owned),
                 default_player: self.default_player

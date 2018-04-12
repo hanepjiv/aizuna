@@ -13,7 +13,7 @@
 /// enum Error
 #[allow(variant_size_differences)]
 #[derive(Debug)]
-pub enum Error {
+pub(crate) enum Error {
     /// OptionNone
     OptionNone,
     /// SetLogger
@@ -77,4 +77,4 @@ impl ::std::error::Error for Error {
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// type Result
-pub type Result<T> = ::std::result::Result<T, Error>;
+pub(crate) type Result<T> = ::std::result::Result<T, Error>;

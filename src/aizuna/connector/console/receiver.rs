@@ -17,7 +17,7 @@ use super::super::ReceiverImpl;
 // ============================================================================
 /// struct Receiver
 #[derive(Debug)]
-pub struct Receiver {
+pub(crate) struct Receiver {
     /// receiver_impl
     receiver_impl: ReceiverImpl<String, ()>,
 }
@@ -25,7 +25,7 @@ pub struct Receiver {
 impl Receiver {
     // ========================================================================
     /// new
-    pub fn new() -> Self {
+    pub(crate) fn new() -> Self {
         Receiver {
             receiver_impl: ReceiverImpl::<String, ()>::from_gen(move || {
                 /*
@@ -45,12 +45,12 @@ impl Receiver {
     }
     // ========================================================================
     /// try_recv
-    pub fn try_recv(&self) -> ::std::result::Result<String, TryRecvError> {
+    pub(crate) fn try_recv(&self) -> ::std::result::Result<String, TryRecvError> {
         self.receiver_impl.try_recv()
     }
     // ========================================================================
     /// disconnect
-    pub fn disconnect(mut self) {
+    pub(crate) fn disconnect(mut self) {
         self.receiver_impl.store_active(false);
         let _ = self.try_recv();
         // let _ = self.receiver.join();

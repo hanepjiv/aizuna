@@ -17,7 +17,7 @@ use super::Error;
 // ============================================================================
 /// enum CardSet
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub enum CardSet {
+pub(crate) enum CardSet {
     /// Basic
     Basic,
     /// Crimson
@@ -29,7 +29,7 @@ pub enum CardSet {
 impl CardSet {
     // ========================================================================
     /// as_str
-    pub fn as_str(&self) -> &str {
+    pub(crate) fn as_str(&self) -> &str {
         match *self {
             CardSet::Basic => "基本",
             CardSet::Crimson => {

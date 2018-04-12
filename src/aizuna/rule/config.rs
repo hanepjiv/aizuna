@@ -13,21 +13,21 @@
 use std::borrow::Cow;
 // ----------------------------------------------------------------------------
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use toml::Value;
 use toml::value::*;
+use toml::Value;
 // ----------------------------------------------------------------------------
 use super::{Error, Result};
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// struct Config
 #[derive(Debug, Clone)]
-pub struct Config {
+pub(crate) struct Config {
     /// enable
-    pub enable: bool,
+    pub(crate) enable: bool,
     /// prefix
-    pub prefix: String,
+    pub(crate) prefix: String,
     /// config
-    pub config: Value,
+    pub(crate) config: Value,
 }
 // ============================================================================
 impl Config {}
@@ -57,7 +57,7 @@ impl<'de> Deserialize<'de> for Config {
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// serialize
-pub mod serialize {
+pub(crate) mod serialize {
     // ////////////////////////////////////////////////////////////////////////
     // ========================================================================
     use super::*;
@@ -69,7 +69,7 @@ pub mod serialize {
     // ========================================================================
     /// struct Config
     #[derive(Debug, Clone, Serialize, Deserialize)]
-    pub struct Config<'a> {
+    pub(crate) struct Config<'a> {
         /// serdever
         serdever: i32,
         /// enable
@@ -83,7 +83,7 @@ pub mod serialize {
     impl<'a> Config<'a> {
         // ====================================================================
         /// into
-        pub fn into(self) -> Result<super::Config> {
+        pub(crate) fn into(self) -> Result<super::Config> {
             debug!("::aizuna::prefix::Config::serialize::into");
             if self.serdever < (CURRENT - AGE) || CURRENT < self.serdever {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));

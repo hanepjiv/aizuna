@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/03/14
+//  @date 2018/04/12
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -20,10 +20,10 @@ use regex::Regex;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 // ----------------------------------------------------------------------------
 use super::super::ask::ask;
-use super::{Aizuna, Driver, Error, Result};
 use super::connector::{Config as ConnectorConfig, Connector, Console, Discord};
-use super::rule::{Config as RuleConfig, RuleImpl};
 use super::rule::shinen::ShinEn;
+use super::rule::{Config as RuleConfig, RuleImpl};
+use super::{Aizuna, Driver, Error, Result};
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 const CONFIG_FILE: &str = "config.toml";
@@ -106,32 +106,32 @@ pub struct Config {
 impl Config {
     // ========================================================================
     /// fn as_greeting
-    pub fn as_greeting(&self) -> &str {
+    pub(crate) fn as_greeting(&self) -> &str {
         &self.greeting
     }
     // ========================================================================
     /// fn as_driver
-    pub fn as_driver(&self) -> &Driver {
+    pub(crate) fn as_driver(&self) -> &Driver {
         &self.driver
     }
     // ========================================================================
     /// fn as_fringe_stack_size
-    pub fn as_fringe_stack_size(&self) -> usize {
+    pub(crate) fn as_fringe_stack_size(&self) -> usize {
         self.fringe_stack_size
     }
     // ========================================================================
     /// fn as_prefix
-    pub fn as_prefix(&self) -> &str {
+    pub(crate) fn as_prefix(&self) -> &str {
         self.prefix.as_str()
     }
     // ========================================================================
     /// fn as_path_db
-    pub fn as_path_db(&self) -> &Path {
+    pub(crate) fn as_path_db(&self) -> &Path {
         &self.path_db
     }
     // ========================================================================
     /// fn as_admin
-    pub fn as_admin(&self) -> &BTreeMap<String, Vec<Regex>> {
+    pub(crate) fn as_admin(&self) -> &BTreeMap<String, Vec<Regex>> {
         &self.admin
     }
     // ========================================================================
@@ -194,7 +194,10 @@ impl Config {
     // ========================================================================
     /// aizuna
     pub fn aizuna(self) -> Result<Aizuna> {
-        info!("::aizuna::Config::aizuna: {:?}", self.path_config);
+        info!(
+            "::aizuna::Config::aizuna: {:?}",
+            self.path_config
+        );
         let mut connectors = Vec::<Box<Connector>>::default();
         for (k0, v0) in &self.connectors {
             if !v0.enable {
@@ -268,7 +271,7 @@ impl<'de> Deserialize<'de> for Config {
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// serialize
-pub mod serialize {
+mod serialize {
     // ////////////////////////////////////////////////////////////////////////
     // ========================================================================
     use super::*;
@@ -280,7 +283,7 @@ pub mod serialize {
     // ========================================================================
     /// struct Config
     #[derive(Debug, Clone, Serialize, Deserialize)]
-    pub struct Config<'a> {
+    pub(crate) struct Config<'a> {
         /// serdever
         serdever: i32,
         /// greeting
@@ -304,7 +307,7 @@ pub mod serialize {
     impl<'a> Config<'a> {
         // ====================================================================
         /// into
-        pub fn into(self) -> Result<super::Config> {
+        pub(crate) fn into(self) -> Result<super::Config> {
             debug!("::aizuna::Config::serialize::into");
             if self.serdever < (CURRENT - AGE) || CURRENT < self.serdever {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));
@@ -333,7 +336,9 @@ pub mod serialize {
                     connectors: self.connectors
                         .map(Cow::into_owned)
                         .unwrap_or_default(),
-                    rules: self.rules.map(Cow::into_owned).unwrap_or_default(),
+                    rules: self.rules
+                        .map(Cow::into_owned)
+                        .unwrap_or_default(),
                     admin: if let Some(x) = self.admin {
                         let mut ret = BTreeMap::default();
                         for (k, v) in x {

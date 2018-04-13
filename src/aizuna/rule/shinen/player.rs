@@ -195,7 +195,10 @@ impl Player {
     }
     // ------------------------------------------------------------------------
     /// fn set_player_type
-    pub(crate) fn set_player_type(&mut self, player_type: PlayerType) -> &mut Self {
+    pub(crate) fn set_player_type(
+        &mut self,
+        player_type: PlayerType,
+    ) -> &mut Self {
         self.player_type = player_type;
         self
     }

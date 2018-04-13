@@ -132,7 +132,10 @@ impl Session {
     }
     // ------------------------------------------------------------------------
     /// fn default_player_mut
-    pub(crate) fn as_default_player_mut<Q>(&mut self, user: &Q) -> Option<&mut Player>
+    pub(crate) fn as_default_player_mut<Q>(
+        &mut self,
+        user: &Q,
+    ) -> Option<&mut Player>
     where
         Q: Ord + ?Sized,
         Uuid: Borrow<Q>,

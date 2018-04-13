@@ -45,7 +45,9 @@ impl Receiver {
     }
     // ========================================================================
     /// try_recv
-    pub(crate) fn try_recv(&self) -> ::std::result::Result<String, TryRecvError> {
+    pub(crate) fn try_recv(
+        &self,
+    ) -> ::std::result::Result<String, TryRecvError> {
         self.receiver_impl.try_recv()
     }
     // ========================================================================

@@ -146,7 +146,9 @@ where
     }
     // ========================================================================
     /// fn try_recv
-    pub(crate) fn try_recv(&self) -> StdResult<T, ::std::sync::mpsc::TryRecvError> {
+    pub(crate) fn try_recv(
+        &self,
+    ) -> StdResult<T, ::std::sync::mpsc::TryRecvError> {
         self.receiver.try_recv()
     }
     // ========================================================================

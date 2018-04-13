@@ -355,7 +355,10 @@ where
     }
     // ========================================================================
     /// fn make_unique_uuid_key
-    pub(crate) fn make_unique_uuid_key<S0>(db: &mut DB, prefix: S0) -> (Uuid, String)
+    pub(crate) fn make_unique_uuid_key<S0>(
+        db: &mut DB,
+        prefix: S0,
+    ) -> (Uuid, String)
     where
         S0: Copy,
         String: ::std::convert::From<S0>,

@@ -32,7 +32,10 @@ impl MessageEAFS for DiscordMessage {
 impl DiscordMessage {
     // ========================================================================
     /// new
-    pub(crate) fn new(connector_id: String, msg: ::discord::model::Message) -> Self {
+    pub(crate) fn new(
+        connector_id: String,
+        msg: ::discord::model::Message,
+    ) -> Self {
         DiscordMessage {
             _eafsf: MessageEAFSField::default(),
             connector_id,

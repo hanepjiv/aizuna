@@ -6,14 +6,14 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/25
-//  @date 2018/04/12
+//  @date 2018/04/14
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
 pub(crate) use self::config::Config;
 pub(crate) use super::{Behavior, Command, Error, Result, SessionKind};
 // mod  =======================================================================
-pub(crate) mod config;
+mod config;
 pub(crate) mod shinen;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================

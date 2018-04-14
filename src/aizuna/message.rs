@@ -6,17 +6,18 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/10
-//  @date 2018/04/12
+//  @date 2018/04/14
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
 use std::fmt::Debug;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
+#[allow(unreachable_pub)]
 aelicit_define!(aelicit_message, Message);
-pub use self::aelicit_message::Aelicit as MessageAelicit;
-pub use self::aelicit_message::EnableAelicitFromSelf as MessageEAFS;
-pub use self::aelicit_message::EnableAelicitFromSelfField as MessageEAFSField;
+pub(crate) use self::aelicit_message::Aelicit as MessageAelicit;
+pub(crate) use self::aelicit_message::EnableAelicitFromSelf as MessageEAFS;
+pub(crate) use self::aelicit_message::EnableAelicitFromSelfField as MessageEAFSField;
 //pub(crate) use self::aelicit_message::WeakAelicit as MessageWeakAelicit;
 // ----------------------------------------------------------------------------
 /// trait Message

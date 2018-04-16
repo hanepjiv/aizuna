@@ -70,6 +70,6 @@ pub use self::format_indent::FormatIndent;
 // mod  =======================================================================
 pub mod aizuna;
 mod ask;
-pub mod error;
+mod error;
 mod format_indent;
-pub mod uuid_set;
+mod uuid_set;

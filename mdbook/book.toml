@@ -1,3 +1,5 @@
+# -*- mode:toml; coding:utf-8-unix; -*-
+
 [book]
 title           = "Aizuna"
 authors         = ["hanepjiv <hanepjiv@gmail.com>"]

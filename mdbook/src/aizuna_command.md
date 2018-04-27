@@ -339,6 +339,5 @@ Aizuna セッションを管理します。
 セッションの所有者が再び[,session invite](#session-invite)を行なえば
 セッションに再度参加できます。
 
-[Aizuna 設定]:./aizuna_config.html
-[Aizuna 設定 greeting]:./aizuna_config.html#greeting-
-[Aizuna 設定 prefix]:./aizuna_config.html#prefix-
+
+{{#include link.md}}

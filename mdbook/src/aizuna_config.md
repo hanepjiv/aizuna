@@ -92,7 +92,7 @@ serdeverは"serialize desserialize version"の略で、
 
 ----
 ##### greeting =
-[,greeting][greeting]コマンドによって、Aizunaが表示する文章です。
+[,greeting][Aizuna コマンド greeting]コマンドによって、Aizunaが表示する文章です。
 自由に書き換えて構いません。
 
 ----
@@ -187,7 +187,7 @@ token       = "DISCORD_BOT_TOKEN"
 >
 > 実運用環境ではデバックコンソールを無効にし、その他のコネクタを有効化することを推奨します。
 >
-> Aizunaは全てのコネクタが終了するまで、プロセスを終了しません。[,quit][quit]を参照してください。
+> Aizunaは全てのコネクタが終了するまで、プロセスを終了しません。[,quit][Aizuna コマンド quit]を参照してください。
 
 ----
 ##### [connectors.{識別名}.config]
@@ -257,14 +257,10 @@ console     = [".*"]
 discord-00  = ["DISCORD_USER_ID_00", "DISCORD_USER_ID_01"]
 ```
 
-管理者を設定していないコネクタは、[,quit][quit]を使用できません。
+管理者を設定していないコネクタは、[,quit][Aizuna コマンド quit]を使用できません。
 その場合、Aizunaプロセスを強制終了させなくてはいけないことに注意してください。
 タイミングによってはデータベースに書き込みが完了していないデータが消失してしまう可能性があります。
 **管理者権限を与えるユーザを必ず設定してください**。
 
-[Aizuna コマンド]:./aizuna_command.html
-[quit]:./aizuna_command.html#quit--q
-[greeting]:./aizuna_command.html#greeting
-[Aizuna スレッドとコルーチン]:./aizuna_thread.html
-[Discord 設定]:./discord.html#設定
-[ShinEn 設定]:./shinen_config.html
+
+{{#include link.md}}

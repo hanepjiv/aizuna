@@ -20,7 +20,7 @@ rustup install nightly
 * B. ソースコードからインストール
 
 ##### A.GitHub から直接インストール
-GitHubの[repository][repository]から直接インストールします。
+GitHubの[repository][Aizuna repository]から直接インストールします。
 
 ```shell
 rustup run nightly cargo install --git https://github.com/hanepjiv/aizuna.git
@@ -29,7 +29,7 @@ rustup run nightly cargo install --git https://github.com/hanepjiv/aizuna.git
 nightly toolchain を指定するため `rustup run nightly` が必要です。
 
 ##### B.ソースコードからインストール
-GitHubの[repository][repository]からソースコードを入手します。
+GitHubの[repository][Aizuna repository]からソースコードを入手します。
 
 ```shell
 git clone https://github.com/hanepjiv/aizuna.git
@@ -126,11 +126,5 @@ Console: Exit
 
 その他のコマンドの詳説は[Aizuna コマンド][Aizuna コマンド]を参照してください。
 
-[repository]:https://github.com/hanepjiv/aizuna.git
-[Rust]:https://www.rust-lang.org
-[Aizuna 用語]:./aizuna_term.html
-[Aizuna セッション]:./aizuna_term.html#セッション
-[Aizuna ユーザ]:./aizuna_term.html#ユーザ
-[Aizuna 設定]:./aizuna_config.html
-[Aizuna 設定 - コネクタ]:./aizuna_config.html#コネクタ
-[Aizuna コマンド]:./aizuna_command.html
+
+{{#include link.md}}

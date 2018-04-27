@@ -145,7 +145,7 @@ Aizunaでは重複が無い様にランダムに決定されており、MACア�
 <p>Aizunaはチャット機能を他のサービスに依存しています。
 他のサービスとの連携を司る機能をコネクタと呼びます。</p>
 <p><strong>デフォルトではデバッグ用のコンソール入出力のみと接続します</strong>。</p>
-<p>詳しくは、<a href="./aizuna_config.html#%E3%82%B3%E3%83%8D%E3%82%AF%E3%82%BF">Aizuna 設定 - コネクタ</a>を参照してください。</p>
+<p>詳しくは、<a href="./aizuna_config.html#a%E3%82%B3%E3%83%8D%E3%82%AF%E3%82%BF">Aizuna 設定 コネクタ</a>を参照してください。</p>
 <a class="header" href="aizuna_term.html#aユーザ" id="aユーザ"><h4>ユーザ</h4></a>
 <p>ユーザとは下記の情報を保持する構造を差します。</p>
 <ul>
@@ -156,7 +156,7 @@ Aizunaでは重複が無い様にランダムに決定されており、MACア�
 Aizunaにコマンドを送ると自動的にユーザが作成されます。</p>
 <p>ユーザはUuidで区別され、コネクタから自動的に参照されたユーザ名を持ちます。</p>
 <p>ユーザはコネクタ毎に分断されており、別のコネクタからの接続は別のユーザとして認識されます。</p>
-<p>ユーザの情報は<a href="./aizuna_command.html#user">,user</a>によって表示されます。</p>
+<p>ユーザの情報は<a href="./aizuna_command.html#user-u">,user</a>によって表示されます。</p>
 <a class="header" href="aizuna_term.html#aセッション" id="aセッション"><h4>セッション</h4></a>
 <p>セッションとは下記の情報を保持する構造を差します。</p>
 <ul>
@@ -173,7 +173,7 @@ Aizunaにコマンドを送ると自動的にユーザが作成されます。</
 <p>ユーザは<a href="./aizuna_command.html#session-new">,session new</a> によってセッションを自由に複数作成できます。</p>
 <a class="header" href="aizuna_term.html#aユーザの現在のセッション" id="aユーザの現在のセッション"><h5>ユーザの現在のセッション</h5></a>
 <p>ユーザの現在のセッションとは、一部のコマンドにおいて、暗黙の内に操作対象となるセッションを差します。</p>
-<p>ユーザの現在のセッションは <a href="./aizuna_command.html#session-default">,session list</a> で <strong>*</strong> で表示され、
+<p>ユーザの現在のセッションは <a href="./aizuna_command.html#session-list">,session list</a> で <strong>*</strong> で表示され、
 <a href="./aizuna_command.html#session-default">,session default</a> によって変更できます。</p>
 <a class="header" href="aizuna_term.html#send--whisper" id="send--whisper"><h4>Send / Whisper</h4></a>
 <p>Aizunaからの応答はコマンドを打ち込んだチャットに送られる Send と

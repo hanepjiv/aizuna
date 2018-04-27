@@ -42,12 +42,12 @@ Aizunaがlibfringeを利用してコルーチンで動作するように、設�
 
 ```
 # aizuna v0.1.0
-serdever        = 0
-greeting        = "aizuna v0.1.0"
-driver          = "Fringe"
+serdever    = 0
+greeting    = "aizuna v0.1.0"
+driver      = "Fringe"
 fringe_stack_size   = 1048576
-path_db         = "./db"
-prefix          = ","
+path_db     = "./db"
+prefix      = ","
 ```
 
 `driver = "Thread"` を `driver = "Fringe"` に書き換えます。
@@ -75,8 +75,5 @@ Console: Gen
 
 `Spawn` の代わりに `Gen` が表示されれば `"Fringe"` による起動に成功しています。
 
-[libfringe]:https://github.com/edef1c/libfringe
-[Aizuna 設定]:./aizuna_config.html
-[Aizuna 設定 設定ファイル]:./aizuna_config.html#設定ファイル
-[Aizuna 設定 設定ファイル driver =]:./aizuna_config.html#driver-
-[Aizuna 設定 設定ファイル fringe_stack_size =]:./aizuna_config.html#fringe_stack_size-
+
+{{#include link.md}}

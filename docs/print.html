@@ -286,7 +286,7 @@ Aizunaでは重複が無い様にランダムに決定されており、MACア�
 <p>Aizunaはチャット機能を他のサービスに依存しています。
 他のサービスとの連携を司る機能をコネクタと呼びます。</p>
 <p><strong>デフォルトではデバッグ用のコンソール入出力のみと接続します</strong>。</p>
-<p>詳しくは、<a href="./aizuna_config.html#%E3%82%B3%E3%83%8D%E3%82%AF%E3%82%BF">Aizuna 設定 - コネクタ</a>を参照してください。</p>
+<p>詳しくは、<a href="./aizuna_config.html#a%E3%82%B3%E3%83%8D%E3%82%AF%E3%82%BF">Aizuna 設定 コネクタ</a>を参照してください。</p>
 <a class="header" href="print.html#aユーザ" id="aユーザ"><h4>ユーザ</h4></a>
 <p>ユーザとは下記の情報を保持する構造を差します。</p>
 <ul>
@@ -297,7 +297,7 @@ Aizunaでは重複が無い様にランダムに決定されており、MACア�
 Aizunaにコマンドを送ると自動的にユーザが作成されます。</p>
 <p>ユーザはUuidで区別され、コネクタから自動的に参照されたユーザ名を持ちます。</p>
 <p>ユーザはコネクタ毎に分断されており、別のコネクタからの接続は別のユーザとして認識されます。</p>
-<p>ユーザの情報は<a href="./aizuna_command.html#user">,user</a>によって表示されます。</p>
+<p>ユーザの情報は<a href="./aizuna_command.html#user-u">,user</a>によって表示されます。</p>
 <a class="header" href="print.html#aセッション" id="aセッション"><h4>セッション</h4></a>
 <p>セッションとは下記の情報を保持する構造を差します。</p>
 <ul>
@@ -314,7 +314,7 @@ Aizunaにコマンドを送ると自動的にユーザが作成されます。</
 <p>ユーザは<a href="./aizuna_command.html#session-new">,session new</a> によってセッションを自由に複数作成できます。</p>
 <a class="header" href="print.html#aユーザの現在のセッション" id="aユーザの現在のセッション"><h5>ユーザの現在のセッション</h5></a>
 <p>ユーザの現在のセッションとは、一部のコマンドにおいて、暗黙の内に操作対象となるセッションを差します。</p>
-<p>ユーザの現在のセッションは <a href="./aizuna_command.html#session-default">,session list</a> で <strong>*</strong> で表示され、
+<p>ユーザの現在のセッションは <a href="./aizuna_command.html#session-list">,session list</a> で <strong>*</strong> で表示され、
 <a href="./aizuna_command.html#session-default">,session default</a> によって変更できます。</p>
 <a class="header" href="print.html#send--whisper" id="send--whisper"><h4>Send / Whisper</h4></a>
 <p>Aizunaからの応答はコマンドを打ち込んだチャットに送られる Send と
@@ -467,7 +467,7 @@ token       = &quot;DISCORD_BOT_TOKEN&quot;
 <a class="header" href="print.html#connectors識別名config" id="connectors識別名config"><h5>[connectors.{識別名}.config]</h5></a>
 <p>コネクタによっては追加の設定が必要となります。</p>
 <a class="header" href="print.html#discord" id="discord"><h6>&quot;discord&quot;</h6></a>
-<p><a href="./discord.html#%E8%A8%AD%E5%AE%9A">Discord 設定</a>を参照してください。</p>
+<p><a href="./discord.html">Discord 設定</a>を参照してください。</p>
 <a class="header" href="print.html#rules" id="rules"><h4>[rules]</h4></a>
 <p>Aizunaで使用するゲームのルールを設定します。</p>
 <p>ルールは識別名で区別されます。
@@ -770,12 +770,12 @@ maches[1] をサイコロの数 n 、 maches[2] をサイコロの種類 m と�
 <a class="header" href="print.html#a設定ファイル-1" id="a設定ファイル-1"><h5>設定ファイル</h5></a>
 <p>Aizunaがlibfringeを利用してコルーチンで動作するように、設定ファイルを書き換えてください。</p>
 <pre><code># aizuna v0.1.0
-serdever        = 0
-greeting        = &quot;aizuna v0.1.0&quot;
-driver          = &quot;Fringe&quot;
+serdever    = 0
+greeting    = &quot;aizuna v0.1.0&quot;
+driver      = &quot;Fringe&quot;
 fringe_stack_size   = 1048576
-path_db         = &quot;./db&quot;
-prefix          = &quot;,&quot;
+path_db     = &quot;./db&quot;
+prefix      = &quot;,&quot;
 </code></pre>
 <p><code>driver = &quot;Thread&quot;</code> を <code>driver = &quot;Fringe&quot;</code> に書き換えます。</p>
 <p><a href="./aizuna_config.html#driver-">Aizuna 設定 driver =</a>と
@@ -802,12 +802,12 @@ Console: Gen
 <p>ルートフォルダに存在する<code>config.toml</code>に設定を記述する必要があります。</p>
 <p>詳説は<a href="./aizuna_config.html#connectors">Aizuna 設定 connectors</a>を参照してください。</p>
 <pre><code>[connectors.discord-00]
-serdever        = 0
-enable          = false
-connector       = &quot;discord&quot;
+serdever    = 0
+enable      = false
+connector   = &quot;discord&quot;
 [connectors.discord-00.config]
-serdever        = 0
-token           = &quot;DISCORD_BOT_TOKEN&quot;
+serdever    = 0
+token       = &quot;DISCORD_BOT_TOKEN&quot;
 </code></pre>
 <a class="header" href="print.html#connector識別名config" id="connector識別名config"><h4>[connector.{識別名}.config]</h4></a>
 <hr />
@@ -843,9 +843,9 @@ token           = &quot;DISCORD_BOT_TOKEN&quot;
 <li>参加ユーザの現在のプレイヤー</li>
 </ul>
 <p>項目の一部は<a href="./shinen_command.html">ShinEn コマンド</a>によって、変更できます。</p>
-<p>ShinEn セッションは<a href="./aizuna_term.html#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">Aizuna セッション</a>の構造の一部として扱われます。
+<p>ShinEn セッションは<a href="./aizuna_term.html#a%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">Aizuna セッション</a>の構造の一部として扱われます。
 よって所有者やメンバーやタイトル等を
-<a href="./aizuna_term.html#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">Aizuna セッション</a>の機能によって変更できます。</p>
+<a href="./aizuna_term.html#a%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">Aizuna セッション</a>の機能によって変更できます。</p>
 <a class="header" href="print.html#aプレイヤー" id="aプレイヤー"><h4>プレイヤー</h4></a>
 <p>プレイヤーとは下記の情報を保持する構造を差します。</p>
 <ul>
@@ -856,7 +856,7 @@ token           = &quot;DISCORD_BOT_TOKEN&quot;
 </ul>
 <p>項目の一部は<a href="./shinen_command.html">ShinEn コマンド</a>によって、変更できます。</p>
 <p><a href="./shinen_term.html#shinen%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3">ShinEn セッション</a>は複数のプレイヤーを保持します。</p>
-<p><a href="./aizuna_term.html#%E3%83%A6%E3%83%BC%E3%82%B6">Aizuna ユーザ</a>はセッション内で複数のプレイヤーを所持することができます。</p>
+<p><a href="./aizuna_term.html#a%E3%83%A6%E3%83%BC%E3%82%B6">Aizuna ユーザ</a>はセッション内で複数のプレイヤーを所持することができます。</p>
 <a class="header" href="print.html#aユーザの現在のプレイヤー" id="aユーザの現在のプレイヤー"><h5>ユーザの現在のプレイヤー</h5></a>
 <p>ユーザの現在のプレイヤーとは、一部のコマンドにおいて、暗黙の内に操作対象となるプレイヤーを差します。</p>
 <p><a href="./shinen_command.html#player-default">,,player default</a> によって変更できます。</p>

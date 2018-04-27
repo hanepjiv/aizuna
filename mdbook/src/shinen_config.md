@@ -101,4 +101,4 @@ destiny = 95
 運命番号を示す数値です。
 
 
-[Aizuna 設定 ルートディレクトリ]:./aizuna_config.html#aizuna-ルートディレクトリ
+{{#include link.md}}

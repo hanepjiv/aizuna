@@ -60,8 +60,4 @@ Aizuna 0.1 では 下記の接続で動作します。
 を参照してください。
 
 
-[Rust]:https://www.rust-lang.org
-[Discord]:https://discordapp.com/
-[Aizuna 設定]:./aizuna_config.html
-[Aizuna 設定 - コネクタ]:./aizuna_config.html#コネクタ
-[Aizuna コマンド]:./aizuna_command.html
+{{#include link.md}}

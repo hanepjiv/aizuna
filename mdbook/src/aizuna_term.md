@@ -15,7 +15,7 @@ Aizunaはチャット機能を他のサービスに依存しています。
 
 **デフォルトではデバッグ用のコンソール入出力のみと接続します**。
 
-詳しくは、[Aizuna 設定 - コネクタ][Aizuna 設定 - コネクタ]を参照してください。
+詳しくは、[Aizuna 設定 コネクタ][Aizuna 設定 コネクタ]を参照してください。
 
 #### ユーザ
 ユーザとは下記の情報を保持する構造を差します。
@@ -30,7 +30,7 @@ Aizunaにコマンドを送ると自動的にユーザが作成されます。
 
 ユーザはコネクタ毎に分断されており、別のコネクタからの接続は別のユーザとして認識されます。
 
-ユーザの情報は[,user][user]によって表示されます。
+ユーザの情報は[,user][Aizuna コマンド user]によって表示されます。
 
 #### セッション
 セッションとは下記の情報を保持する構造を差します。
@@ -48,13 +48,13 @@ Aizunaは複数のユーザの集まりをセッションとして、個別に�
 セッションはコネクタ毎に分断されており、
 同じコネクタで接続しているユーザ同士のみがセッションを共有できます。
 
-ユーザは[,session new][session-new] によってセッションを自由に複数作成できます。
+ユーザは[,session new][Aizuna コマンド session-new] によってセッションを自由に複数作成できます。
 
 ##### ユーザの現在のセッション
 ユーザの現在のセッションとは、一部のコマンドにおいて、暗黙の内に操作対象となるセッションを差します。
 
-ユーザの現在のセッションは [,session list][session-default] で __*__ で表示され、
-[,session default][session-default] によって変更できます。
+ユーザの現在のセッションは [,session list][Aizuna コマンド session-list] で __*__ で表示され、
+[,session default][Aizuna コマンド session-default] によって変更できます。
 
 #### Send / Whisper
 Aizunaからの応答はコマンドを打ち込んだチャットに送られる Send と
@@ -62,9 +62,5 @@ Aizunaからの応答はコマンドを打ち込んだチャットに送られ�
 
 Send は同じチャット内にいる他のユーザにも表示されます。
 
-[Discord]:https://discordapp.com/
-[Aizuna 設定]:./aizuna_config.html
-[Aizuna 設定 - コネクタ]:./aizuna_config.html#コネクタ
-[user]:./aizuna_command.html#user
-[session-new]:./aizuna_command.html#session-new
-[session-default]:./aizuna_command.html#session-default
+
+{{#include link.md}}

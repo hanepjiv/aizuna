@@ -338,6 +338,5 @@ Player / GameMaster の違いで機能が制限される等の相違はありま
 
 [,,player list](#player-list)を参照してください。
 
-[Aizuna 設定]:./aizuna_config.html
-[Aizuna コマンド]:./aizuna_command.html
-[ShinEn 設定]:./shinen_config.html
+
+{{#include link.md}}

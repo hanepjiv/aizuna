@@ -6,10 +6,12 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/04/12
+//  @date 2018/04/28
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
+use std::any::Any as StdAny;
+// ----------------------------------------------------------------------------
 #[cfg(feature = "coroutine")]
 use std::collections::BTreeSet;
 use std::thread::JoinHandle;
@@ -61,7 +63,7 @@ impl ConsoleMessage {
 // ============================================================================
 impl Message for ConsoleMessage {
     // ========================================================================
-    fn as_any(&self) -> &::std::any::Any {
+    fn as_any(&self) -> &dyn StdAny {
         &self.msg
     }
     // ========================================================================
@@ -141,7 +143,7 @@ impl Console {
         if s.is_empty() {
             return Responce::Yield;
         }
-        if let Err(x) = msg.with(|x: &Message| {
+        if let Err(x) = msg.with(|x: &dyn Message| {
             x.as_any()
                 .downcast_ref::<String>()
                 .ok_or(Error::Downcast(String::from(

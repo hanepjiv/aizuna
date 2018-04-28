@@ -6,8 +6,11 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/30
-//  @date 2017/12/31
+//  @date 2018/04/28
 
+// ////////////////////////////////////////////////////////////////////////////
+// ============================================================================
+use std::error::Error as StdError;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// enum Error
@@ -65,7 +68,7 @@ impl ::std::error::Error for Error {
         }
     }
     // ========================================================================
-    fn cause(&self) -> Option<&::std::error::Error> {
+    fn cause(&self) -> Option<&dyn StdError> {
         match *self {
             Error::OptionNone => None,
             Error::SetLogger(ref e) => Some(e),

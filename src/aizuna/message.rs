@@ -6,10 +6,11 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/10
-//  @date 2018/04/14
+//  @date 2018/04/28
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
+use std::any::Any as StdAny;
 use std::fmt::Debug;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
@@ -24,7 +25,7 @@ pub(crate) use self::aelicit_message::EnableAelicitFromSelfField as MessageEAFSF
 pub trait Message: Debug + Send + Sync + MessageEAFS {
     // ========================================================================
     /// as_any
-    fn as_any(&self) -> &::std::any::Any;
+    fn as_any(&self) -> &dyn StdAny;
     // ========================================================================
     /// as_connector_type
     fn as_connector_type(&self) -> &str;

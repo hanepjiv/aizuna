@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/09
-//  @date 2018/04/12
+//  @date 2018/04/28
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -36,7 +36,7 @@ where
     /// db
     pub(crate) db: &'a mut DB,
     /// msg
-    pub(crate) msg: &'a Message,
+    pub(crate) msg: &'a dyn Message,
     /// inputs
     pub(crate) inputs: &'a mut Vec<String>,
     /// user
@@ -214,7 +214,7 @@ where
     }
     // ========================================================================
     /// fn is_admin
-    fn is_admin(config: &Config, msg: &Message) -> bool {
+    fn is_admin(config: &Config, msg: &dyn Message) -> bool {
         if let Some(x) = config.as_admin().get(msg.as_connector_id()) {
             for re in x.iter() {
                 if re.is_match(msg.as_author_id()) {
@@ -229,7 +229,7 @@ where
     fn new_user(
         config: &Config,
         db: &mut DB,
-        msg: &'a Message,
+        msg: &'a dyn Message,
         key_user_uuid: &str,
         key_user: &str,
         user_uuid: &Uuid,
@@ -302,7 +302,7 @@ where
         label: S0,
         config: &Config,
         db: &mut DB,
-        msg: &'a Message,
+        msg: &'a dyn Message,
     ) -> Result<User<'a>>
     where
         S0: AsRef<str>,
@@ -382,7 +382,7 @@ where
         rules: &mut BTreeMap<String, RuleImpl>,
         dice: &Dice,
         db: &mut DB,
-        msg: &'a Message,
+        msg: &'a dyn Message,
     ) -> Result<Option<Command>> {
         let label = "Aizuna: ";
 
@@ -412,7 +412,7 @@ where
     /// fn new
     fn new(
         db: &'a mut DB,
-        msg: &'a Message,
+        msg: &'a dyn Message,
         inputs: &'a mut Vec<String>,
         user: &'a User<'b>,
     ) -> Self {

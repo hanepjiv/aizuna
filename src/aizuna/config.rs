@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/04/12
+//  @date 2018/04/28
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -198,7 +198,7 @@ impl Config {
             "::aizuna::Config::aizuna: {:?}",
             self.path_config
         );
-        let mut connectors = Vec::<Box<Connector>>::default();
+        let mut connectors = Vec::<Box<dyn Connector>>::default();
         for (k0, v0) in &self.connectors {
             if !v0.enable {
                 continue;

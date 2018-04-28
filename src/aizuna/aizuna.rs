@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/04/12
+//  @date 2018/04/28
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -49,7 +49,7 @@ pub struct Aizuna {
     /// config
     config: Config,
     /// connectors
-    connectors: Vec<Box<Connector>>,
+    connectors: Vec<Box<dyn Connector>>,
     /// rules
     rules: BTreeMap<String, RuleImpl>,
     /// dice
@@ -82,7 +82,7 @@ impl Aizuna {
         rules: IR,
     ) -> Result<Self>
     where
-        IC: IntoIterator<Item = Box<Connector>>,
+        IC: IntoIterator<Item = Box<dyn Connector>>,
         IR: IntoIterator<Item = (String, RuleImpl)>,
     {
         info!("Aizuna::new");
@@ -156,7 +156,7 @@ impl Aizuna {
         message: &MessageAelicit,
     ) -> Result<Option<Command>> {
         message.with(
-            move |msg: &Message| -> Result<Option<Command>> {
+            move |msg: &dyn Message| -> Result<Option<Command>> {
                 Behavior::on_msg(
                     &self.config,
                     &mut self.rules,

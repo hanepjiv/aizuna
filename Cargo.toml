@@ -33,9 +33,15 @@ serde_derive            = { default-features = false, version = "^1.0" }
 serde_json              = { default-features = false, version = "^1.0" }
 toml                    = { default-features = false, version = "^0.4" }
 # -----------------------------------------------------------------------------
-#elicit                  = { default-features = false, git = "https://github.com/hanepjiv/elicit-rs.git" }
-#elicit                  = { default-features = false, path = "../../elicit-rs/orig" }
-elicit                  = { default-features = false, version = "^0.7" }
+[dependencies.elicit]
+default-features        = false
+# __
+git                     = "https://github.com/hanepjiv/elicit-rs.git"
+branch                  = "dyn-trait"
+# __
+#path                    = "../../elicit-rs/orig"
+# __
+#version                 = "^0.7"
 # -----------------------------------------------------------------------------
 [dependencies.chrono]
 default-features        = false

@@ -26,7 +26,7 @@ env_logger              = { default-features = false, version = "^0.5" }
 getopts                 = { default-features = false, version = "^0.2" }
 log                     = { default-features = false, version = "^0.4" }
 rand                    = { default-features =  true, version = "^0.4" }
-regex                   = { default-features = false, version = "^0.2" }
+regex                   = { default-features =  true, version = "^1.0" }
 rusty-leveldb           = { default-features = false, version = "^0.2" }
 serde                   = { default-features = false, version = "^1.0" }
 serde_derive            = { default-features = false, version = "^1.0" }

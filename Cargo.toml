@@ -57,12 +57,3 @@ optional                = true
 default-features        = false
 version                 = "^0.6"
 features                = ["v4", "serde"]
-# =============================================================================
-[[bin]]
-name                    = "aizuna"
-test                    = true
-doctest                 = true
-bench                   = false
-doc                     = false
-plugin                  = false
-harness                 = true

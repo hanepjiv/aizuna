@@ -37,7 +37,7 @@ toml                    = { default-features = false, version = "^0.4" }
 default-features        = false
 # __
 git                     = "https://github.com/hanepjiv/elicit-rs.git"
-branch                  = "dyn-trait"
+branch                  = "nightly"
 # __
 #path                    = "../../elicit-rs/orig"
 # __

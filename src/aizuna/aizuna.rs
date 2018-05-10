@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/04/28
+//  @date 2018/05/10
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -155,17 +155,15 @@ impl Aizuna {
         &mut self,
         message: &MessageAelicit,
     ) -> Result<Option<Command>> {
-        message.with(
-            move |msg: &dyn Message| -> Result<Option<Command>> {
-                Behavior::on_msg(
-                    &self.config,
-                    &mut self.rules,
-                    &self.dice,
-                    &mut self.db,
-                    msg,
-                )
-            },
-        )
+        message.with(move |msg: &dyn Message| -> Result<Option<Command>> {
+            Behavior::on_msg(
+                &self.config,
+                &mut self.rules,
+                &self.dice,
+                &mut self.db,
+                msg,
+            )
+        })
     }
     // ========================================================================
     #[cfg(feature = "coroutine-fringe")]

@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/06
-//  @date 2018/05/04
+//  @date 2018/05/11
 
 // ////////////////////////////////////////////////////////////////////////////
 // attribute  =================================================================
@@ -145,7 +145,8 @@ Usage:
     );
 }
 // ============================================================================
-fn app() -> Result<()> {
+fn main() -> Result<()> {
+    env_logger::init();
     let args: Vec<String> = env::args().collect();
     let mut opts = ::getopts::Options::new();
     let _ = opts.optflag("v", "version", "print version")
@@ -163,25 +164,15 @@ fn app() -> Result<()> {
     if matches.opt_present("h") {
         return Ok(print_usage(&opts));
     }
-    let path_root = matches
-        .opt_str("R")
-        .map(PathBuf::from)
-        .unwrap_or({
-            let mut ret = env::home_dir()?;
-            ret.push(".config");
-            ret.push("aizuna");
-            ret
-        });
+    let path_root = matches.opt_str("R").map(PathBuf::from).unwrap_or({
+        let mut ret = env::home_dir()?;
+        ret.push(".config");
+        ret.push("aizuna");
+        ret
+    });
     Ok(match Config::new(path_root) {
         Err(aizuna::Error::NoConfig) => (),
         x @ Err(_) => x.map(|_| ())?,
         Ok(x) => x.aizuna()?.drive()?,
     })
-}
-// ============================================================================
-fn main() {
-    env_logger::init();
-    if let Err(x) = app() {
-        eprintln!("{}", x);
-    }
 }

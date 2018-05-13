@@ -22,30 +22,9 @@ use super::super::{Connector, ResSen};
 use super::{Config, DiscordMessage, Error, Result};
 // ----------------------------------------------------------------------------
 #[cfg(feature = "coroutine-fringe")]
-#[cfg(feature = "coroutine-fringe")]
-#[cfg(feature = "coroutine-fringe")]
-#[cfg(feature = "coroutine-fringe")]
-#[cfg(feature = "coroutine-fringe")]
-#[cfg(feature = "coroutine-fringe")]
-#[cfg(feature = "coroutine-fringe")]
-#[cfg(feature = "coroutine-fringe")]
 use super::super::Generator;
 #[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
 use super::receiver::Receiver;
-#[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
-#[cfg(feature = "coroutine")]
 #[cfg(feature = "coroutine")]
 use std::sync::mpsc::TryRecvError;
 // ////////////////////////////////////////////////////////////////////////////

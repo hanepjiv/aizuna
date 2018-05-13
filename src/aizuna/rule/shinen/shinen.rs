@@ -6,20 +6,22 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/25
-//  @date 2018/04/12
+//  @date 2018/05/13
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
-use std::path::Path;
-use std::result::Result as StdResult;
+use std::{path::Path, result::Result as StdResult};
 // ----------------------------------------------------------------------------
 use rusty_leveldb::WriteBatch;
 use toml::Value;
 use uuid::Uuid;
 // ----------------------------------------------------------------------------
-use super::super::super::{Behavior, Command, SessionKind};
-use super::super::Rule;
-use super::{CardMap, Config, Deck, Hand, Player, PlayerType, Result, Session};
+use super::{
+    super::{
+        super::{Behavior, Command, SessionKind}, Rule,
+    },
+    CardMap, Config, Deck, Hand, Player, PlayerType, Result, Session,
+};
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// struct ShinEn
@@ -74,14 +76,9 @@ impl Rule for ShinEn {
     // ========================================================================
     fn new_session_kind(&mut self) -> Result<SessionKind> {
         use rand::{thread_rng, Rng};
-        let mut pile = self.cards
-            .keys()
-            .cloned()
-            .collect::<Vec<String>>();
+        let mut pile = self.cards.keys().cloned().collect::<Vec<String>>();
         thread_rng().shuffle(&mut pile[..]);
-        Ok(SessionKind::ShinEn(Session::new(Deck::from(
-            pile,
-        ))))
+        Ok(SessionKind::ShinEn(Session::new(Deck::from(pile))))
     }
 }
 // ============================================================================
@@ -136,13 +133,13 @@ impl ShinEn {
             return Ok(bhv.whisper(format!("{}empty args.", label)));
         }
 
-        Ok(bhv.send(
-            if let Some(card) = self.cards.get(&bhv.inputs[1]) {
+        Ok(
+            bhv.send(if let Some(card) = self.cards.get(&bhv.inputs[1]) {
                 card.pretty()
             } else {
                 format!("{}card not found {}.", label, bhv.inputs[1])
-            },
-        ))
+            }),
+        )
     }
     // ========================================================================
     fn on_session(&self, bhv: &mut Behavior) -> Result<Command> {
@@ -193,10 +190,7 @@ impl ShinEn {
         }
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         Ok(bhv.session_whisper(&label, &session, format!("{}", label)))
@@ -235,10 +229,7 @@ impl ShinEn {
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         Ok(bhv.session_whisper(&label, &session, s))
@@ -264,15 +255,12 @@ impl ShinEn {
         }
     }
     // ========================================================================
-    fn default_player<'a, S0>(
+    fn default_player<'a>(
         &self,
         bhv: &mut Behavior,
-        label: S0,
+        label: impl AsRef<str>,
         shinen_session: &'a Session,
-    ) -> StdResult<&'a Player, Result<Command>>
-    where
-        S0: AsRef<str>,
-    {
+    ) -> StdResult<&'a Player, Result<Command>> {
         shinen_session
             .as_default_player(bhv.user.as_uuid())
             .ok_or_else(|| {
@@ -283,15 +271,12 @@ impl ShinEn {
             })
     }
     // ------------------------------------------------------------------------
-    fn default_player_mut<'a, S0>(
+    fn default_player_mut<'a>(
         &self,
         bhv: &mut Behavior,
-        label: S0,
+        label: impl AsRef<str>,
         shinen_session: &'a mut Session,
-    ) -> StdResult<&'a mut Player, Result<Command>>
-    where
-        S0: AsRef<str>,
-    {
+    ) -> StdResult<&'a mut Player, Result<Command>> {
         shinen_session
             .as_default_player_mut(bhv.user.as_uuid())
             .ok_or_else(|| {
@@ -301,28 +286,21 @@ impl ShinEn {
             })
     }
     // ========================================================================
-    fn parse_player_uuid_str<'a, S0, S1>(
+    fn parse_player_uuid_str<'a>(
         &self,
         bhv: &mut Behavior,
-        label: S0,
+        label: impl AsRef<str>,
         shinen_session: &'a Session,
-        uuid_str: S1,
-    ) -> StdResult<&'a Player, Result<Command>>
-    where
-        S0: AsRef<str>,
-        S1: AsRef<str>,
-    {
+        uuid_str: impl AsRef<str>,
+    ) -> StdResult<&'a Player, Result<Command>> {
         if let Ok(uuid) = Uuid::parse_str(uuid_str.as_ref()) {
-            match shinen_session
-                .as_players()
-                .get(&uuid)
-                .ok_or_else(|| {
-                    Ok(bhv.whisper(format!(
-                        "{}player not found {}.",
-                        label.as_ref(),
-                        uuid
-                    )))
-                }) {
+            match shinen_session.as_players().get(&uuid).ok_or_else(|| {
+                Ok(bhv.whisper(format!(
+                    "{}player not found {}.",
+                    label.as_ref(),
+                    uuid
+                )))
+            }) {
                 x @ Err(_) => return x,
                 Ok(x) => Ok(x),
             }
@@ -360,8 +338,8 @@ impl ShinEn {
             return Ok(bhv.whisper(format!("{}Inner Error.", label)));
         };
 
-        let current_player = self.default_player(bhv, &label, shinen_session)
-            .ok();
+        let current_player =
+            self.default_player(bhv, &label, shinen_session).ok();
 
         let mut ret = String::from(label);
         for (k, v) in shinen_session.as_players().iter() {
@@ -459,16 +437,15 @@ impl ShinEn {
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
-        Ok(bhv.whisper(format!(
-            "{}{} ({}).",
-            label, player_name, player_uuid
-        )))
+        Ok(
+            bhv.whisper(format!(
+                "{}{} ({}).",
+                label, player_name, player_uuid
+            )),
+        )
     }
     // ========================================================================
     fn on_player_new(&self, bhv: &mut Behavior) -> Result<Command> {
@@ -534,10 +511,7 @@ impl ShinEn {
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         Ok(bhv.send(format!("{}{}.", label, player_uuid,)))
@@ -599,21 +573,14 @@ impl ShinEn {
                 )
             };
 
-            shinen_session
-                .as_discard_mut()
-                .append(&mut hand);
-            let _ = shinen_session
-                .as_players_mut()
-                .remove(&player_uuid);
+            shinen_session.as_discard_mut().append(&mut hand);
+            let _ = shinen_session.as_players_mut().remove(&player_uuid);
 
             (player_name, player_uuid)
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         Ok(bhv.session_whisper(
@@ -686,9 +653,8 @@ impl ShinEn {
                     return Ok(bhv.whisper(format!("{}Inner Error.", label)));
                 };
 
-            let player = if let Some(x) = shinen_session
-                .as_players_mut()
-                .get_mut(&player_uuid)
+            let player = if let Some(x) =
+                shinen_session.as_players_mut().get_mut(&player_uuid)
             {
                 x
             } else {
@@ -711,10 +677,7 @@ impl ShinEn {
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         Ok(bhv.session_whisper(
@@ -774,18 +737,11 @@ impl ShinEn {
             let prev_name = String::from(player.as_name());
             let _ = player.set_name(matches.free[1].as_str());
 
-            (
-                prev_name,
-                String::from(player.as_name()),
-                *player.as_uuid(),
-            )
+            (prev_name, String::from(player.as_name()), *player.as_uuid())
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         Ok(bhv.session_whisper(
@@ -857,10 +813,7 @@ impl ShinEn {
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         Ok(bhv.session_whisper(
@@ -906,16 +859,12 @@ impl ShinEn {
         )))
     }
     // ========================================================================
-    fn choice_hand<'a, S, S0>(
+    fn choice_hand<'a>(
         bhv: &mut Behavior,
-        label: S,
+        label: impl AsRef<str>,
         hand: &'a Hand,
-        num_str: S0,
-    ) -> StdResult<(usize, &'a String), Result<Command>>
-    where
-        S: AsRef<str>,
-        S0: AsRef<str>,
-    {
+        num_str: impl AsRef<str>,
+    ) -> StdResult<(usize, &'a String), Result<Command>> {
         let n = if let Ok(x) = num_str.as_ref().parse::<usize>() {
             x
         } else {
@@ -1013,11 +962,7 @@ impl ShinEn {
                 card.pretty()
             };
 
-            (
-                String::from(player.as_name()),
-                *player.as_uuid(),
-                ret,
-            )
+            (String::from(player.as_name()), *player.as_uuid(), ret)
         };
 
         Ok(bhv.whisper(format!(
@@ -1103,18 +1048,11 @@ impl ShinEn {
                 )));
             };
 
-            (
-                String::from(player.as_name()),
-                *player.as_uuid(),
-                hand,
-            )
+            (String::from(player.as_name()), *player.as_uuid(), hand)
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         let s0 = format!(
@@ -1192,9 +1130,7 @@ impl ShinEn {
                 return Ok(bhv.whisper(format!("{}player not owned.", label)));
             }
 
-            player
-                .as_hand_mut()
-                .push_back(card_name.clone());
+            player.as_hand_mut().push_back(card_name.clone());
 
             let hand = if let Some(x) = player.hand_to_string(&self.cards) {
                 x
@@ -1214,10 +1150,7 @@ impl ShinEn {
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         let s0 = format!(
@@ -1248,17 +1181,13 @@ impl ShinEn {
         ))
     }
     // ========================================================================
-    fn hand_pickup<S, S0>(
+    fn hand_pickup(
         &self,
         bhv: &mut Behavior,
-        label: S,
-        num_str: S0,
+        label: impl AsRef<str>,
+        num_str: impl AsRef<str>,
         shinen_session: &mut Session,
-    ) -> StdResult<(String, Uuid, String, String), Result<Command>>
-    where
-        S: AsRef<str>,
-        S0: AsRef<str>,
-    {
+    ) -> StdResult<(String, Uuid, String, String), Result<Command>> {
         let player = self.default_player_mut(bhv, &label, shinen_session)?;
 
         if bhv.user.as_uuid() != player.as_user_uuid() {
@@ -1344,10 +1273,7 @@ impl ShinEn {
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         let s0 = format!(
@@ -1425,10 +1351,7 @@ impl ShinEn {
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         let s0 = format!(
@@ -1508,10 +1431,7 @@ impl ShinEn {
                     )));
                 }
 
-                (
-                    String::from(player.as_name()),
-                    *player.as_uuid(),
-                )
+                (String::from(player.as_name()), *player.as_uuid())
             };
 
             let mut cards = Deck::default();
@@ -1534,10 +1454,7 @@ impl ShinEn {
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         let s0 = format!(
@@ -1597,9 +1514,8 @@ impl ShinEn {
                 Ok(x) => x,
             };
 
-            let mut target_player = if let Some(x) = shinen_session
-                .as_players_mut()
-                .get_mut(&target_player_uuid)
+            let mut target_player = if let Some(x) =
+                shinen_session.as_players_mut().get_mut(&target_player_uuid)
             {
                 x
             } else {
@@ -1611,18 +1527,11 @@ impl ShinEn {
 
             let _ = target_player.as_hand_mut().push_back(card_name);
 
-            (
-                player_name,
-                String::from(target_player.as_name()),
-                hand,
-            )
+            (player_name, String::from(target_player.as_name()), hand)
         };
 
         let mut batch = WriteBatch::new();
-        batch.put(
-            key_session.as_bytes(),
-            &::serde_json::to_vec(&session)?,
-        );
+        batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
         let _ = bhv.db.write(batch, false)?;
 
         let s0 = format!(

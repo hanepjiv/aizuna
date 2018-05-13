@@ -253,10 +253,8 @@ mod serialize {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));
             }
             Ok(super::Session {
-                pile: self.pile
-                    .map_or(Deck::default(), Cow::into_owned),
-                discard: self.discard
-                    .map_or(Deck::default(), Cow::into_owned),
+                pile: self.pile.map_or(Deck::default(), Cow::into_owned),
+                discard: self.discard.map_or(Deck::default(), Cow::into_owned),
                 players: self.players
                     .map_or(PlayerMap::default(), Cow::into_owned),
                 default_player: self.default_player

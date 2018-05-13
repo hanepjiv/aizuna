@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/01
-//  @date 2018/02/21
+//  @date 2018/05/13
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -52,18 +52,13 @@ impl Dice {
     }
     // ========================================================================
     /// fn parse
-    pub(crate) fn parse<S>(&self, src: S) -> Result<(i32, i32, Vec<i32>, i64)>
-    where
-        S: AsRef<str>,
-    {
-        let caps = self.regex
-            .captures(src.as_ref())
-            .ok_or_else(|| {
-                Error::InvalidArg(format!(
-                    "Dice::parse: {}: caps",
-                    src.as_ref()
-                ))
-            })?;
+    pub(crate) fn parse(
+        &self,
+        src: impl AsRef<str>,
+    ) -> Result<(i32, i32, Vec<i32>, i64)> {
+        let caps = self.regex.captures(src.as_ref()).ok_or_else(|| {
+            Error::InvalidArg(format!("Dice::parse: {}: caps", src.as_ref()))
+        })?;
         Ok(Dice::roll(
             caps.get(1)
                 .map(|x| x.as_str().parse().unwrap_or(1))

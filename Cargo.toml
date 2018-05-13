@@ -23,6 +23,7 @@ coroutine-fringe        = ["coroutine", "fringe"]
 bitflags                = { default-features = false, version = "^1.0" }
 discord                 = { default-features = false, version = "^0.8" }
 env_logger              = { default-features = false, version = "^0.5" }
+elicit                  = { default-features = false, version = "^0.7" }
 getopts                 = { default-features = false, version = "^0.2" }
 log                     = { default-features = false, version = "^0.4" }
 rand                    = { default-features =  true, version = "^0.4" }
@@ -32,16 +33,6 @@ serde                   = { default-features = false, version = "^1.0" }
 serde_derive            = { default-features = false, version = "^1.0" }
 serde_json              = { default-features = false, version = "^1.0" }
 toml                    = { default-features = false, version = "^0.4" }
-# -----------------------------------------------------------------------------
-[dependencies.elicit]
-default-features        = false
-# __
-git                     = "https://github.com/hanepjiv/elicit-rs.git"
-branch                  = "nightly"
-# __
-#path                    = "../../elicit-rs/orig"
-# __
-#version                 = "^0.7"
 # -----------------------------------------------------------------------------
 [dependencies.chrono]
 default-features        = false
@@ -57,3 +48,7 @@ optional                = true
 default-features        = false
 version                 = "^0.6"
 features                = ["v4", "serde"]
+# =============================================================================
+[replace]
+"elicit:0.7.0"          = { default-features = false, git = "https://github.com/hanepjiv/elicit-rs.git", branch = "nightly" }
+#"elicit:0.7.0"          = { default-features = false, path = "../../elicit-rs/orig" }

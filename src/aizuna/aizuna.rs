@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/05/10
+//  @date 2018/05/13
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -26,8 +26,10 @@ use rusty_leveldb::{CompressionType, Options, WriteBatch, DB};
 // ----------------------------------------------------------------------------
 use super::connector::{Connector, ResRec};
 use super::rule::RuleImpl;
-use super::{Behavior, Command, Config, Dice, Error, Message, MessageAelicit,
-            Responce, Result};
+use super::{
+    Behavior, Command, Config, Dice, Error, Message, MessageAelicit, Responce,
+    Result,
+};
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// enum Driver
@@ -76,15 +78,11 @@ impl ::std::fmt::Debug for Aizuna {
 impl Aizuna {
     // ========================================================================
     /// fn new
-    pub fn new<IC, IR>(
+    pub fn new(
         config: Config,
-        connectors: IC,
-        rules: IR,
-    ) -> Result<Self>
-    where
-        IC: IntoIterator<Item = Box<dyn Connector>>,
-        IR: IntoIterator<Item = (String, RuleImpl)>,
-    {
+        connectors: impl IntoIterator<Item = Box<dyn Connector>>,
+        rules: impl IntoIterator<Item = (String, RuleImpl)>,
+    ) -> Result<Self> {
         info!("Aizuna::new");
         let connectors = Vec::from_iter(connectors);
         if connectors.is_empty() {

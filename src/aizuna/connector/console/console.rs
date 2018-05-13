@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/04/28
+//  @date 2018/05/13
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -16,8 +16,9 @@ use std::any::Any as StdAny;
 use std::collections::BTreeSet;
 use std::thread::JoinHandle;
 // ----------------------------------------------------------------------------
-use super::super::super::{Command, Message, MessageAelicit, MessageEAFS,
-                          MessageEAFSField, Responce};
+use super::super::super::{
+    Command, Message, MessageAelicit, MessageEAFS, MessageEAFSField, Responce,
+};
 use super::super::{Connector, ResSen};
 use super::Result;
 // ----------------------------------------------------------------------------
@@ -47,11 +48,7 @@ impl MessageEAFS for ConsoleMessage {
 impl ConsoleMessage {
     // ========================================================================
     /// new
-    pub(crate) fn new<S0, S1>(id: S0, msg: S1) -> Self
-    where
-        S0: AsRef<str>,
-        S1: AsRef<str>,
-    {
+    pub(crate) fn new(id: impl AsRef<str>, msg: impl AsRef<str>) -> Self {
         ConsoleMessage {
             _eafsf: MessageEAFSField::default(),
             id: String::from(id.as_ref()),
@@ -107,10 +104,7 @@ pub(crate) struct Console {
 impl Console {
     // ========================================================================
     /// new
-    pub(crate) fn new<S>(id: S) -> Self
-    where
-        S: AsRef<str>,
-    {
+    pub(crate) fn new(id: impl AsRef<str>) -> Self {
         println!("Console::new: *** Caution! This is a DEBUG console. ***");
         Console {
             id: String::from(id.as_ref()),
@@ -146,9 +140,7 @@ impl Console {
         if let Err(x) = msg.with(|x: &dyn Message| {
             x.as_any()
                 .downcast_ref::<String>()
-                .ok_or(Error::Downcast(String::from(
-                    "Console::on_send",
-                )))
+                .ok_or(Error::Downcast(String::from("Console::on_send")))
                 .and_then(|m| {
                     Ok(println!(r##"Console: Send: {:?} => {}"##, m, s))
                 })
@@ -191,37 +183,34 @@ impl Connector for Console {
     #[cfg(feature = "coroutine-fringe")]
     fn gen(&self, stack: ::fringe::OsStack) -> Result<Generator> {
         let mut receiver = Receiver::new();
-        Ok(Generator::new(
-            stack,
-            move |yielder, mut command| {
-                println!("Console: Gen");
-                loop {
-                    command = match command {
-                        Command::Quit(_x) => {
-                            break;
-                        }
-                        Command::Listen => {
-                            yielder.suspend(self.on_listen(&mut receiver))
-                        }
-                        Command::Send(ref msg, ref s) => {
-                            yielder.suspend(self.on_send(msg, s))
-                        }
-                        Command::Whisper(ref vs, ref s) => {
-                            yielder.suspend(self.on_whisper(vs, s))
-                        }
-                        Command::SendWhisperMine(
-                            ref send,
-                            ref whisper,
-                            ref mine,
-                        ) => yielder.suspend(self.on_send_whisper_mine(
-                            send, whisper, mine,
-                        )),
+        Ok(Generator::new(stack, move |yielder, mut command| {
+            println!("Console: Gen");
+            loop {
+                command = match command {
+                    Command::Quit(_x) => {
+                        break;
                     }
+                    Command::Listen => {
+                        yielder.suspend(self.on_listen(&mut receiver))
+                    }
+                    Command::Send(ref msg, ref s) => {
+                        yielder.suspend(self.on_send(msg, s))
+                    }
+                    Command::Whisper(ref vs, ref s) => {
+                        yielder.suspend(self.on_whisper(vs, s))
+                    }
+                    Command::SendWhisperMine(
+                        ref send,
+                        ref whisper,
+                        ref mine,
+                    ) => yielder.suspend(self.on_send_whisper_mine(
+                        send, whisper, mine,
+                    )),
                 }
-                receiver.disconnect();
-                println!("Console: Exit");
-            },
-        ))
+            }
+            receiver.disconnect();
+            println!("Console: Exit");
+        }))
     }
     // ========================================================================
     fn spawn(&self, res_sen: ResSen) -> Result<JoinHandle<Result<()>>> {

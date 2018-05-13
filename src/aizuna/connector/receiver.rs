@@ -154,8 +154,7 @@ where
     // ========================================================================
     /// fn store_active
     pub(crate) fn store_active(&mut self, is_active: bool) {
-        self.is_active
-            .store(is_active, Ordering::SeqCst);
+        self.is_active.store(is_active, Ordering::SeqCst);
     }
     // ========================================================================
     /// fn join

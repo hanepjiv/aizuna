@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2018/03/03
+//  @date 2018/05/13
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -139,21 +139,16 @@ impl AsRef<Uuid> for Player {
 impl Player {
     // ========================================================================
     /// fn new
-    pub(crate) fn new<U0, U1, S0>(
-        uuid: U0,
-        user_uuid: U1,
-        name: S0,
+    pub(crate) fn new(
+        uuid: impl Into<Uuid>,
+        user_uuid: impl Into<Uuid>,
+        name: impl Into<String>,
         player_type: PlayerType,
-    ) -> Self
-    where
-        Uuid: From<U0>,
-        Uuid: From<U1>,
-        String: From<S0>,
-    {
+    ) -> Self {
         Player {
-            uuid: Uuid::from(uuid),
-            user_uuid: Uuid::from(user_uuid),
-            name: String::from(name),
+            uuid: uuid.into(),
+            user_uuid: user_uuid.into(),
+            name: name.into(),
             player_type,
             hand: Hand::default(),
         }
@@ -181,11 +176,8 @@ impl Player {
     }
     // ------------------------------------------------------------------------
     /// fn set_name
-    pub(crate) fn set_name<S0>(&mut self, name: S0) -> &mut Self
-    where
-        String: From<S0>,
-    {
-        self.name = String::from(name);
+    pub(crate) fn set_name(&mut self, name: impl Into<String>) -> &mut Self {
+        self.name = name.into();
         self
     }
     // ========================================================================
@@ -294,8 +286,7 @@ mod serialize {
                         ))
                     })?
                     .into_owned(),
-                name: self.name
-                    .map_or(String::default(), Cow::into_owned),
+                name: self.name.map_or(String::default(), Cow::into_owned),
                 player_type: self.player_type
                     .ok_or_else(|| {
                         Error::MissingField(String::from(
@@ -303,8 +294,7 @@ mod serialize {
                         ))
                     })?
                     .into_owned(),
-                hand: self.hand
-                    .map_or(Hand::default(), Cow::into_owned),
+                hand: self.hand.map_or(Hand::default(), Cow::into_owned),
             })
         }
     }

@@ -12,8 +12,9 @@
 // use  =======================================================================
 use std::any::Any as StdAny;
 // ----------------------------------------------------------------------------
-use super::super::super::{Message, MessageAelicit, MessageEAFS,
-                          MessageEAFSField};
+use super::super::super::{
+    Message, MessageAelicit, MessageEAFS, MessageEAFSField,
+};
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// DiscordMessage

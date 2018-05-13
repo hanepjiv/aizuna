@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/03/03
+//  @date 2018/05/13
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -62,10 +62,7 @@ pub(crate) struct Discord {
 impl Discord {
     // ========================================================================
     /// new
-    pub(crate) fn new<S>(id: S, config: Value) -> Result<Self>
-    where
-        S: AsRef<str>,
-    {
+    pub(crate) fn new(id: impl AsRef<str>, config: Value) -> Result<Self> {
         Ok(Discord {
             id: String::from(id.as_ref()),
             config: config.try_into::<Config>()?,
@@ -84,10 +81,7 @@ impl Discord {
             Ok(x) => {
                 state.update(&x);
                 if let MessageCreate(m) = x {
-                    debug!(
-                        "{}Says: {}: {}",
-                        label, m.author.name, m.content
-                    );
+                    debug!("{}Says: {}: {}", label, m.author.name, m.content);
                     Responce::Message(MessageAelicit::new(
                         DiscordMessage::new(id.to_string(), m),
                     ))
@@ -122,17 +116,14 @@ impl Discord {
         msg: &MessageAelicit,
     ) -> Result<::discord::model::Message> {
         msg.with(|x| {
-            if let Some(x) = x.as_any()
-                .downcast_ref::<::discord::model::Message>()
+            if let Some(x) =
+                x.as_any().downcast_ref::<::discord::model::Message>()
             {
                 discord
                     .send_message(x.channel_id, "Aizuna Quit.", "", false)
                     .map_err(Error::Discord)
             } else {
-                Err(Error::Downcast(format!(
-                    "Discord::connect: {}",
-                    label
-                )))
+                Err(Error::Downcast(format!("Discord::connect: {}", label)))
             }
         })
     }
@@ -145,8 +136,8 @@ impl Discord {
         s: &str,
     ) -> Responce {
         if let Err(x) = msg.with(|x| {
-            if let Some(m) = x.as_any()
-                .downcast_ref::<::discord::model::Message>()
+            if let Some(m) =
+                x.as_any().downcast_ref::<::discord::model::Message>()
             {
                 discord
                     .send_message(
@@ -157,10 +148,7 @@ impl Discord {
                     )
                     .map_err(Error::Discord)
             } else {
-                Err(Error::Downcast(format!(
-                    "Discord::connect: {}",
-                    label
-                )))
+                Err(Error::Downcast(format!("Discord::connect: {}", label)))
             }
         }) {
             Responce::Error(Error::Aizuna(format!("{}{:?}", label, x)))
@@ -275,43 +263,37 @@ impl Connector for Discord {
         let id = self.id.clone();
         let (label, discord, mut state, connection) = self.discord()?;
         let receiver = Receiver::new(connection);
-        Ok(Generator::new(
-            stack,
-            move |yielder, mut command| {
-                println!("Discord: Gen");
-                loop {
-                    command = match command {
-                        Command::Quit(ref x) => {
-                            if let &Some(ref msg) = x {
-                                let _ =
-                                    Discord::on_quit(&label, &discord, msg);
-                            }
-                            break;
+        Ok(Generator::new(stack, move |yielder, mut command| {
+            println!("Discord: Gen");
+            loop {
+                command = match command {
+                    Command::Quit(ref x) => {
+                        if let &Some(ref msg) = x {
+                            let _ = Discord::on_quit(&label, &discord, msg);
                         }
-                        Command::Listen => {
-                            yielder.suspend(Discord::on_listen_async(
-                                &id, &label, &mut state, &receiver,
-                            ))
-                        }
-                        Command::Send(ref msg, ref s) => yielder.suspend(
-                            Discord::on_send(&label, &discord, msg, s),
-                        ),
-                        Command::Whisper(ref vs, ref s) => yielder.suspend(
-                            Discord::on_whisper(&label, &discord, vs, s),
-                        ),
-                        Command::SendWhisperMine(
-                            ref send,
-                            ref whisper,
-                            ref mine,
-                        ) => yielder.suspend(Discord::on_send_whisper_mine(
-                            &label, &discord, send, whisper, mine,
-                        )),
+                        break;
                     }
+                    Command::Listen => {
+                        yielder.suspend(Discord::on_listen_async(
+                            &id, &label, &mut state, &receiver,
+                        ))
+                    }
+                    Command::Send(ref msg, ref s) => yielder
+                        .suspend(Discord::on_send(&label, &discord, msg, s)),
+                    Command::Whisper(ref vs, ref s) => yielder
+                        .suspend(Discord::on_whisper(&label, &discord, vs, s)),
+                    Command::SendWhisperMine(
+                        ref send,
+                        ref whisper,
+                        ref mine,
+                    ) => yielder.suspend(Discord::on_send_whisper_mine(
+                        &label, &discord, send, whisper, mine,
+                    )),
                 }
-                println!("{}Disconnect", label);
-                receiver.disconnect(&discord, &state);
-            },
-        ))
+            }
+            println!("{}Disconnect", label);
+            receiver.disconnect(&discord, &state);
+        }))
     }
     // ========================================================================
     fn spawn(&self, res_sen: ResSen) -> Result<JoinHandle<Result<()>>> {

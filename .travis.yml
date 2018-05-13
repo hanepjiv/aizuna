@@ -4,13 +4,13 @@ cache:
 - apt
 - cargo
 rust:
-- stable
-- beta
+#- stable
+#- beta
 - nightly
-matrix:
-  allow_failures:
-  - rust: stable
-  - rust: beta
+#matrix:
+#  allow_failures:
+#  - rust: stable
+#  - rust: beta
 notifications:
   slack:
     secure: FQXozwr8RrOhPlKP0rGV2P7sLi09VfBQd3CBjQFGJZvnpiinUTeCNhZnaiDDJd5CRQAmFMM/tvxNVtj21wTwfiyuXFQ/GrHDZnbswdAcGGILgKQS5lw3QMwSEzBFDTFX4CwNhW7QmXHGsJVCdMBTrLaDULN8nNTHj5uQbsimwZyLppILGfGf0og2IL29v0wEimW3B0X/OfTaPDfBfz1P5jX48RKEzje95LhQ78ucYmVT1pGZtm8zHXZlmk8CfKk1lD6jPR/kmMhkvo+aDxcemWiuj/QNIF0lO0IMkwNNq4ZIixtA1+SWtterBnSUb0W31i9kZNA+lfpYthwlPsIQWYrGk9SW45/bRjpA7YUFXCPqLv9gEdb167mKBq6WTWddjflb1I8uqx653gnG3Elgog0wY4CXKcUTI2puhVs6dKuAgeHfRvyJf24EBGEgYIE//YL5MpMytY/VrIiG3t08CIAVBu6JLTZ4VeD8plCVPYHSqdjeblavOViZfNqnsQPA7ztQ8NMwZ4mMN9pZoNJ3tFOCaQrsKYZshtzzZzvTRQv3IjE1VlkKAxFd4oG50XaJ+eHkyCmk6Uqe3fgVAvckJElv6aJCUpPFcfrobB84Bzf0z5PXHjcBueHmuPnD+MpCXgn+TLqU0nj90Ek97MZpfhjurYuwtdRC7UT2sw3kfnM=

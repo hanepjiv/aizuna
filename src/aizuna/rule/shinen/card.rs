@@ -24,8 +24,9 @@ use std::vec::Vec;
 // ----------------------------------------------------------------------------
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 // ----------------------------------------------------------------------------
-use super::{Action, CardSet, Color, Constellation, Damage, Error, Result,
-            Story};
+use super::{
+    Action, CardSet, Color, Constellation, Damage, Error, Result, Story,
+};
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// struct Card
@@ -231,8 +232,7 @@ mod serialize {
                         None
                     },
                     value: self.value,
-                    desc: self.desc
-                        .map_or(String::default(), Cow::into_owned),
+                    desc: self.desc.map_or(String::default(), Cow::into_owned),
                     story: if let Some(x) = self.story {
                         let mut ret = Vec::<Story>::default();
                         for i in x {
@@ -369,8 +369,7 @@ where
             let mut destiny_map = BTreeMap::<i32, Card>::default();
             for v in cardset.values() {
                 let _ = destiny_map.insert(
-                    v.as_destiny()
-                        .unwrap_or_else(|| ::std::i32::MAX),
+                    v.as_destiny().unwrap_or_else(|| ::std::i32::MAX),
                     v.clone(),
                 );
             }
@@ -379,8 +378,9 @@ where
             let _ = p.set_extension(EXTS_NEW_CARDS);
             info!("shinen::card::export: {:?}", p);
             let _ = File::create(p).and_then(|mut f| {
-                use std::io::{Error as IOError, ErrorKind as IOErrorKind,
-                              Write};
+                use std::io::{
+                    Error as IOError, ErrorKind as IOErrorKind, Write,
+                };
                 for v in destiny_map.values() {
                     let _ = f.write(
                         format!("[\"{}\"]\n", v.as_name()).as_bytes(),
@@ -463,10 +463,7 @@ impl Deck {
     // ========================================================================
     /// find
     pub(crate) fn find(&mut self, v: &[u8]) -> Option<(usize, &String)> {
-        self.0
-            .iter()
-            .enumerate()
-            .find(|&(_, x)| x.as_bytes() == v)
+        self.0.iter().enumerate().find(|&(_, x)| x.as_bytes() == v)
     }
     // ========================================================================
     /// pick

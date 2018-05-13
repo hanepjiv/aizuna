@@ -6,12 +6,11 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/25
-//  @date 2018/04/12
+//  @date 2018/05/13
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
-use std::borrow::{Borrow, Cow};
-use std::collections::BTreeSet;
+use std::{borrow::Cow, collections::BTreeSet};
 // ----------------------------------------------------------------------------
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use uuid::Uuid;
@@ -36,26 +35,13 @@ pub(crate) struct User<'a> {
     admin: bool,
 }
 // ============================================================================
-impl<'a> AsRef<Uuid> for User<'a> {
-    fn as_ref(&self) -> &Uuid {
-        &self.uuid
-    }
-}
-// ============================================================================
-impl<'a> Borrow<Uuid> for User<'a> {
-    fn borrow(&self) -> &Uuid {
-        &self.uuid
-    }
-}
-// ============================================================================
 impl<'a> User<'a> {
     // ========================================================================
     /// fn make_id
-    pub(crate) fn make_id<S0, S1>(connector_id: S0, author_id: S1) -> String
-    where
-        S0: AsRef<str>,
-        S1: AsRef<str>,
-    {
+    pub(crate) fn make_id(
+        connector_id: impl AsRef<str>,
+        author_id: impl AsRef<str>,
+    ) -> String {
         let mut id = String::from(connector_id.as_ref());
         id.push(':');
         id += author_id.as_ref();
@@ -63,25 +49,19 @@ impl<'a> User<'a> {
     }
     // ========================================================================
     /// fn new
-    pub(crate) fn new<U, S0, S1, S2>(
-        uuid: U,
-        connector_id: &'a S0,
-        author_id: &'a S1,
-        author_name: &'a S2,
+    pub(crate) fn new(
+        uuid: impl Into<Uuid>,
+        connector_id: &'a str,
+        author_id: &'a str,
+        author_name: &'a str,
         admin: bool,
-    ) -> Self
-    where
-        Uuid: From<U>,
-        S0: AsRef<str> + ?Sized,
-        S1: AsRef<str> + ?Sized,
-        S2: AsRef<str> + ?Sized,
-    {
+    ) -> Self {
         User {
-            uuid: Uuid::from(uuid),
+            uuid: uuid.into(),
             alias: BTreeSet::default(),
-            connector_id: Cow::Borrowed(connector_id.as_ref()),
-            author_id: Cow::Borrowed(author_id.as_ref()),
-            author_name: Cow::Borrowed(author_name.as_ref()),
+            connector_id: Cow::Borrowed(connector_id),
+            author_id: Cow::Borrowed(author_id),
+            author_name: Cow::Borrowed(author_name),
             admin,
         }
     }
@@ -107,10 +87,10 @@ impl<'a> User<'a> {
     }
     // ------------------------------------------------------------------------
     /// fn set_author_name
-    pub(crate) fn set_author_name<S0>(&mut self, author_name: &'a S0)
-    where
-        S0: AsRef<str> + ?Sized,
-    {
+    pub(crate) fn set_author_name(
+        &mut self,
+        author_name: &'a impl AsRef<str>,
+    ) {
         self.author_name = Cow::Borrowed(author_name.as_ref());
     }
     // ========================================================================
@@ -216,9 +196,7 @@ mod serialize {
                 connector_id,
                 author_id,
                 author_name,
-                alias: self.alias
-                    .map(Cow::into_owned)
-                    .unwrap_or_default(),
+                alias: self.alias.map(Cow::into_owned).unwrap_or_default(),
                 admin: false,
             })
         }

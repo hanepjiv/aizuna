@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/04
-//  @date 2018/04/14
+//  @date 2018/05/13
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -146,13 +146,13 @@ impl FormatIndent for SessionImpl {
 impl SessionImpl {
     // ========================================================================
     /// fn new
-    pub(crate) fn new<U, IO>(uuid: U, owners: IO, kind: SessionKind) -> Self
-    where
-        Uuid: From<U>,
-        IO: IntoIterator<Item = Uuid>,
-    {
+    pub(crate) fn new(
+        uuid: impl Into<Uuid>,
+        owners: impl IntoIterator<Item = Uuid>,
+        kind: SessionKind,
+    ) -> Self {
         SessionImpl {
-            uuid: Uuid::from(uuid),
+            uuid: uuid.into(),
             utc: Utc::now(),
             owners: UuidSet::from_iter(owners.into_iter()),
             member: UuidSet::default(),
@@ -198,8 +198,8 @@ impl SessionImpl {
     /// fn owners_member_contains
     pub(crate) fn owners_member_contains<Q>(&self, x: &Q) -> bool
     where
+        Q: Ord + ?Sized,
         Uuid: Borrow<Q>,
-        Q: Ord,
     {
         self.owners.contains(x) || self.member.contains(x)
     }
@@ -220,10 +220,7 @@ impl SessionImpl {
     }
     // ------------------------------------------------------------------------
     /// fn set_title
-    pub(crate) fn set_title<S>(&mut self, title: S) -> &mut Self
-    where
-        S: AsRef<str>,
-    {
+    pub(crate) fn set_title(&mut self, title: impl AsRef<str>) -> &mut Self {
         self.title = String::from(title.as_ref());
         self
     }

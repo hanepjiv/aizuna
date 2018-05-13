@@ -16,8 +16,9 @@ pub(crate) use self::behavior::Behavior;
 pub(crate) use self::command::Command;
 pub use self::config::Config;
 pub(crate) use self::dice::Dice;
-pub(crate) use self::message::{Message, MessageAelicit, MessageEAFS,
-                               MessageEAFSField};
+pub(crate) use self::message::{
+    Message, MessageAelicit, MessageEAFS, MessageEAFSField,
+};
 pub(crate) use self::responce::Responce;
 pub(crate) use self::session::{Session, SessionImpl};
 pub(crate) use self::session_kind::SessionKind;

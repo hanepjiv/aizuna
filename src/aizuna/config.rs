@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/28
-//  @date 2018/04/28
+//  @date 2018/05/13
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -20,7 +20,9 @@ use regex::Regex;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 // ----------------------------------------------------------------------------
 use super::super::ask::ask;
-use super::connector::{Config as ConnectorConfig, Connector, Console, Discord};
+use super::connector::{
+    Config as ConnectorConfig, Connector, Console, Discord,
+};
 use super::rule::shinen::ShinEn;
 use super::rule::{Config as RuleConfig, RuleImpl};
 use super::{Aizuna, Driver, Error, Result};
@@ -136,10 +138,7 @@ impl Config {
     }
     // ========================================================================
     /// new
-    pub fn new<P>(path_root: P) -> Result<Config>
-    where
-        P: AsRef<Path>,
-    {
+    pub fn new(path_root: impl AsRef<Path>) -> Result<Config> {
         info!("Config::new");
         let mut path_root = PathBuf::from(path_root.as_ref());
         path_root = if path_root.is_absolute() {
@@ -194,10 +193,7 @@ impl Config {
     // ========================================================================
     /// aizuna
     pub fn aizuna(self) -> Result<Aizuna> {
-        info!(
-            "::aizuna::Config::aizuna: {:?}",
-            self.path_config
-        );
+        info!("::aizuna::Config::aizuna: {:?}", self.path_config);
         let mut connectors = Vec::<Box<dyn Connector>>::default();
         for (k0, v0) in &self.connectors {
             if !v0.enable {
@@ -336,9 +332,7 @@ mod serialize {
                     connectors: self.connectors
                         .map(Cow::into_owned)
                         .unwrap_or_default(),
-                    rules: self.rules
-                        .map(Cow::into_owned)
-                        .unwrap_or_default(),
+                    rules: self.rules.map(Cow::into_owned).unwrap_or_default(),
                     admin: if let Some(x) = self.admin {
                         let mut ret = BTreeMap::default();
                         for (k, v) in x {

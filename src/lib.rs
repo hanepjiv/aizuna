@@ -6,11 +6,12 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/05/11
+//  @date 2018/05/14
 
 // ////////////////////////////////////////////////////////////////////////////
 // attribute  =================================================================
 #![feature(try_trait)]
+// rustc 1.27.0-nightly (ff2ac35db 2018-05-12)  -------------------------------
 #![deny(
     anonymous_parameters, bare_trait_object, missing_copy_implementations,
     missing_debug_implementations, missing_docs, unused_extern_crates,

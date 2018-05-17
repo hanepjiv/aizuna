@@ -318,7 +318,8 @@ mod serialize {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));
             }
             Ok(super::SessionImpl {
-                uuid: self.uuid
+                uuid: self
+                    .uuid
                     .ok_or_else(|| {
                         Error::MissingField(String::from(
                             "SessionImpl::serialize::uuid",
@@ -326,14 +327,18 @@ mod serialize {
                     })?
                     .into_owned(),
                 utc: self.utc.map_or(Utc::now(), Cow::into_owned),
-                owners: self.owners
+                owners: self
+                    .owners
                     .map_or(UuidSet::default(), Cow::into_owned),
-                member: self.member
+                member: self
+                    .member
                     .map_or(UuidSet::default(), Cow::into_owned),
-                title: self.title
+                title: self
+                    .title
                     .map_or(String::from("title"), Cow::into_owned),
                 flags: self.flags.unwrap_or_default(),
-                kind: self.kind
+                kind: self
+                    .kind
                     .ok_or_else(|| {
                         Error::MissingField(String::from(
                             "SessionImpl::serialize::kind",

@@ -331,7 +331,8 @@ where
     ) -> Result<Option<Command>> {
         let label = "Aizuna: ";
 
-        let mut inputs: Vec<String> = msg.as_content()
+        let mut inputs: Vec<String> = msg
+            .as_content()
             .split_whitespace()
             .map(String::from)
             .collect();
@@ -499,10 +500,8 @@ Aizuna v{0}:
                         label.as_ref(),
                         &key_user_sessions
                     );
-                    return Err(Ok(self.whisper(format!(
-                        "{}Inner Error.",
-                        label.as_ref()
-                    ))));
+                    return Err(Ok(self
+                        .whisper(format!("{}Inner Error.", label.as_ref()))));
                 }
             } else {
                 UserSessions::default()
@@ -566,10 +565,8 @@ Aizuna v{0}:
         if let Some(ref x) = self.db.get(key) {
             self.parse_uuid(label, unsafe { from_utf8_unchecked(x) })
         } else {
-            return Err(Ok(self.whisper(format!(
-                "{}default is not found.",
-                label.as_ref()
-            ))));
+            return Err(Ok(self
+                .whisper(format!("{}default is not found.", label.as_ref()))));
         }
     }
     // ========================================================================
@@ -746,7 +743,8 @@ Aizuna v{0}:
     ) -> Result<Command> {
         let label = "session.new: ";
 
-        if self.inputs.len() < 3 || 3 < self.inputs.len()
+        if self.inputs.len() < 3
+            || 3 < self.inputs.len()
             || self.inputs[2].is_empty()
         {
             return Ok(self.whisper(format!("{}invalid args.", label)));
@@ -762,10 +760,8 @@ Aizuna v{0}:
             };
 
         let session_kind = match {
-            let mut ret = Err(Ok(self.whisper(format!(
-                "{}not found {}.",
-                label, self.inputs[2]
-            ))));
+            let mut ret = Err(Ok(self
+                .whisper(format!("{}not found {}.", label, self.inputs[2]))));
             for ref mut rule in rules.values_mut() {
                 println!("{}, {}", self.inputs[2], rule.as_rule_name());
                 if self.inputs[2].as_bytes() == rule.as_rule_name().as_bytes()
@@ -905,10 +901,9 @@ Aizuna v{0}:
         }
 
         if session.as_owners().len() != 1 {
-            return Ok(self.whisper(format!(
-                "{}other owner still exist.",
-                label
-            )));
+            return Ok(
+                self.whisper(format!("{}other owner still exist.", label))
+            );
         }
 
         if session.is_open() {
@@ -1038,18 +1033,16 @@ Aizuna v{0}:
                     Ok(uuid) => uuid,
                 },
                 _ => {
-                    return Ok(self.whisper(format!(
-                        "{}unknown options.",
-                        label
-                    )));
+                    return Ok(
+                        self.whisper(format!("{}unknown options.", label))
+                    );
                 }
             };
             match Behavior::get_user(&label, &mut self.db, &target_user_uuid) {
                 (_, None) => {
-                    return Ok(self.whisper(format!(
-                        "{}user not found.",
-                        label
-                    )));
+                    return Ok(
+                        self.whisper(format!("{}user not found.", label))
+                    );
                 }
                 (x, Some(y)) => (x, y),
             }
@@ -1124,18 +1117,16 @@ Aizuna v{0}:
                     Ok(uuid) => uuid,
                 },
                 _ => {
-                    return Ok(self.whisper(format!(
-                        "{}unknown options.",
-                        label
-                    )));
+                    return Ok(
+                        self.whisper(format!("{}unknown options.", label))
+                    );
                 }
             };
             match Behavior::get_user(&label, &mut self.db, &target_user_uuid) {
                 (_, None) => {
-                    return Ok(self.whisper(format!(
-                        "{}user not found.",
-                        label
-                    )));
+                    return Ok(
+                        self.whisper(format!("{}user not found.", label))
+                    );
                 }
                 (x, Some(y)) => (x, y),
             }
@@ -1207,18 +1198,16 @@ Aizuna v{0}:
                     Ok(uuid) => uuid,
                 },
                 _ => {
-                    return Ok(self.whisper(format!(
-                        "{}unknown options.",
-                        label
-                    )));
+                    return Ok(
+                        self.whisper(format!("{}unknown options.", label))
+                    );
                 }
             };
             match Behavior::get_user(&label, &mut self.db, &target_user_uuid) {
                 (_, None) => {
-                    return Ok(self.whisper(format!(
-                        "{}user not found.",
-                        label
-                    )));
+                    return Ok(
+                        self.whisper(format!("{}user not found.", label))
+                    );
                 }
                 (x, Some(y)) => (x, y),
             }
@@ -1296,7 +1285,8 @@ Aizuna v{0}:
     fn on_session_request(&mut self) -> Result<Command> {
         let label = "session.request: ";
 
-        if self.inputs.len() < 3 || 3 < self.inputs.len()
+        if self.inputs.len() < 3
+            || 3 < self.inputs.len()
             || self.inputs[2].is_empty()
         {
             return Ok(self.whisper(format!("{}invalid args.", label)));

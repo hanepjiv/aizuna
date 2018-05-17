@@ -81,7 +81,8 @@ mod serialize {
             }
             match self.serdever {
                 0 => Ok(super::Config {
-                    root: self.root
+                    root: self
+                        .root
                         .map(Cow::into_owned)
                         .map(PathBuf::from)
                         .unwrap_or_default(),

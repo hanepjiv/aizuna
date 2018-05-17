@@ -320,16 +320,21 @@ mod serialize {
                         )),
                         String::from,
                     ),
-                    driver: self.driver
+                    driver: self
+                        .driver
                         .map_or(Driver::Thread, Cow::into_owned),
-                    fringe_stack_size: self.fringe_stack_size
+                    fringe_stack_size: self
+                        .fringe_stack_size
                         .unwrap_or(1024 * 1024),
-                    path_db: self.path_db
+                    path_db: self
+                        .path_db
                         .map(Cow::into_owned)
                         .map_or(PathBuf::from("./db"), PathBuf::from),
-                    prefix: self.prefix
+                    prefix: self
+                        .prefix
                         .map_or(String::from(","), String::from),
-                    connectors: self.connectors
+                    connectors: self
+                        .connectors
                         .map(Cow::into_owned)
                         .unwrap_or_default(),
                     rules: self.rules.map(Cow::into_owned).unwrap_or_default(),

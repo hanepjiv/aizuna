@@ -128,7 +128,8 @@ mod serialize {
             if self.serdever < (CURRENT - AGE) || CURRENT < self.serdever {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));
             }
-            let rule = self.rule
+            let rule = self
+                .rule
                 .ok_or_else(|| {
                     Error::MissingField(String::from(
                         "::aizuna::SessionKind::serialize::rule",

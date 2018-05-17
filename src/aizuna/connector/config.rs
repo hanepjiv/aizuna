@@ -91,7 +91,8 @@ pub(crate) mod serialize {
             match self.serdever {
                 0 => Ok(super::Config {
                     enable: self.enable.unwrap_or(true),
-                    connector: self.connector
+                    connector: self
+                        .connector
                         .map_or(String::from(","), String::from),
                     config: self.config.map_or(
                         Value::Table(Table::default()),

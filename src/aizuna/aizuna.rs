@@ -170,9 +170,9 @@ impl Aizuna {
         info!("Aizuna: Fringe");
         let mut gens = VecDeque::default();
         for x in self.connectors.iter() {
-            gens.push_back(RefCell::new(x.gen(::fringe::OsStack::new(
-                stack_size,
-            )?)?));
+            gens.push_back(RefCell::new(
+                x.gen(::fringe::OsStack::new(stack_size)?)?
+            ));
         }
         while let Some(con) = gens.pop_front() {
             let mut res = con.borrow_mut().resume(Command::Listen);

@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/05/13
+//  @date 2018/05/17
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -27,6 +27,9 @@ use super::super::Generator;
 use super::receiver::Receiver;
 #[cfg(feature = "coroutine")]
 use std::sync::mpsc::TryRecvError;
+// ////////////////////////////////////////////////////////////////////////////
+// ============================================================================
+const DISCORD_MAX_LENGTH: usize = 1950usize;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// struct Discord
@@ -121,7 +124,13 @@ impl Discord {
                 discord
                     .send_message(
                         m.channel_id,
-                        format!("{}\n\t{}", s, m.author.mention()).as_str(),
+                        format!(
+                            "{}\n\t{}",
+                            &s.chars()
+                                .take(DISCORD_MAX_LENGTH)
+                                .collect::<String>(),
+                            m.author.mention()
+                        ).as_str(),
                         "",
                         false,
                     )
@@ -152,7 +161,11 @@ impl Discord {
                     .create_private_channel(user_id)
                     .map_err(Error::Discord)?
                     .id,
-                format!("{}\n\t{}", s, user_id.mention()).as_str(),
+                format!(
+                    "{}\n\t{}",
+                    &s.chars().take(DISCORD_MAX_LENGTH).collect::<String>(),
+                    user_id.mention()
+                ).as_str(),
                 "",
                 false,
             )

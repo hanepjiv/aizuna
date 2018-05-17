@@ -203,9 +203,9 @@ impl Connector for Console {
                         ref send,
                         ref whisper,
                         ref mine,
-                    ) => yielder.suspend(self.on_send_whisper_mine(
-                        send, whisper, mine,
-                    )),
+                    ) => yielder.suspend(
+                        self.on_send_whisper_mine(send, whisper, mine),
+                    ),
                 }
             }
             receiver.disconnect();

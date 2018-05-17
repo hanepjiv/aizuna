@@ -255,9 +255,11 @@ mod serialize {
             Ok(super::Session {
                 pile: self.pile.map_or(Deck::default(), Cow::into_owned),
                 discard: self.discard.map_or(Deck::default(), Cow::into_owned),
-                players: self.players
+                players: self
+                    .players
                     .map_or(PlayerMap::default(), Cow::into_owned),
-                default_player: self.default_player
+                default_player: self
+                    .default_player
                     .map_or(DefaultPlayerMap::default(), Cow::into_owned),
             })
         }

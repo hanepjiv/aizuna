@@ -272,14 +272,16 @@ mod serialize {
                 return Err(Error::SerDeVer(self.serdever, CURRENT, AGE));
             }
             Ok(super::Player {
-                uuid: self.uuid
+                uuid: self
+                    .uuid
                     .ok_or_else(|| {
                         Error::MissingField(String::from(
                             "::shinen::Player::serialize::uuid",
                         ))
                     })?
                     .into_owned(),
-                user_uuid: self.user_uuid
+                user_uuid: self
+                    .user_uuid
                     .ok_or_else(|| {
                         Error::MissingField(String::from(
                             "::shinen::Player::serialize::user_uuid",
@@ -287,7 +289,8 @@ mod serialize {
                     })?
                     .into_owned(),
                 name: self.name.map_or(String::default(), Cow::into_owned),
-                player_type: self.player_type
+                player_type: self
+                    .player_type
                     .ok_or_else(|| {
                         Error::MissingField(String::from(
                             "::shinen::Player::serialize::player_type",

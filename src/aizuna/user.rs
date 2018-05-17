@@ -186,7 +186,8 @@ mod serialize {
                 ))
             })?;
             Ok(super::User {
-                uuid: self.uuid
+                uuid: self
+                    .uuid
                     .ok_or_else(|| {
                         Error::MissingField(String::from(
                             "::aizuna::User::serialize::uuid",

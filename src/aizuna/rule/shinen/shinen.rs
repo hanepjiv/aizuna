@@ -264,10 +264,8 @@ impl ShinEn {
         shinen_session
             .as_default_player(bhv.user.as_uuid())
             .ok_or_else(|| {
-                Ok(bhv.whisper(format!(
-                    "{} player not found.",
-                    label.as_ref(),
-                )))
+                Ok(bhv
+                    .whisper(format!("{} player not found.", label.as_ref(),)))
             })
     }
     // ------------------------------------------------------------------------
@@ -280,9 +278,8 @@ impl ShinEn {
         shinen_session
             .as_default_player_mut(bhv.user.as_uuid())
             .ok_or_else(|| {
-                Ok(bhv.whisper(
-                    format!("{}player not found.", label.as_ref(),),
-                ))
+                Ok(bhv
+                    .whisper(format!("{}player not found.", label.as_ref(),)))
             })
     }
     // ========================================================================
@@ -419,10 +416,9 @@ impl ShinEn {
                 };
 
                 if player.as_user_uuid() != bhv.user.as_uuid() {
-                    return Ok(bhv.whisper(format!(
-                        "{}player not owned.",
-                        label
-                    )));
+                    return Ok(
+                        bhv.whisper(format!("{}player not owned.", label))
+                    );
                 }
 
                 (player.as_name().to_string(), *player.as_uuid())
@@ -553,17 +549,15 @@ impl ShinEn {
                 {
                     x
                 } else {
-                    return Ok(bhv.whisper(format!(
-                        "{}player not found.",
-                        label
-                    )));
+                    return Ok(
+                        bhv.whisper(format!("{}player not found.", label))
+                    );
                 };
 
                 if !is_owner && bhv.user.as_uuid() != player.as_user_uuid() {
-                    return Ok(bhv.whisper(format!(
-                        "{}player not owned.",
-                        label
-                    )));
+                    return Ok(
+                        bhv.whisper(format!("{}player not owned.", label))
+                    );
                 }
 
                 (
@@ -607,7 +601,8 @@ impl ShinEn {
                 Ok(x) => x,
             };
 
-        if 3 != matches.free.len() || matches.free[1].is_empty()
+        if 3 != matches.free.len()
+            || matches.free[1].is_empty()
             || matches.free[2].is_empty()
         {
             return Ok(bhv.whisper(format!("{}invalid args.", label)));
@@ -706,7 +701,8 @@ impl ShinEn {
                 Ok(x) => x,
             };
 
-        if matches.free.len() < 2 || 2 < matches.free.len()
+        if matches.free.len() < 2
+            || 2 < matches.free.len()
             || matches.free[1].is_empty()
         {
             return Ok(bhv.whisper(format!("{}invalid args.", label)));
@@ -769,7 +765,8 @@ impl ShinEn {
                 Ok(x) => x,
             };
 
-        if matches.free.len() < 2 || 2 < matches.free.len()
+        if matches.free.len() < 2
+            || 2 < matches.free.len()
             || matches.free[1].is_empty()
         {
             return Ok(bhv.whisper(format!("{}invalid args.", label)));
@@ -876,10 +873,9 @@ impl ShinEn {
         };
 
         if hand.is_empty() {
-            return Err(Ok(bhv.whisper(format!(
-                "{}empty hand.",
-                label.as_ref()
-            ))));
+            return Err(Ok(
+                bhv.whisper(format!("{}empty hand.", label.as_ref()))
+            ));
         }
 
         if (hand.len() - 1) < n {
@@ -1042,10 +1038,8 @@ impl ShinEn {
             let hand = if let Some(x) = player.hand_to_string(&self.cards) {
                 x
             } else {
-                return Ok(bhv.whisper(format!(
-                    "{}failed get card from info.",
-                    label
-                )));
+                return Ok(bhv
+                    .whisper(format!("{}failed get card from info.", label)));
             };
 
             (String::from(player.as_name()), *player.as_uuid(), hand)
@@ -1111,10 +1105,8 @@ impl ShinEn {
             {
                 x.clone()
             } else {
-                return Ok(bhv.send(format!(
-                    "{}{} not found.",
-                    label, matches.free[0]
-                )));
+                return Ok(bhv
+                    .send(format!("{}{} not found.", label, matches.free[0])));
             };
 
             let mut player = match self.default_player_mut(
@@ -1135,10 +1127,8 @@ impl ShinEn {
             let hand = if let Some(x) = player.hand_to_string(&self.cards) {
                 x
             } else {
-                return Ok(bhv.whisper(format!(
-                    "{}failed get card from info.",
-                    label
-                )));
+                return Ok(bhv
+                    .whisper(format!("{}failed get card from info.", label)));
             };
 
             (
@@ -1191,10 +1181,9 @@ impl ShinEn {
         let player = self.default_player_mut(bhv, &label, shinen_session)?;
 
         if bhv.user.as_uuid() != player.as_user_uuid() {
-            return Err(Ok(bhv.whisper(format!(
-                "{}player not owned.",
-                label.as_ref()
-            ))));
+            return Err(Ok(
+                bhv.whisper(format!("{}player not owned.", label.as_ref()))
+            ));
         }
 
         let (card_idx, card_name) = match ShinEn::choice_hand(
@@ -1248,12 +1237,13 @@ impl ShinEn {
                     return Ok(bhv.whisper(format!("{}Inner Error.", label)));
                 };
 
-            let (player_name, player_uuid, card_name, hand) = match self.hand_pickup(
-                bhv,
-                &label,
-                &matches.free[0],
-                &mut shinen_session,
-            ) {
+            let (player_name, player_uuid, card_name, hand) = match self
+                .hand_pickup(
+                    bhv,
+                    &label,
+                    &matches.free[0],
+                    &mut shinen_session,
+                ) {
                 Err(x) => return x,
                 Ok(x) => x,
             };
@@ -1263,10 +1253,8 @@ impl ShinEn {
             let card = if let Some(x) = self.cards.get(&card_name) {
                 x
             } else {
-                return Ok(bhv.whisper(format!(
-                    "{}failed get card from info.",
-                    label
-                )));
+                return Ok(bhv
+                    .whisper(format!("{}failed get card from info.", label)));
             };
 
             (player_name, player_uuid, card.pretty(), hand)
@@ -1326,12 +1314,13 @@ impl ShinEn {
                     return Ok(bhv.whisper(format!("{}Inner Error.", label)));
                 };
 
-            let (player_name, player_uuid, card_name, hand) = match self.hand_pickup(
-                bhv,
-                &label,
-                &matches.free[0],
-                &mut shinen_session,
-            ) {
+            let (player_name, player_uuid, card_name, hand) = match self
+                .hand_pickup(
+                    bhv,
+                    &label,
+                    &matches.free[0],
+                    &mut shinen_session,
+                ) {
                 Err(x) => return x,
                 Ok(x) => x,
             };
@@ -1341,10 +1330,8 @@ impl ShinEn {
             let card = if let Some(x) = self.cards.get(&card_name) {
                 x
             } else {
-                return Ok(bhv.whisper(format!(
-                    "{}failed get card from info.",
-                    label
-                )));
+                return Ok(bhv
+                    .whisper(format!("{}failed get card from info.", label)));
             };
 
             (player_name, player_uuid, card.pretty(), hand)
@@ -1425,10 +1412,9 @@ impl ShinEn {
                 };
 
                 if bhv.user.as_uuid() != player.as_user_uuid() {
-                    return Ok(bhv.whisper(format!(
-                        "{}player not owned.",
-                        label
-                    )));
+                    return Ok(
+                        bhv.whisper(format!("{}player not owned.", label))
+                    );
                 }
 
                 (String::from(player.as_name()), *player.as_uuid())
@@ -1504,12 +1490,13 @@ impl ShinEn {
                     return Ok(bhv.whisper(format!("{}Inner Error.", label)));
                 };
 
-            let (player_name, _player_uuid, card_name, hand) = match self.hand_pickup(
-                bhv,
-                &label,
-                &matches.free[0],
-                &mut shinen_session,
-            ) {
+            let (player_name, _player_uuid, card_name, hand) = match self
+                .hand_pickup(
+                    bhv,
+                    &label,
+                    &matches.free[0],
+                    &mut shinen_session,
+                ) {
                 Err(x) => return x,
                 Ok(x) => x,
             };

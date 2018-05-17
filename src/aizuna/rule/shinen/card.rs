@@ -207,14 +207,16 @@ mod serialize {
             }
             match self.serdever {
                 0 => Ok(super::Card {
-                    name: self.name
+                    name: self
+                        .name
                         .ok_or_else(|| {
                             Error::MissingField(String::from(
                                 "::shinen::Card::serialize::name",
                             ))
                         })?
                         .into_owned(),
-                    card_set: self.card_set
+                    card_set: self
+                        .card_set
                         .ok_or_else(|| {
                             Error::MissingField(String::from(
                                 "::shinen::Card::serialize::card_set",
@@ -242,7 +244,8 @@ mod serialize {
                     } else {
                         Vec::<Story>::default()
                     },
-                    story_desc: self.story_desc
+                    story_desc: self
+                        .story_desc
                         .map_or(String::default(), Cow::into_owned),
                     action: if let Some(x) = self.action {
                         let mut ret = Vec::<Action>::default();
@@ -258,7 +261,8 @@ mod serialize {
                     } else {
                         None
                     },
-                    damage_desc: self.damage_desc
+                    damage_desc: self
+                        .damage_desc
                         .map_or(String::default(), Cow::into_owned),
                     destiny: self.destiny,
                 }),
@@ -382,9 +386,8 @@ where
                     Error as IOError, ErrorKind as IOErrorKind, Write,
                 };
                 for v in destiny_map.values() {
-                    let _ = f.write(
-                        format!("[\"{}\"]\n", v.as_name()).as_bytes(),
-                    )?;
+                    let _ = f
+                        .write(format!("[\"{}\"]\n", v.as_name()).as_bytes())?;
                     let _ = f.write(
                         ::toml::to_string(&v)
                             .map_err(|e| {

@@ -150,7 +150,8 @@ fn main() -> Result<()> {
     env_logger::init();
     let args: Vec<String> = env::args().collect();
     let mut opts = ::getopts::Options::new();
-    let _ = opts.optflag("v", "version", "print version")
+    let _ = opts
+        .optflag("v", "version", "print version")
         .optflag("h", "help", "print this help menu")
         .optopt(
             "R",

@@ -10,16 +10,17 @@
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
-use std::collections::BTreeSet;
-use std::thread::JoinHandle;
+use std::{collections::BTreeSet, thread::JoinHandle};
 // ----------------------------------------------------------------------------
-use discord::model::Event::MessageCreate;
-use discord::model::UserId;
+use discord::model::{Event::MessageCreate, UserId};
 use toml::Value;
 // ----------------------------------------------------------------------------
-use super::super::super::{Command, MessageAelicit, Responce};
-use super::super::{Connector, ResSen};
-use super::{Config, DiscordMessage, Error, Result};
+use super::{
+    super::{
+        super::{Command, MessageAelicit, Responce}, {Connector, ResSen},
+    },
+    {Config, DiscordMessage, Error, Result},
+};
 // ----------------------------------------------------------------------------
 #[cfg(feature = "coroutine-fringe")]
 use super::super::Generator;

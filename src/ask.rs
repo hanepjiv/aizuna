@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/29
-//  @date 2018/04/12
+//  @date 2018/05/20
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -22,7 +22,7 @@ pub(crate) fn ask(msg: &str, default: bool) -> Result<bool> {
     let _ = stdout().flush()?;
     let mut line = String::new();
     let _ = stdin().read_line(&mut line)?;
-    match line.to_lowercase().trim() {
+    match line.trim().to_lowercase().as_str() {
         "" => Ok(default),
         "y" | "yes" => Ok(true),
         "n" | "no" => Ok(false),

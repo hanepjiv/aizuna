@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/09
-//  @date 2018/05/13
+//  @date 2018/05/27
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -208,7 +208,7 @@ where
         let mut batch = WriteBatch::new();
         batch.put(key_user_uuid.as_bytes(), user_uuid.to_string().as_bytes());
         batch.put(key_user.as_bytes(), &::serde_json::to_vec(&user)?);
-        let _ = db.write(batch, false)?;
+        db.write(batch, false)?;
         Ok(user)
     }
     // ========================================================================
@@ -639,7 +639,7 @@ Aizuna v{0}:
                 key_user_sessions.as_bytes(),
                 &::serde_json::to_vec(&user_sessions)?,
             );
-            let _ = self.db.write(batch, false)?;
+            self.db.write(batch, false)?;
         }
 
         list.sort_unstable_by(|lhs, rhs| rhs.as_utc().cmp(lhs.as_utc()));
@@ -726,7 +726,7 @@ Aizuna v{0}:
                 .as_bytes(),
             session.as_uuid().to_string().as_bytes(),
         );
-        let _ = self.db.write(batch, false)?;
+        self.db.write(batch, false)?;
 
         Ok(self.whisper(format!(
             "{}{} ({})",
@@ -762,7 +762,7 @@ Aizuna v{0}:
         let session_kind = match {
             let mut ret = Err(Ok(self
                 .whisper(format!("{}not found {}.", label, self.inputs[2]))));
-            for ref mut rule in rules.values_mut() {
+            for rule in rules.values_mut() {
                 println!("{}, {}", self.inputs[2], rule.as_rule_name());
                 if self.inputs[2].as_bytes() == rule.as_rule_name().as_bytes()
                 {
@@ -799,7 +799,7 @@ Aizuna v{0}:
                 .as_bytes(),
             session_uuid.to_string().as_bytes(),
         );
-        let _ = self.db.write(batch, false)?;
+        self.db.write(batch, false)?;
 
         Ok(self.send(format!("{}Session Uuid = {}", label, session_uuid,)))
     }
@@ -829,7 +829,7 @@ Aizuna v{0}:
         let _ = session.close();
         let mut batch = WriteBatch::new();
         batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
-        let _ = self.db.write(batch, false)?;
+        self.db.write(batch, false)?;
 
         Ok({
             let s = format!(
@@ -868,7 +868,7 @@ Aizuna v{0}:
         let _ = session.open();
         let mut batch = WriteBatch::new();
         batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
-        let _ = self.db.write(batch, false)?;
+        self.db.write(batch, false)?;
 
         Ok({
             let s = format!(
@@ -924,7 +924,7 @@ Aizuna v{0}:
             key_user_sessions.as_bytes(),
             &::serde_json::to_vec(&user_sessions)?,
         );
-        let _ = self.db.write(batch, false)?;
+        self.db.write(batch, false)?;
 
         Ok({
             let s = format!(
@@ -990,7 +990,7 @@ Aizuna v{0}:
             let mut batch = WriteBatch::new();
             batch
                 .put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
-            let _ = self.db.write(batch, false)?;
+            self.db.write(batch, false)?;
         }
 
         Ok({
@@ -1074,7 +1074,7 @@ Aizuna v{0}:
             key_target_user_sessions.as_bytes(),
             &::serde_json::to_vec(&target_user_sessions)?,
         );
-        let _ = self.db.write(batch, false)?;
+        self.db.write(batch, false)?;
 
         Ok({
             let s = format!(
@@ -1165,7 +1165,7 @@ Aizuna v{0}:
             key_target_user_sessions.as_bytes(),
             &::serde_json::to_vec(&target_user_sessions)?,
         );
-        let _ = self.db.write(batch, false)?;
+        self.db.write(batch, false)?;
 
         Ok(ret)
     }
@@ -1228,7 +1228,7 @@ Aizuna v{0}:
 
         let mut batch = WriteBatch::new();
         batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
-        let _ = self.db.write(batch, false)?;
+        self.db.write(batch, false)?;
 
         Ok({
             let s = format!(
@@ -1267,7 +1267,7 @@ Aizuna v{0}:
 
         let mut batch = WriteBatch::new();
         batch.put(key_session.as_bytes(), &::serde_json::to_vec(&session)?);
-        let _ = self.db.write(batch, false)?;
+        self.db.write(batch, false)?;
 
         Ok({
             let s = format!(
@@ -1370,7 +1370,7 @@ Aizuna v{0}:
             key_user_sessions.as_bytes(),
             &::serde_json::to_vec(&user_sessions)?,
         );
-        let _ = self.db.write(batch, false)?;
+        self.db.write(batch, false)?;
 
         Ok(ret)
     }

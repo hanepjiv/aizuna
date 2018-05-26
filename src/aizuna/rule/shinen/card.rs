@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2018/03/09
+//  @date 2018/05/27
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -381,7 +381,7 @@ where
             p.push(path);
             let _ = p.set_extension(EXTS_NEW_CARDS);
             info!("shinen::card::export: {:?}", p);
-            let _ = File::create(p).and_then(|mut f| {
+            File::create(p).and_then(|mut f| {
                 use std::io::{
                     Error as IOError, ErrorKind as IOErrorKind, Write,
                 };

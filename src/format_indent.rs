@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/12
-//  @date 2018/05/13
+//  @date 2018/05/27
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -19,13 +19,19 @@ use uuid::Uuid;
 /// trait FormatIndent
 pub trait FormatIndent {
     // ========================================================================
+    /// fn make_idt
+    fn make_idt(idt: usize) -> String {
+        [' '].iter().cycle().take(idt).collect()
+    }
+    // ========================================================================
     /// fn fmt_idt
     fn fmt_idt(&self, f: &mut Formatter, idt: usize) -> Result;
 }
 // ============================================================================
 impl FormatIndent for Uuid {
     fn fmt_idt(&self, f: &mut Formatter, idt: usize) -> Result {
-        write!(f, "{e:>idt0$}{}", self, e = "", idt0 = idt)
+        let s0 = <Self as FormatIndent>::make_idt(idt);
+        write!(f, "{s0}{}", self, s0 = s0)
     }
 }
 // ============================================================================
@@ -34,16 +40,17 @@ where
     T: FormatIndent,
 {
     fn fmt_idt(&self, f: &mut Formatter, idt: usize) -> Result {
+        let s0 = <Self as FormatIndent>::make_idt(idt);
         if self.is_empty() {
-            return write!(f, "{e:>idt0$}[]", e = "", idt0 = idt);
+            return write!(f, "{s0}[]", s0 = s0);
         }
-        let _ = write!(f, "{e:>idt0$}[", e = "", idt0 = idt)?;
+        write!(f, "{s0}[", s0 = s0)?;
         for i in self {
-            let _ = f.write_str("\n")?;
-            let _ = i.fmt_idt(f, idt + 2usize)?;
-            let _ = f.write_str(",")?;
+            f.write_str("\n")?;
+            i.fmt_idt(f, idt + 2usize)?;
+            f.write_str(",")?;
         }
-        write!(f, "\n{e:>idt0$}]", e = "", idt0 = idt)
+        write!(f, "\n{s0}]", s0 = s0)
     }
 }
 // ============================================================================
@@ -53,19 +60,22 @@ where
     V: Debug + FormatIndent,
 {
     fn fmt_idt(&self, f: &mut Formatter, idt: usize) -> Result {
+        let s0 = <Self as FormatIndent>::make_idt(idt);
+
         if self.is_empty() {
-            return write!(f, "{e:>idt0$}{{}}", e = "", idt0 = idt);
+            return write!(f, "{s0}{{}}", s0 = s0);
         }
-        let _ = write!(f, "{e:>idt0$}{{", e = "", idt0 = idt)?;
+
+        let s1 = <Self as FormatIndent>::make_idt(idt + 2usize);
+
+        write!(f, "{s0}{{", s0 = s0)?;
         for (k, v) in self.iter() {
-            let _ =
-                write!(f, "\n{e:>idt1$}(\n", e = "", idt1 = idt + 2usize,)?;
-            let _ = k.fmt_idt(f, idt + 4usize)?;
-            let _ = f.write_str(",\n")?;
-            let _ = v.fmt_idt(f, idt + 4usize)?;
-            let _ =
-                write!(f, ",\n{e:>idt1$}),", e = "", idt1 = idt + 2usize,)?;
+            writeln!(f, "\n{s1}(", s1 = s1)?;
+            k.fmt_idt(f, idt + 4usize)?;
+            f.write_str(",\n")?;
+            v.fmt_idt(f, idt + 4usize)?;
+            write!(f, ",\n{s1}),", s1 = s1)?;
         }
-        write!(f, "\n{e:>idt0$}}}", e = "", idt0 = idt)
+        write!(f, "\n{s0}}}", s0 = s0)
     }
 }

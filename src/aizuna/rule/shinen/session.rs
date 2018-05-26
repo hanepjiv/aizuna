@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2018/03/03
+//  @date 2018/05/27
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -51,27 +51,21 @@ impl FormatIndent for Session {
         f: &mut ::std::fmt::Formatter,
         idt: usize,
     ) -> ::std::fmt::Result {
-        let _ = write!(
+        let s0 = <Self as FormatIndent>::make_idt(idt);
+        let s1 = <Self as FormatIndent>::make_idt(idt + 2usize);
+        writeln!(
             f,
-            r##"{e:>idt0$}ShinEn {{
-{e:>idt1$}pile:         {pile:?},
-{e:>idt1$}discard:      {discard},
-{e:>idt1$}players:
-"##,
-            e = "",
-            idt0 = idt,
-            idt1 = idt + 2usize,
+            r##"{s0}ShinEn {{
+{s1}pile:         {pile:?},
+{s1}discard:      {discard},
+{s1}players:"##,
+            s0 = s0,
+            s1 = s1,
             pile = self.pile.len(),
             discard = self.discard.len(),
         )?;
-        let _ = self.players.fmt_idt(f, idt + 2usize)?;
-        write!(
-            f,
-            r##"
-{e:>idt0$}}}"##,
-            e = "",
-            idt0 = idt,
-        )
+        self.players.fmt_idt(f, idt + 2usize)?;
+        write!(f, r##"\n{s0}}}"##, s0 = s0,)
     }
 }
 // ============================================================================

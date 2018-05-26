@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2018/05/13
+//  @date 2018/05/27
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -85,18 +85,19 @@ impl FormatIndent for Player {
         f: &mut ::std::fmt::Formatter,
         idt: usize,
     ) -> ::std::fmt::Result {
+        let s0 = <Self as FormatIndent>::make_idt(idt);
+        let s1 = <Self as FormatIndent>::make_idt(idt + 2usize);
         write!(
             f,
-            r##"{e:>idt0$}Player {{
-{e:>idt1$}uuid:         {uuid},
-{e:>idt1$}user_uuid:    {user_uuid},
-{e:>idt1$}name:         {name},
-{e:>idt1$}player_type:  {player_type:?},
-{e:>idt1$}hand:         {hand}
-{e:>idt0$}}}"##,
-            e = "",
-            idt0 = idt,
-            idt1 = idt + 2usize,
+            r##"{s0}Player {{
+{s1}uuid:         {uuid},
+{s1}user_uuid:    {user_uuid},
+{s1}name:         {name},
+{s1}player_type:  {player_type:?},
+{s1}hand:         {hand}
+{s0}}}"##,
+            s0 = s0,
+            s1 = s1,
             uuid = self.uuid,
             user_uuid = self.user_uuid,
             name = self.name,

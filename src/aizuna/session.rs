@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/04
-//  @date 2018/05/13
+//  @date 2018/05/27
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -103,40 +103,32 @@ impl FormatIndent for SessionImpl {
         f: &mut ::std::fmt::Formatter,
         idt: usize,
     ) -> ::std::fmt::Result {
-        let _ = write!(
+        let s0 = <Self as FormatIndent>::make_idt(idt);
+        let s1 = <Self as FormatIndent>::make_idt(idt + 2usize);
+        writeln!(
             f,
-            r##"{e:>idt0$}Session {{
-{e:>idt1$}uuid:         {uuid},
-{e:>idt1$}create:       {create},
-{e:>idt1$}title:        {title},
-{e:>idt1$}owners:
-"##,
-            e = "",
-            idt0 = idt,
-            idt1 = idt + 2usize,
+            r##"{s0}Session {{
+{s1}uuid:       {uuid},
+{s1}create:     {create},
+{s1}title:      {title},
+{s1}owners:"##,
+            s0 = s0,
+            s1 = s1,
             uuid = self.uuid,
             create = self.with_local(),
             title = self.title,
         )?;
-        let _ = self.owners.fmt_idt(f, idt + 2usize)?;
-        let _ = write!(
+        self.owners.fmt_idt(f, idt + 2usize)?;
+        writeln!(f, r##"\n{s1}member:"##, s1 = s1,)?;
+        self.member.fmt_idt(f, idt + 2usize)?;
+        writeln!(
             f,
             r##"
-{e:>idt1$}member:
-"##,
-            e = "",
-            idt1 = idt + 2usize,
-        )?;
-        let _ = self.member.fmt_idt(f, idt + 2usize)?;
-        write!(
-            f,
-            r##"
-{e:>idt1$}open:         {open},
-{e:>idt1$}kind:         {kind},
-{e:>idt0$}}}"##,
-            e = "",
-            idt0 = idt,
-            idt1 = idt + 2usize,
+{s1}open:       {open},
+{s1}kind:       {kind},
+{s0}}}"##,
+            s0 = s0,
+            s1 = s1,
             open = self.is_open(),
             kind = self.as_rule_name(),
         )

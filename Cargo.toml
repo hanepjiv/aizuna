@@ -2,7 +2,7 @@
 # =============================================================================
 [package]
 name                    = "aizuna"
-version                 = "0.1.1"
+version                 = "0.1.2"
 authors                 = ["hanepjiv <hanepjiv@gmail.com>"]
 license                 = "MIT/Apache-2.0"
 keywords                = ["bot", "game"]
@@ -26,7 +26,7 @@ env_logger              = { default-features = false, version = "^0.5" }
 elicit                  = { default-features = false, version = "^0.7" }
 getopts                 = { default-features = false, version = "^0.2" }
 log                     = { default-features = false, version = "^0.4" }
-rand                    = { default-features =  true, version = "^0.4" }
+rand                    = { default-features =  true, version = "^0.5" }
 regex                   = { default-features =  true, version = "^1.0" }
 rusty-leveldb           = { default-features = false, version = "^0.2" }
 serde                   = { default-features = false, version = "^1.0" }

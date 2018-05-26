@@ -6,11 +6,11 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/01
-//  @date 2018/05/13
+//  @date 2018/05/27
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
-use rand::distributions::{IndependentSample, Range};
+use rand::distributions::{Distribution, Uniform};
 use regex::Regex;
 // ----------------------------------------------------------------------------
 use super::{Error, Result};
@@ -35,10 +35,10 @@ impl Dice {
             n = 99;
         }
         let mut ret = 0i64;
-        let range = Range::new(1, m + 1);
+        let between = Uniform::from(1..(m + 1));
         let mut rng = ::rand::thread_rng();
         for i in 0..n {
-            v.push(range.ind_sample(&mut rng));
+            v.push(between.sample(&mut rng));
             ret += i64::from(v[i as usize]);
         }
         (n, m, v, ret)

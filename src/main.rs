@@ -11,17 +11,16 @@
 // ////////////////////////////////////////////////////////////////////////////
 // attribute  =================================================================
 #![feature(try_trait)]
-// rustc 1.28.0-nightly (990d8aa74 2018-05-25)  -------------------------------
+// rustc 1.28.0-nightly (5bf68db6e 2018-05-28)  -------------------------------
 #![deny(
     absolute_paths_not_starting_with_crate, anonymous_parameters,
-    bare_trait_objects, box_pointers, missing_copy_implementations,
-    missing_debug_implementations, missing_docs, trivial_casts,
-    trivial_numeric_casts, unnecessary_extern_crates, unreachable_pub,
-    unsafe_code, unused_extern_crates, unused_import_braces, unused_labels,
+    bare_trait_objects, missing_copy_implementations,
+    missing_debug_implementations, missing_docs, unnecessary_extern_crates,
+    unused_extern_crates, unused_import_braces, unused_labels,
     unused_lifetimes, unused_qualifications, unused_results,
-    variant_size_differences, dead_code, deprecated,
-    duplicate_associated_type_bindings, illegal_floating_point_literal_pattern,
-    improper_ctypes, late_bound_lifetime_arguments, non_camel_case_types,
+    variant_size_differences, deprecated, duplicate_associated_type_bindings,
+    illegal_floating_point_literal_pattern, improper_ctypes,
+    late_bound_lifetime_arguments, non_camel_case_types,
     non_shorthand_field_patterns, non_snake_case, non_upper_case_globals,
     no_mangle_generic_items, overflowing_literals, path_statements,
     patterns_in_fns_without_body, plugin_as_library, private_in_public,

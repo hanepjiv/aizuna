@@ -58,7 +58,7 @@ rustup override set nightly
 ```
 
 プロジェクトフォルダ毎に toolchain を override 指定することができます。
-詳しくは `rustup` のヘルプを参照してくださし
+詳しくは `rustup` のヘルプを参照してください。
 
 ## 初回起動
 

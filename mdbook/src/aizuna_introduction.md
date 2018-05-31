@@ -23,10 +23,10 @@ rustup install nightly
 GitHubの[repository][Aizuna repository]から直接インストールします。
 
 ```shell
-rustup run nightly cargo install --git https://github.com/hanepjiv/aizuna.git
+cargo +nightly install --git https://github.com/hanepjiv/aizuna.git
 ```
 
-nightly toolchain を指定するため `rustup run nightly` が必要です。
+nightly toolchain を指定するため `+nightly` が必要です。
 
 ##### B.ソースコードからインストール
 GitHubの[repository][Aizuna repository]からソースコードを入手します。
@@ -40,8 +40,7 @@ cd asizuna
 nightlyでコンパイルすることを指示し、`cargo`コマンドでインストールします。
 
 ```shell
-rustup override set nightly
-cargo install
+cargo +nightly install
 aizuna
 ```
 
@@ -49,9 +48,17 @@ aizuna
 `cargo run`コマンドでインストールせずに実行することもできます。
 
 ```shell
-rustup override set nightly
-cargo run --release
+cargo +nightly run --release
 ```
+
+##### +nightlyの省略
+
+```shell
+rustup override set nightly
+```
+
+プロジェクトフォルダ毎に toolchain を override 指定することができます。
+詳しくは `rustup` のヘルプを参照してくださし
 
 ## 初回起動
 
@@ -70,7 +77,7 @@ create config file? "${HOME}/.config/aizuna/config.toml" [Y/n]:
 >
 > `cargo run`で起動する場合は次のように指定します。
 > ```shell
-> cargo run --release -- --root ./
+> cargo +nightly run --release -- --root ./
 > ```
 
 設定ファイルを新規作成すると、デバッグコンソールのみに接続した状態で起動します。

@@ -50,7 +50,7 @@
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
             var theme;
-            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
             if (theme === null || theme === undefined) { theme = 'light'; }
             document.body.className = theme;
             document.querySelector('html').className = theme + ' js';
@@ -99,7 +99,7 @@
                             
                         </div>
 
-                        <h1 class="menu-title">Aizuna</h1>
+                        <h1 class="menu-title">Aizuna</h1> 
 
                         <div class="right-buttons">
                             <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -182,7 +182,7 @@
 </ul>
 <a class="header" href="print.html#a動作環境" id="a動作環境"><h3>動作環境</h3></a>
 <ul>
-<li><a href="https://www.rust-lang.org">Rust</a> nightly</li>
+<li><a href="https://www.rust-lang.org">Rust</a> rustc 1.28.0-nightly (5d0631a64 2018-05-30)</li>
 </ul>
 <a class="header" href="print.html#a動作確認環境" id="a動作確認環境"><h4>動作確認環境</h4></a>
 <ul>
@@ -207,9 +207,9 @@
 </ul>
 <a class="header" href="print.html#agithub-から直接インストール" id="agithub-から直接インストール"><h5>A.GitHub から直接インストール</h5></a>
 <p>GitHubの<a href="https://github.com/hanepjiv/aizuna.git">repository</a>から直接インストールします。</p>
-<pre><code class="language-shell">rustup run nightly cargo install --git https://github.com/hanepjiv/aizuna.git
+<pre><code class="language-shell">cargo +nightly install --git https://github.com/hanepjiv/aizuna.git
 </code></pre>
-<p>nightly toolchain を指定するため <code>rustup run nightly</code> が必要です。</p>
+<p>nightly toolchain を指定するため <code>+nightly</code> が必要です。</p>
 <a class="header" href="print.html#bソースコードからインストール" id="bソースコードからインストール"><h5>B.ソースコードからインストール</h5></a>
 <p>GitHubの<a href="https://github.com/hanepjiv/aizuna.git">repository</a>からソースコードを入手します。</p>
 <pre><code class="language-shell">git clone https://github.com/hanepjiv/aizuna.git
@@ -217,15 +217,18 @@ cd asizuna
 </code></pre>
 <a class="header" href="print.html#aインストール-1" id="aインストール-1"><h6>インストール</h6></a>
 <p>nightlyでコンパイルすることを指示し、<code>cargo</code>コマンドでインストールします。</p>
-<pre><code class="language-shell">rustup override set nightly
-cargo install
+<pre><code class="language-shell">cargo +nightly install
 aizuna
 </code></pre>
 <a class="header" href="print.html#aインストールをしないで実行" id="aインストールをしないで実行"><h6>インストールをしないで実行</h6></a>
 <p><code>cargo run</code>コマンドでインストールせずに実行することもできます。</p>
-<pre><code class="language-shell">rustup override set nightly
-cargo run --release
+<pre><code class="language-shell">cargo +nightly run --release
 </code></pre>
+<a class="header" href="print.html#nightlyの省略" id="nightlyの省略"><h5>+nightlyの省略</h5></a>
+<pre><code class="language-shell">rustup override set nightly
+</code></pre>
+<p>プロジェクトフォルダ毎に toolchain を override 指定することができます。
+詳しくは <code>rustup</code> のヘルプを参照してくださし</p>
 <a class="header" href="print.html#a初回起動" id="a初回起動"><h2>初回起動</h2></a>
 <a class="header" href="print.html#a設定ファイルの新規作成" id="a設定ファイルの新規作成"><h4>設定ファイルの新規作成</h4></a>
 <p>初回起動で設定ファイルが無い場合、設定ファイルを新規作成するかを問われます。</p>
@@ -237,7 +240,7 @@ cargo run --release
 <pre><code class="language-shell">aizuna --root ./
 </code></pre>
 <p><code>cargo run</code>で起動する場合は次のように指定します。</p>
-<pre><code class="language-shell">cargo run --release -- --root ./
+<pre><code class="language-shell">cargo +nightly run --release -- --root ./
 </code></pre>
 </blockquote>
 <p>設定ファイルを新規作成すると、デバッグコンソールのみに接続した状態で起動します。</p>
@@ -762,10 +765,10 @@ maches[1] をサイコロの数 n 、 maches[2] をサイコロの種類 m と�
 コルーチンを有効化してAizunaをコンパイルする必要があります。</p>
 <p><code>--features=coroutine-fringe</code> を指定してください。</p>
 <a class="header" href="print.html#aインストールする場合" id="aインストールする場合"><h6>インストールする場合</h6></a>
-<pre><code class="language-shell">cargo install --features=coroutine-fringe
+<pre><code class="language-shell">cargo +nightly install --features=coroutine-fringe
 </code></pre>
 <a class="header" href="print.html#aインストール無しで実行する場合" id="aインストール無しで実行する場合"><h6>インストール無しで実行する場合</h6></a>
-<pre><code class="language-shell">cargo run --release --features=coroutine-fringe
+<pre><code class="language-shell">cargo +nightly run --release --features=coroutine-fringe
 </code></pre>
 <a class="header" href="print.html#a設定ファイル-1" id="a設定ファイル-1"><h5>設定ファイル</h5></a>
 <p>Aizunaがlibfringeを利用してコルーチンで動作するように、設定ファイルを書き換えてください。</p>
@@ -1240,14 +1243,6 @@ Player / GameMaster の違いで機能が制限される等の相違はありま
         
 
         
-        <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', function() {
-                window.print();
-            })
-        </script>
-        
-
-        
 
         
         <script src="searchindex.js" type="text/javascript" charset="utf-8"></script>
@@ -1263,6 +1258,16 @@ Player / GameMaster の違いで機能が制限される等の相違はありま
         <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
         
 
     </body>

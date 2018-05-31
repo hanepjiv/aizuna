@@ -29,12 +29,12 @@ AizunaはデフォルトでOSのスレッドで動作します。
 
 ###### インストールする場合
 ```shell
-cargo install --features=coroutine-fringe
+cargo +nightly install --features=coroutine-fringe
 ```
 
 ###### インストール無しで実行する場合
 ```shell
-cargo run --release --features=coroutine-fringe
+cargo +nightly run --release --features=coroutine-fringe
 ```
 
 ##### 設定ファイル

@@ -48,7 +48,7 @@ Aizuna 0.1 では 下記の接続で動作します。
 
 ### 動作環境
 
-* [Rust][Rust] nightly
+* [Rust][Rust] rustc 1.28.0-nightly (5d0631a64 2018-05-30)
 
 #### 動作確認環境
 

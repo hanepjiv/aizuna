@@ -17,9 +17,9 @@ use std::result::Result as StdResult;
 use std::sync::mpsc::RecvTimeoutError;
 use std::time::Duration;
 // ----------------------------------------------------------------------------
-#[cfg(feature = "coroutine-fringe")]
+#[cfg(feature = "coroutine_fringe")]
 use std::cell::RefCell;
-#[cfg(feature = "coroutine-fringe")]
+#[cfg(feature = "coroutine_fringe")]
 use std::collections::VecDeque;
 // ----------------------------------------------------------------------------
 use rusty_leveldb::{CompressionType, Options, WriteBatch, DB};

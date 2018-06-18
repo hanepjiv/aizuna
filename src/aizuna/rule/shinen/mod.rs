@@ -17,7 +17,8 @@ use toml::Value;
 use uuid::Uuid;
 // ============================================================================
 use super::{
-    super::{Behavior, Command, SessionKind}, Rule,
+    super::{Behavior, Command, SessionKind},
+    Rule,
 };
 pub(crate) use super::{Error, Result};
 // ----------------------------------------------------------------------------

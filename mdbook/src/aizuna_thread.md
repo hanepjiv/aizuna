@@ -25,16 +25,16 @@ AizunaはデフォルトでOSのスレッドで動作します。
 デフォルトではコルーチンは有効化されていません。
 コルーチンを有効化してAizunaをコンパイルする必要があります。
 
-`--features=coroutine-fringe` を指定してください。
+`--features=coroutine_fringe` を指定してください。
 
 ###### インストールする場合
 ```shell
-cargo +nightly install --features=coroutine-fringe
+cargo +nightly install --features=coroutine_fringe
 ```
 
 ###### インストール無しで実行する場合
 ```shell
-cargo +nightly run --release --features=coroutine-fringe
+cargo +nightly run --release --features=coroutine_fringe
 ```
 
 ##### 設定ファイル

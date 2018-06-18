@@ -19,13 +19,14 @@ use discord::model::{Event::MessageCreate, UserId};
 use toml::Value;
 // ----------------------------------------------------------------------------
 use super::{
-    super::{Command, MessageAelicit, Responce}, Connector, ResSen,
+    super::{Command, MessageAelicit, Responce},
+    Connector, ResSen,
 };
 pub(crate) use super::{Error, Result};
 // ----------------------------------------------------------------------------
 #[cfg(feature = "coroutine")]
 use self::receiver::Receiver;
-#[cfg(feature = "coroutine-fringe")]
+#[cfg(feature = "coroutine_fringe")]
 use super::Generator;
 // ----------------------------------------------------------------------------
 pub(crate) use self::config::Config;
@@ -258,7 +259,7 @@ impl Discord {
 // ============================================================================
 impl Connector for Discord {
     // ========================================================================
-    #[cfg(feature = "coroutine-fringe")]
+    #[cfg(feature = "coroutine_fringe")]
     fn gen(&self, stack: ::fringe::OsStack) -> Result<Generator> {
         let id = self.id.clone();
         let (label, discord, mut state, connection) = self.discord()?;

@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/06/07
+//  @date 2018/06/17
 
 // ////////////////////////////////////////////////////////////////////////////
 // attribute  =================================================================
@@ -49,29 +49,32 @@
 // extern  ====================================================================
 #[macro_use]
 extern crate bitflags;
-extern crate chrono;
-extern crate discord;
-#[cfg(feature = "coroutine-fringe")]
-extern crate fringe;
-extern crate getopts;
+#[macro_use]
+extern crate elicit;
 #[macro_use]
 extern crate log;
+#[macro_use]
+extern crate serde_derive;
+// ----------------------------------------------------------------------------
+extern crate chrono;
+extern crate discord;
+extern crate getopts;
 extern crate rand;
 extern crate regex;
 extern crate rusty_leveldb;
 extern crate serde;
-#[macro_use]
-extern crate serde_derive;
 extern crate serde_json;
 extern crate toml;
 extern crate uuid;
 // ----------------------------------------------------------------------------
-#[macro_use]
-extern crate elicit;
+#[cfg(feature = "coroutine_fringe")]
+extern crate fringe;
 // use  =======================================================================
-pub use self::aizuna::{Aizuna, Config};
-pub use self::error::{Error, Result};
-pub use self::format_indent::FormatIndent;
+pub use self::{
+    aizuna::{Aizuna, Config},
+    error::{Error, Result},
+    format_indent::FormatIndent,
+};
 // mod  =======================================================================
 mod aizuna;
 mod ask;

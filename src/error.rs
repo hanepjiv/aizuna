@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/06/01
+//  @date 2018/06/15
 
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
@@ -89,7 +89,7 @@ impl From<::std::io::Error> for Error {
 // ----------------------------------------------------------------------------
 impl<T> From<::std::sync::mpsc::SendError<T>> for Error {
     fn from(e: ::std::sync::mpsc::SendError<T>) -> Self {
-        Error::Send(format!("{:?}", e))
+        Error::Send(format!("{}", e))
     }
 }
 // ----------------------------------------------------------------------------
@@ -101,7 +101,7 @@ impl From<::std::num::ParseIntError> for Error {
 // ----------------------------------------------------------------------------
 impl<T> From<::std::sync::PoisonError<T>> for Error {
     fn from(e: ::std::sync::PoisonError<T>) -> Self {
-        Error::SyncPoison(format!("{:?}", e))
+        Error::SyncPoison(format!("{}", e))
     }
 }
 // ----------------------------------------------------------------------------
@@ -167,7 +167,7 @@ impl From<::elicit::Error> for Error {
 // ============================================================================
 impl ::std::fmt::Display for Error {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "{:?}", self)
+        <Self as ::std::fmt::Debug>::fmt(self, f)
     }
 }
 // ============================================================================

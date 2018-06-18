@@ -32,7 +32,7 @@ pub(crate) use super::Result;
 use self::receiver::Receiver;
 #[cfg(feature = "coroutine")]
 pub(crate) use super::Error;
-#[cfg(feature = "coroutine-fringe")]
+#[cfg(feature = "coroutine_fringe")]
 use super::Generator;
 // mod  =======================================================================
 #[cfg(feature = "coroutine")]
@@ -187,7 +187,7 @@ impl Console {
 // ============================================================================
 impl Connector for Console {
     // ========================================================================
-    #[cfg(feature = "coroutine-fringe")]
+    #[cfg(feature = "coroutine_fringe")]
     fn gen(&self, stack: ::fringe::OsStack) -> Result<Generator> {
         let mut receiver = Receiver::new();
         Ok(Generator::new(stack, move |yielder, mut command| {

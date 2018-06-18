@@ -11,16 +11,18 @@
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
 use std::{
-    collections::{BTreeMap, BTreeSet}, iter::{FromIterator, IntoIterator},
-    result::Result as StdResult, str::from_utf8_unchecked,
+    collections::{BTreeMap, BTreeSet},
+    iter::{FromIterator, IntoIterator},
+    result::Result as StdResult,
+    str::from_utf8_unchecked,
 };
 // ----------------------------------------------------------------------------
 use rusty_leveldb::{LdbIterator, WriteBatch, DB};
 use uuid::Uuid;
 // ----------------------------------------------------------------------------
 use super::{
-    rule::{Rule, RuleImpl}, Command, Config, Dice, Error, Message, Result,
-    Session, SessionImpl, User,
+    rule::{Rule, RuleImpl},
+    Command, Config, Dice, Error, Message, Result, Session, SessionImpl, User,
 };
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================

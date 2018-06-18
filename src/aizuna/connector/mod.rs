@@ -31,12 +31,12 @@ mod receiver;
 // ============================================================================
 // Fringe
 // ============================================================================
-#[cfg(feature = "coroutine-fringe")]
+#[cfg(feature = "coroutine_fringe")]
 /// type Generator
 pub(crate) type Generator =
     ::fringe::generator::Generator<Command, Responce, ::fringe::OsStack>;
 // ============================================================================
-#[cfg(feature = "coroutine-fringe")]
+#[cfg(feature = "coroutine_fringe")]
 /// Yielder
 pub(crate) type Yielder = ::fringe::generator::Yielder<Command, Responce>;
 // ////////////////////////////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ pub(crate) type ResRec = Receiver<(Responce, Option<CmdSen>)>;
 /// trait Connector
 pub trait Connector: Debug {
     // ========================================================================
-    #[cfg(feature = "coroutine-fringe")]
+    #[cfg(feature = "coroutine_fringe")]
     /// fn gen
     fn gen(&self, stack: ::fringe::OsStack) -> Result<Generator>;
     // ========================================================================

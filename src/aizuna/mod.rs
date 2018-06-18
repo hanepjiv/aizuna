@@ -6,39 +6,41 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/16
-//  @date 2018/05/27
+//  @date 2018/06/17
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
-use std::collections::BTreeMap;
-use std::iter::{FromIterator, IntoIterator};
-use std::path::PathBuf;
-use std::result::Result as StdResult;
-use std::sync::mpsc::RecvTimeoutError;
-use std::time::Duration;
+use std::{
+    collections::BTreeMap,
+    iter::{FromIterator, IntoIterator},
+    path::PathBuf,
+    result::Result as StdResult,
+    sync::mpsc::RecvTimeoutError,
+    time::Duration,
+};
 // ----------------------------------------------------------------------------
-#[cfg(feature = "coroutine-fringe")]
-use std::cell::RefCell;
-#[cfg(feature = "coroutine-fringe")]
-use std::collections::VecDeque;
+#[cfg(feature = "coroutine_fringe")]
+use std::{cell::RefCell, collections::VecDeque};
 // ============================================================================
 use rusty_leveldb::{CompressionType, Options, WriteBatch, DB};
 // ============================================================================
 pub(crate) use super::{Error, Result};
 // ============================================================================
-pub(crate) use self::behavior::Behavior;
-pub(crate) use self::command::Command;
 pub use self::config::Config;
-use self::connector::{Connector, ResRec};
-pub(crate) use self::dice::Dice;
-pub(crate) use self::message::{
-    Message, MessageAelicit, MessageEAFS, MessageEAFSField,
+pub(crate) use self::{
+    behavior::Behavior,
+    command::Command,
+    dice::Dice,
+    message::{Message, MessageAelicit, MessageEAFS, MessageEAFSField},
+    responce::Responce,
+    session::{Session, SessionImpl},
+    session_kind::SessionKind,
+    user::User,
 };
-pub(crate) use self::responce::Responce;
-use self::rule::RuleImpl;
-pub(crate) use self::session::{Session, SessionImpl};
-pub(crate) use self::session_kind::SessionKind;
-pub(crate) use self::user::User;
+use self::{
+    connector::{Connector, ResRec},
+    rule::RuleImpl,
+};
 // mod  =======================================================================
 mod behavior;
 mod command;
@@ -186,7 +188,7 @@ impl Aizuna {
         })
     }
     // ========================================================================
-    #[cfg(feature = "coroutine-fringe")]
+    #[cfg(feature = "coroutine_fringe")]
     /// fn gen
     pub(crate) fn gen(mut self, stack_size: usize) -> Result<()> {
         info!("Aizuna: Fringe");
@@ -336,30 +338,17 @@ impl Aizuna {
         Ok(())
     }
     // ========================================================================
-    #[cfg(feature = "coroutine")]
     /// fn drive
     pub fn drive(mut self) -> Result<()> {
         #[allow(unreachable_patterns)]
-        match self.config.as_driver() {
-            &Driver::Thread => self.spawn(),
-            #[cfg(feature = "coroutine-fringe")]
-            &Driver::Fringe => {
+        match *self.config.as_driver() {
+            Driver::Thread => self.spawn(),
+            #[cfg(feature = "coroutine_fringe")]
+            Driver::Fringe => {
                 let fringe_stack_size =
                     self.config.as_fringe_stack_size().clone();
                 self.gen(fringe_stack_size)
             }
-            _ => Err(Error::Aizuna(format!(
-                "unsupported driver: {:?}",
-                self.config.as_driver()
-            ))),
-        }
-    }
-    // ------------------------------------------------------------------------
-    #[cfg(not(feature = "coroutine"))]
-    /// fn drive
-    pub fn drive(mut self) -> Result<()> {
-        match *self.config.as_driver() {
-            Driver::Thread => self.spawn(),
             _ => Err(Error::Aizuna(format!(
                 "unsupported driver: {:?}",
                 self.config.as_driver()

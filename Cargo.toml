@@ -2,7 +2,7 @@
 # =============================================================================
 [package]
 name                    = "aizuna"
-version                 = "0.1.4-alpha.1"
+version                 = "0.1.5"
 authors                 = ["hanepjiv <hanepjiv@gmail.com>"]
 license                 = "MIT/Apache-2.0"
 keywords                = ["bot", "game"]
@@ -11,7 +11,7 @@ readme                  = "README.md"
 documentation           = "https://hanepjiv.github.io/aizuna/"
 homepage                = "https://hanepjiv.github.io/aizuna/"
 repository              = "https://github.com/hanepjiv/aizuna"
-publish                 = false
+publish                 = true
 # =============================================================================
 [features]
 coroutine               = []

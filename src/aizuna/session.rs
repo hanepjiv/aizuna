@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/04
-//  @date 2018/05/27
+//  @date 2018/06/19
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -26,7 +26,7 @@ use super::{Error, Result, SessionKind};
 bitflags! {
     #[derive(Serialize, Deserialize)]
     pub(crate) struct Flags: u32 {
-    const OPEN  = 0b0000_0001u32;
+        const OPEN              = 0b0000_0000_0000_0000_0000_0000_0000_0001u32;
     }
 }
 // ============================================================================

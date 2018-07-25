@@ -23,8 +23,9 @@ use super::{Error, Result};
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 /// enum PlayerType
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize,
-         Deserialize)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize,
+)]
 pub(crate) enum PlayerType {
     /// Player
     Player,

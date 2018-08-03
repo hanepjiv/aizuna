@@ -213,16 +213,14 @@ mod serialize {
                             Error::MissingField(String::from(
                                 "::shinen::Card::serialize::name",
                             ))
-                        })?
-                        .into_owned(),
+                        })?.into_owned(),
                     card_set: self
                         .card_set
                         .ok_or_else(|| {
                             Error::MissingField(String::from(
                                 "::shinen::Card::serialize::card_set",
                             ))
-                        })?
-                        .parse()?,
+                        })?.parse()?,
                     color: if let Some(x) = self.color {
                         Some(x.parse()?)
                     } else {
@@ -365,8 +363,7 @@ where
                     let mut input = String::new();
                     let _ = f.read_to_string(&mut input)?;
                     Ok(input)
-                })?
-                .as_str(),
+                })?.as_str(),
         )?;
         if cfg!(debug_assertions) {
             // export
@@ -386,8 +383,9 @@ where
                     Error as IOError, ErrorKind as IOErrorKind, Write,
                 };
                 for v in destiny_map.values() {
-                    let _ = f
-                        .write(format!("[\"{}\"]\n", v.as_name()).as_bytes())?;
+                    let _ = f.write(
+                        format!("[\"{}\"]\n", v.as_name()).as_bytes(),
+                    )?;
                     let _ = f.write(
                         ::toml::to_string(&v)
                             .map_err(|e| {
@@ -395,8 +393,7 @@ where
                                     IOErrorKind::Other,
                                     format!("toml::to_string: {:?}", e),
                                 )
-                            })?
-                            .as_bytes(),
+                            })?.as_bytes(),
                     )?;
                     let _ = f.write(b"\n")?;
                 }

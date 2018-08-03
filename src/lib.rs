@@ -6,13 +6,13 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/07/25
+//  @date 2018/08/03
 
 // ////////////////////////////////////////////////////////////////////////////
 // attribute  =================================================================
 #![feature(try_trait)]
 // ----------------------------------------------------------------------------
-// rustc 1.29.0-nightly (6a1c0637c 2018-07-23)
+// rustc 1.29.0-nightly (97085f9fb 2018-08-01)
 #![deny(
     absolute_paths_not_starting_with_crate,
     anonymous_parameters,
@@ -23,6 +23,8 @@
     missing_copy_implementations,
     missing_debug_implementations,
     missing_docs,
+    question_mark_macro_sep,
+    unstable_features,
     unused_extern_crates,
     unused_import_braces,
     unused_labels,
@@ -92,12 +94,7 @@
     safe_extern_statics,
     unknown_crate_types,
 )]
-#![warn(
-    dead_code,
-    renamed_and_removed_lints,
-    unstable_features,
-    unreachable_pub
-)]
+#![warn(dead_code, renamed_and_removed_lints, unreachable_pub)]
 #![allow(
     box_pointers,
     elided_lifetimes_in_paths,

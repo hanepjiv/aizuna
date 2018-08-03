@@ -316,8 +316,7 @@ mod serialize {
                         Error::MissingField(String::from(
                             "SessionImpl::serialize::uuid",
                         ))
-                    })?
-                    .into_owned(),
+                    })?.into_owned(),
                 utc: self.utc.map_or(Utc::now(), Cow::into_owned),
                 owners: self
                     .owners
@@ -335,8 +334,7 @@ mod serialize {
                         Error::MissingField(String::from(
                             "SessionImpl::serialize::kind",
                         ))
-                    })?
-                    .into_owned(),
+                    })?.into_owned(),
             })
         }
     }

@@ -134,8 +134,7 @@ mod serialize {
                     Error::MissingField(String::from(
                         "::aizuna::SessionKind::serialize::rule",
                     ))
-                })?
-                .into_owned();
+                })?.into_owned();
             let dump = self.dump.ok_or_else(|| {
                 Error::MissingField(String::from(
                     "::aizuna::SessionKind::serialize::dump",

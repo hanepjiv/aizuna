@@ -2,16 +2,22 @@
 # =============================================================================
 [package]
 name                    = "aizuna"
-version                 = "0.1.6-alpha.1"
+version                 = "0.1.6-alpha.2"
 authors                 = ["hanepjiv <hanepjiv@gmail.com>"]
 license                 = "MIT/Apache-2.0"
 keywords                = ["bot", "game"]
 description             = "Chat BOT."
 readme                  = "README.md"
-documentation           = "https://hanepjiv.github.io/aizuna/"
+documentation           = "https://docs.rs/aizuna/"
+repository              = "https://github.com/hanepjiv/aizuna/"
 homepage                = "https://hanepjiv.github.io/aizuna/"
-repository              = "https://github.com/hanepjiv/aizuna"
-exclude                 = [ "rungibo.sh",
+include                 = [ "Cargo.toml",
+                            "build.rs",
+                            "src/**/*.rs",
+                            "crates-io.md",
+                            "README.md",
+                            "LICENSE-APACHE-2.0",
+                            "LICENSE-MIT"
                             ]
 publish                 = false
 # =============================================================================
@@ -27,6 +33,7 @@ dirs                    = { default-features = false, version = "^1.0" }
 discord                 = { default-features = false, version = "^0.8" }
 env_logger              = { default-features = false, version = "^0.5" }
 elicit                  = { default-features = false, version = "^0.7" }
+#elicit                  = { default-features = false, path = "../../elicit-rs/orig" }
 getopts                 = { default-features = false, version = "^0.2" }
 log                     = { default-features = false, version = "^0.4" }
 rand                    = { default-features =  true, version = "^0.5" }
@@ -52,8 +59,8 @@ default-features        = false
 version                 = "^0.6"
 features                = ["v4", "serde"]
 # =============================================================================
-[replace."elicit:0.7.5"]
+[replace."elicit:0.7.6"]
 default-features        = false
-git                     = "https://github.com/hanepjiv/elicit-rs.git"
-tag                     = "v0.7.5+nightly"
-#path                    = "../../elicit-rs/orig"
+git                    = "https://github.com/hanepjiv/elicit-rs.git"
+tag                    = "v0.7.6+nightly"
+#path                     = "../../elicit-rs/orig"

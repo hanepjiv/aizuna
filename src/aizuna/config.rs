@@ -156,9 +156,10 @@ impl Config {
                 true,
             )? {
                 ::std::fs::create_dir_all(path_root.as_path())?;
-                let _ = File::create(path_config.as_path()).and_then(
-                    |mut f| Ok(f.write(CONFIG_DEFAULT.as_bytes())?),
-                )?;
+                let _ =
+                    File::create(path_config.as_path()).and_then(|mut f| {
+                        Ok(f.write(CONFIG_DEFAULT.as_bytes())?)
+                    })?;
             } else {
                 return Err(Error::NoConfig);
             }
@@ -176,8 +177,7 @@ impl Config {
                     let mut input = String::new();
                     let _ = f.read_to_string(&mut input)?;
                     Ok(input)
-                })?
-                .as_str(),
+                })?.as_str(),
         )?;
         if config.path_db.is_relative() {
             let mut path_db = path_root.clone();

@@ -142,8 +142,7 @@ impl Discord {
                         ).as_str(),
                         "",
                         false,
-                    )
-                    .map_err(Error::Discord)
+                    ).map_err(Error::Discord)
             } else {
                 Err(Error::Downcast(format!("Discord::connect: {}", label)))
             }
@@ -177,8 +176,7 @@ impl Discord {
                 ).as_str(),
                 "",
                 false,
-            )
-            .map_err(Error::Discord)?;
+            ).map_err(Error::Discord)?;
         Ok(Responce::Yield)
     }
     // ------------------------------------------------------------------------
@@ -240,10 +238,8 @@ impl Discord {
                         .iter()
                         .filter(|chan| {
                             chan.kind == ::discord::model::ChannelType::Text
-                        })
-                        .count()
-                })
-                .sum();
+                        }).count()
+                }).sum();
             println!(
                 "{}Ready: {}: {} servers with {} text channels",
                 label,

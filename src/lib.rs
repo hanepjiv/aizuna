@@ -24,7 +24,6 @@
     missing_debug_implementations,
     missing_docs,
     question_mark_macro_sep,
-    unstable_features,
     unused_extern_crates,
     unused_import_braces,
     unused_labels,
@@ -94,7 +93,12 @@
     safe_extern_statics,
     unknown_crate_types,
 )]
-#![warn(dead_code, renamed_and_removed_lints, unreachable_pub)]
+#![warn(
+    dead_code,
+    renamed_and_removed_lints,
+    unreachable_pub,
+    unstable_features,
+)]
 #![allow(
     box_pointers,
     elided_lifetimes_in_paths,

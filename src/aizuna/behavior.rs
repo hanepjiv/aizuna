@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/09
-//  @date 2018/05/27
+//  @date 2018/08/22
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -51,7 +51,7 @@ impl<'a, 'b> ::std::fmt::Debug for Behavior<'a, 'b>
 where
     'b: 'a,
 {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
         write!(
             f,
             r##"Behavior {{

@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/27
-//  @date 2018/05/27
+//  @date 2018/08/22
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -16,6 +16,7 @@ use std::{collections::BTreeSet, thread::JoinHandle};
 use std::sync::mpsc::TryRecvError;
 // ----------------------------------------------------------------------------
 use discord::model::{Event::MessageCreate, UserId};
+use log::debug;
 use toml::Value;
 // ----------------------------------------------------------------------------
 use super::{

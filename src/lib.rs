@@ -6,24 +6,32 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/08/03
+//  @date 2018/08/22
 
 // ////////////////////////////////////////////////////////////////////////////
 // attribute  =================================================================
 #![feature(try_trait)]
 // ----------------------------------------------------------------------------
-// rustc 1.29.0-nightly (97085f9fb 2018-08-01)
+// rustc 1.30.0-nightly (33b923fd4 2018-08-18)
 #![deny(
     absolute_paths_not_starting_with_crate,
     anonymous_parameters,
     async_idents,
     bare_trait_objects,
+    box_pointers,
+    elided_lifetimes_in_paths,
     ellipsis_inclusive_range_patterns,
     macro_use_extern_crate,
     missing_copy_implementations,
     missing_debug_implementations,
     missing_docs,
     question_mark_macro_sep,
+    single_use_lifetimes,
+    trivial_casts,
+    trivial_numeric_casts,
+    unreachable_pub,
+    unsafe_code,
+    unstable_features,
     unused_extern_crates,
     unused_import_braces,
     unused_labels,
@@ -31,6 +39,7 @@
     unused_qualifications,
     unused_results,
     variant_size_differences,
+    dead_code,
     deprecated,
     duplicate_associated_type_bindings,
     illegal_floating_point_literal_pattern,
@@ -50,6 +59,7 @@
     private_no_mangle_fns,
     private_no_mangle_statics,
     proc_macro_derive_resolution_fallback,
+    renamed_and_removed_lints,
     safe_packed_borrows,
     stable_features,
     trivial_bounds,
@@ -108,13 +118,9 @@
     unsafe_code
 )]
 // extern  ====================================================================
-#[macro_use]
 extern crate bitflags;
-#[macro_use]
 extern crate elicit;
-#[macro_use]
 extern crate log;
-#[macro_use]
 extern crate serde_derive;
 // ----------------------------------------------------------------------------
 extern crate chrono;

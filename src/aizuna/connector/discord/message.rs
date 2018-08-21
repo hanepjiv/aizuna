@@ -6,11 +6,13 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/04
-//  @date 2018/04/28
+//  @date 2018/08/22
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
 use std::any::Any as StdAny;
+// ----------------------------------------------------------------------------
+use elicit::enable_aelicit_from_self_delegate;
 // ----------------------------------------------------------------------------
 use super::super::super::{
     Message, MessageAelicit, MessageEAFS, MessageEAFSField,

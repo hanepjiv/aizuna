@@ -6,15 +6,18 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/10
-//  @date 2018/05/13
+//  @date 2018/08/22
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
 use std::{any::Any as StdAny, fmt::Debug};
+// ----------------------------------------------------------------------------
+use elicit::aelicit_define;
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
 #[allow(unreachable_pub)]
 aelicit_define!(aelicit_message, Message);
+// ----------------------------------------------------------------------------
 pub(crate) use self::aelicit_message::{
     Aelicit as MessageAelicit,
     EnableAelicitFromSelf as MessageEAFS,

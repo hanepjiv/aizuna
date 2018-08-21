@@ -6,12 +6,13 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2018/05/27
+//  @date 2018/08/22
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
 use std::{path::Path, result::Result as StdResult};
 // ============================================================================
+use log::info;
 use rusty_leveldb::WriteBatch;
 use toml::Value;
 use uuid::Uuid;

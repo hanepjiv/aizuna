@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2018/08/22
+//  @date 2018/08/27
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -57,7 +57,8 @@ impl FormatIndent for Session {
         let s1 = <Self as FormatIndent>::make_idt(idt + 2usize);
         writeln!(
             f,
-            r##"{s0}ShinEn {{
+            r##"
+{s0}ShinEn {{
 {s1}pile:         {pile:?},
 {s1}discard:      {discard},
 {s1}players:"##,
@@ -66,8 +67,14 @@ impl FormatIndent for Session {
             pile = self.pile.len(),
             discard = self.discard.len(),
         )?;
-        self.players.fmt_idt(f, idt + 2usize)?;
-        write!(f, r##"\n{s0}}}"##, s0 = s0,)
+        self.players.fmt_idt(f, idt + 4usize)?;
+        write!(
+            f,
+            r##"
+{s0}}}
+"##,
+            s0 = s0,
+        )
     }
 }
 // ============================================================================

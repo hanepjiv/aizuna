@@ -2,7 +2,7 @@
 # =============================================================================
 [package]
 name                    = "aizuna"
-version                 = "0.1.7-alpha.0"
+version                 = "0.1.7-alpha.1"
 authors                 = ["hanepjiv <hanepjiv@gmail.com>"]
 license                 = "MIT/Apache-2.0"
 keywords                = ["bot", "game"]
@@ -56,11 +56,11 @@ optional                = true
 # -----------------------------------------------------------------------------
 [dependencies.uuid]
 default-features        = false
-version                 = "^0.6"
+version                 = "^0.7"
 features                = ["v4", "serde"]
 # =============================================================================
 [replace."elicit:0.7.6"]
-default-features       = false
-git                    = "https://github.com/hanepjiv/elicit-rs.git"
-tag                    = "v0.7.6+nightly"
-#path                   = "../../elicit-rs/orig"
+default-features        = false
+git                     = "https://github.com/hanepjiv/elicit-rs.git"
+tag                     = "v0.7.6+nightly"
+#path                    = "../../elicit-rs/orig"

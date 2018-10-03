@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/06/15
+//  @date 2018/10/03
 
 // ////////////////////////////////////////////////////////////////////////////
 // ============================================================================
@@ -32,7 +32,7 @@ pub enum Error {
     /// Utf8
     Utf8(::std::str::Utf8Error),
     /// UuidParse
-    UuidParse(::uuid::ParseError),
+    UuidParse(::uuid::parser::ParseError),
     /// Regex
     Regex(::regex::Error),
     /// GetOpts
@@ -111,8 +111,8 @@ impl From<::std::str::Utf8Error> for Error {
     }
 }
 // ----------------------------------------------------------------------------
-impl From<::uuid::ParseError> for Error {
-    fn from(e: ::uuid::ParseError) -> Self {
+impl From<::uuid::parser::ParseError> for Error {
+    fn from(e: ::uuid::parser::ParseError) -> Self {
         Error::UuidParse(e)
     }
 }

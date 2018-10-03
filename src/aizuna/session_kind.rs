@@ -136,22 +136,25 @@ mod serialize {
                     Error::MissingField(String::from(
                         "::aizuna::SessionKind::serialize::rule",
                     ))
-                })?.into_owned();
+                })?
+                .into_owned();
             let dump = self.dump.ok_or_else(|| {
                 Error::MissingField(String::from(
                     "::aizuna::SessionKind::serialize::dump",
                 ))
             })?;
             match rule.as_str() {
-                "shinen" => if let Ok(x) =
-                    ::serde_json::from_str::<ShinEnSession>(&dump)
-                {
-                    Ok(super::SessionKind::ShinEn(x))
-                } else {
-                    Err(Error::Aizuna(String::from(
+                "shinen" => {
+                    if let Ok(x) =
+                        ::serde_json::from_str::<ShinEnSession>(&dump)
+                    {
+                        Ok(super::SessionKind::ShinEn(x))
+                    } else {
+                        Err(Error::Aizuna(String::from(
                         "::aizuna::SessionKind::serialize: unsupported kind.",
                     )))
-                },
+                    }
+                }
                 _ => Err(Error::Aizuna(format!(
                     "::aizuna::SessionKind::serialize: unsupported kind. {}",
                     rule

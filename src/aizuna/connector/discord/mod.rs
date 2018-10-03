@@ -140,10 +140,12 @@ impl Discord {
                                 .take(DISCORD_MAX_LENGTH)
                                 .collect::<String>(),
                             m.author.mention()
-                        ).as_str(),
+                        )
+                        .as_str(),
                         "",
                         false,
-                    ).map_err(Error::Discord)
+                    )
+                    .map_err(Error::Discord)
             } else {
                 Err(Error::Downcast(format!("Discord::connect: {}", label)))
             }
@@ -174,10 +176,12 @@ impl Discord {
                     "{}\n\t{}",
                     &s.chars().take(DISCORD_MAX_LENGTH).collect::<String>(),
                     user_id.mention()
-                ).as_str(),
+                )
+                .as_str(),
                 "",
                 false,
-            ).map_err(Error::Discord)?;
+            )
+            .map_err(Error::Discord)?;
         Ok(Responce::Yield)
     }
     // ------------------------------------------------------------------------
@@ -239,8 +243,10 @@ impl Discord {
                         .iter()
                         .filter(|chan| {
                             chan.kind == ::discord::model::ChannelType::Text
-                        }).count()
-                }).sum();
+                        })
+                        .count()
+                })
+                .sum();
             println!(
                 "{}Ready: {}: {} servers with {} text channels",
                 label,

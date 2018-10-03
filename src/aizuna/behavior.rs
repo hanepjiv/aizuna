@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/09
-//  @date 2018/08/22
+//  @date 2018/10/03
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -408,17 +408,20 @@ Aizuna v{0}:
             b"database" => self.on_database()?,
             b"greeting" => self.on_greeting(config)?,
             b"session" | b"s" => self.on_session(rules)?,
-            _ => if let Ok(cmd) = self.on_rules(rules) {
-                cmd
-            } else if let Ok((n, m, v, ret)) = dice.parse(&self.inputs[0]) {
-                self.send(format!("{}d{} = {:?} = {}.", n, m, v, ret,))
-            } else {
-                self.whisper(format!(
-                    "unsupported command: {}. See {}help.",
-                    self.inputs[0],
-                    config.as_prefix(),
-                ))
-            },
+            _ => {
+                if let Ok(cmd) = self.on_rules(rules) {
+                    cmd
+                } else if let Ok((n, m, v, ret)) = dice.parse(&self.inputs[0])
+                {
+                    self.send(format!("{}d{} = {:?} = {}.", n, m, v, ret,))
+                } else {
+                    self.whisper(format!(
+                        "unsupported command: {}. See {}help.",
+                        self.inputs[0],
+                        config.as_prefix(),
+                    ))
+                }
+            }
         }))
     }
     // ========================================================================

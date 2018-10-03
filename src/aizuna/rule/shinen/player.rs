@@ -282,14 +282,16 @@ mod serialize {
                         Error::MissingField(String::from(
                             "::shinen::Player::serialize::uuid",
                         ))
-                    })?.into_owned(),
+                    })?
+                    .into_owned(),
                 user_uuid: self
                     .user_uuid
                     .ok_or_else(|| {
                         Error::MissingField(String::from(
                             "::shinen::Player::serialize::user_uuid",
                         ))
-                    })?.into_owned(),
+                    })?
+                    .into_owned(),
                 name: self.name.map_or(String::default(), Cow::into_owned),
                 player_type: self
                     .player_type
@@ -297,7 +299,8 @@ mod serialize {
                         Error::MissingField(String::from(
                             "::shinen::Player::serialize::player_type",
                         ))
-                    })?.into_owned(),
+                    })?
+                    .into_owned(),
                 hand: self.hand.map_or(Hand::default(), Cow::into_owned),
             })
         }

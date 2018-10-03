@@ -179,7 +179,8 @@ impl Config {
                     let mut input = String::new();
                     let _ = f.read_to_string(&mut input)?;
                     Ok(input)
-                })?.as_str(),
+                })?
+                .as_str(),
         )?;
         if config.path_db.is_relative() {
             let mut path_db = path_root.clone();

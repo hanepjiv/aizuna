@@ -6,21 +6,21 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/08/22
+//  @date 2018/09/16
 
 // ////////////////////////////////////////////////////////////////////////////
 // attribute  =================================================================
 #![feature(try_trait)]
 // ----------------------------------------------------------------------------
-// rustc 1.30.0-nightly (33b923fd4 2018-08-18)
+// rustc 1.30.0-nightly (2ab3eba30 2018-09-14)
 #![deny(
     absolute_paths_not_starting_with_crate,
     anonymous_parameters,
-    async_idents,
     bare_trait_objects,
     box_pointers,
     elided_lifetimes_in_paths,
     ellipsis_inclusive_range_patterns,
+    keyword_idents,
     macro_use_extern_crate,
     missing_copy_implementations,
     missing_debug_implementations,
@@ -68,7 +68,7 @@
     unconditional_recursion,
     unions_with_drop_fields,
     unknown_lints,
-    unnameable_test_functions,
+    unnameable_test_items,
     unreachable_code,
     unreachable_patterns,
     unstable_name_collisions,
@@ -95,19 +95,20 @@
     irrefutable_let_patterns,
     legacy_constructor_visibility,
     legacy_directory_ownership,
+    macro_expanded_macro_exports_accessed_by_absolute_paths,
     missing_fragment_specifier,
     mutable_transmutes,
     no_mangle_const_items,
     parenthesized_params_in_types_and_modules,
     pub_use_of_private_extern_crate,
     safe_extern_statics,
-    unknown_crate_types,
+    unknown_crate_types
 )]
 #![warn(
     dead_code,
     renamed_and_removed_lints,
     unreachable_pub,
-    unstable_features,
+    unstable_features
 )]
 #![allow(
     box_pointers,

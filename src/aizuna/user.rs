@@ -194,7 +194,8 @@ mod serialize {
                         Error::MissingField(String::from(
                             "::aizuna::User::serialize::uuid",
                         ))
-                    })?.into_owned(),
+                    })?
+                    .into_owned(),
                 connector_id,
                 author_id,
                 author_name,

@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2018/08/22
+//  @date 2018/09/16
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -95,7 +95,7 @@ impl Card {
     /// fn pretty
     pub(crate) fn pretty(&self) -> String {
         format!(
-            "{name} / {card_set} / 色： {color} / 星座： {constellation} / \
+            "{name} / {card_set} / 色: {color} / 星座: {constellation} / \
              数値: {value} / 叙述: {desc} / 語り部: {story:?} {story_desc} / \
              アクション: {action:?} / ダメージ: {damage} {damage_desc} / \
              運命: {destiny}",
@@ -215,14 +215,16 @@ mod serialize {
                             Error::MissingField(String::from(
                                 "::shinen::Card::serialize::name",
                             ))
-                        })?.into_owned(),
+                        })?
+                        .into_owned(),
                     card_set: self
                         .card_set
                         .ok_or_else(|| {
                             Error::MissingField(String::from(
                                 "::shinen::Card::serialize::card_set",
                             ))
-                        })?.parse()?,
+                        })?
+                        .parse()?,
                     color: if let Some(x) = self.color {
                         Some(x.parse()?)
                     } else {
@@ -365,7 +367,8 @@ where
                     let mut input = String::new();
                     let _ = f.read_to_string(&mut input)?;
                     Ok(input)
-                })?.as_str(),
+                })?
+                .as_str(),
         )?;
         if cfg!(debug_assertions) {
             // export
@@ -395,7 +398,8 @@ where
                                     IOErrorKind::Other,
                                     format!("toml::to_string: {:?}", e),
                                 )
-                            })?.as_bytes(),
+                            })?
+                            .as_bytes(),
                     )?;
                     let _ = f.write(b"\n")?;
                 }

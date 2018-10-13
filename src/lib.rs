@@ -6,31 +6,25 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/13
-//  @date 2018/09/16
+//  @date 2018/10/13
 
 // ////////////////////////////////////////////////////////////////////////////
 // attribute  =================================================================
 #![feature(try_trait)]
 // ----------------------------------------------------------------------------
-// rustc 1.30.0-nightly (2ab3eba30 2018-09-14)
+// rustc 1.31.0-nightly (2c2e2c57d 2018-10-12)
 #![deny(
     absolute_paths_not_starting_with_crate,
     anonymous_parameters,
     bare_trait_objects,
-    box_pointers,
-    elided_lifetimes_in_paths,
     ellipsis_inclusive_range_patterns,
+    explicit_outlives_requirements,
     keyword_idents,
     macro_use_extern_crate,
     missing_copy_implementations,
     missing_debug_implementations,
     missing_docs,
     question_mark_macro_sep,
-    single_use_lifetimes,
-    trivial_casts,
-    trivial_numeric_casts,
-    unreachable_pub,
-    unsafe_code,
     unstable_features,
     unused_extern_crates,
     unused_import_braces,
@@ -39,7 +33,6 @@
     unused_qualifications,
     unused_results,
     variant_size_differences,
-    dead_code,
     deprecated,
     duplicate_associated_type_bindings,
     illegal_floating_point_literal_pattern,
@@ -56,10 +49,7 @@
     patterns_in_fns_without_body,
     plugin_as_library,
     private_in_public,
-    private_no_mangle_fns,
-    private_no_mangle_statics,
     proc_macro_derive_resolution_fallback,
-    renamed_and_removed_lints,
     safe_packed_borrows,
     stable_features,
     trivial_bounds,

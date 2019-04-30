@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2018/08/22
+//  @date 2019/04/30
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -97,9 +97,9 @@ impl Rule for ShinEn {
     }
     // ========================================================================
     fn new_session_kind(&mut self) -> Result<SessionKind> {
-        use rand::{thread_rng, Rng};
+        use rand::{seq::SliceRandom, thread_rng};
         let mut pile = self.cards.keys().cloned().collect::<Vec<String>>();
-        thread_rng().shuffle(&mut pile[..]);
+        pile.shuffle(&mut thread_rng());
         Ok(SessionKind::ShinEn(Session::new(Deck::from(pile))))
     }
 }
@@ -401,7 +401,7 @@ impl ShinEn {
         }
 
         let (player_name, player_uuid) = {
-            let mut shinen_session =
+            let shinen_session =
                 if let Some(x) = session.as_kind_mut().as_shinen_mut() {
                     x
                 } else {
@@ -480,7 +480,7 @@ impl ShinEn {
         }
 
         let player_uuid = {
-            let mut shinen_session =
+            let shinen_session =
                 if let Some(x) = session.as_kind_mut().as_shinen_mut() {
                     x
                 } else {
@@ -501,7 +501,7 @@ impl ShinEn {
             };
 
             let player_uuid = {
-                let mut ret = Uuid::new_v4();
+                let ret = Uuid::new_v4();
                 loop {
                     if !shinen_session.as_players().contains_key(&ret) {
                         break;
@@ -557,7 +557,7 @@ impl ShinEn {
         let is_owner = session.as_owners().contains(bhv.user.as_uuid());
 
         let (player_name, player_uuid) = {
-            let mut shinen_session =
+            let shinen_session =
                 if let Some(x) = session.as_kind_mut().as_shinen_mut() {
                     x
                 } else {
@@ -646,16 +646,15 @@ impl ShinEn {
             return Ok(bhv.whisper(format!("{}not a member.", label)));
         }
 
-        let _target_user = match Behavior::get_user(
-            &label,
-            bhv.db,
-            &target_user_uuid,
-        ) {
-            (_x, None) => {
-                return Ok(bhv.whisper(format!("{}user not found.", label)));
-            }
-            (_x, Some(mut y)) => y,
-        };
+        let _target_user =
+            match Behavior::get_user(&label, bhv.db, &target_user_uuid) {
+                (_x, None) => {
+                    return Ok(
+                        bhv.whisper(format!("{}user not found.", label))
+                    );
+                }
+                (_x, Some(y)) => y,
+            };
 
         if !session.as_owners().contains(bhv.user.as_uuid()) {
             return Ok(bhv.whisper(format!("{}session not owned.", label)));
@@ -739,7 +738,7 @@ impl ShinEn {
                     return Ok(bhv.whisper(format!("{}Inner Error.", label)));
                 };
 
-            let mut player = match self.default_player_mut(
+            let player = match self.default_player_mut(
                 bhv,
                 &label,
                 &mut shinen_session,
@@ -803,7 +802,7 @@ impl ShinEn {
                     return Ok(bhv.whisper(format!("{}Inner Error.", label)));
                 };
 
-            let mut player = match self.default_player_mut(
+            let player = match self.default_player_mut(
                 bhv,
                 &label,
                 &mut shinen_session,
@@ -1040,7 +1039,7 @@ impl ShinEn {
                 ret
             };
 
-            let mut player = match self.default_player_mut(
+            let player = match self.default_player_mut(
                 bhv,
                 &label,
                 &mut shinen_session,
@@ -1127,11 +1126,13 @@ impl ShinEn {
             {
                 x.clone()
             } else {
-                return Ok(bhv
-                    .send(format!("{}{} not found.", label, matches.free[0])));
+                return Ok(bhv.send(format!(
+                    "{}{} not found.",
+                    label, matches.free[0]
+                )));
             };
 
-            let mut player = match self.default_player_mut(
+            let player = match self.default_player_mut(
                 bhv,
                 &label,
                 &mut shinen_session,
@@ -1424,7 +1425,7 @@ impl ShinEn {
                 };
 
             let (player_name, player_uuid) = {
-                let mut player = match self.default_player_mut(
+                let player = match self.default_player_mut(
                     bhv,
                     &label,
                     &mut shinen_session,
@@ -1452,7 +1453,7 @@ impl ShinEn {
                 }
             }
 
-            let mut ret = if let Some(x) = cards.to_string(&self.cards) {
+            let ret = if let Some(x) = cards.to_string(&self.cards) {
                 x
             } else {
                 return Ok(bhv.whisper(format!("{}unknown card.", label)));
@@ -1523,7 +1524,7 @@ impl ShinEn {
                 Ok(x) => x,
             };
 
-            let mut target_player = if let Some(x) =
+            let target_player = if let Some(x) =
                 shinen_session.as_players_mut().get_mut(&target_player_uuid)
             {
                 x

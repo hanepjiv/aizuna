@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2017/12/14
-//  @date 2018/09/16
+//  @date 2019/03/18
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -101,32 +101,40 @@ impl Card {
              運命: {destiny}",
             name = self.name,
             card_set = self.card_set.as_str(),
-            color = self.color
+            color = self
+                .color
                 .clone()
                 .map(|x| String::from(x.as_str()))
                 .unwrap_or_else(|| "-".to_string()),
-            constellation = self.constellation
+            constellation = self
+                .constellation
                 .clone()
                 .map(|x| String::from(x.as_str()))
                 .unwrap_or_else(|| "-".to_string()),
-            value = self.value.map(|x| x.to_string())
+            value = self
+                .value
+                .map(|x| x.to_string())
                 .unwrap_or_else(|| "-".to_string()),
             desc = self.desc,
-            story = self.story
+            story = self
+                .story
                 .iter()
                 .map(|x| String::from(x.as_str()))
                 .collect::<Vec<String>>(),
             story_desc = self.story_desc,
-            action = self.action
+            action = self
+                .action
                 .iter()
                 .map(|x| String::from(x.as_str()))
                 .collect::<Vec<String>>(),
-            damage = self.damage
+            damage = self
+                .damage
                 .clone()
                 .map(|x| String::from(x.as_str()))
                 .unwrap_or_else(|| "-".to_string()),
             damage_desc = self.damage_desc,
-            destiny = self.destiny
+            destiny = self
+                .destiny
                 .map(|x| x.to_string())
                 .unwrap_or_else(|| "-".to_string()),
         )
@@ -462,8 +470,8 @@ impl Deck {
     /// shuffle
     pub(crate) fn shuffle(&mut self) {
         let mut x = self.0.iter().cloned().collect::<Vec<String>>();
-        use rand::{thread_rng, Rng};
-        thread_rng().shuffle(&mut x[..]);
+        use rand::{seq::SliceRandom, thread_rng};
+        x.shuffle(&mut thread_rng());
         self.0 = VecDeque::<String>::from(x);
     }
     // ========================================================================

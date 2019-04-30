@@ -6,7 +6,7 @@
 //  @author hanepjiv <hanepjiv@gmail.com>
 //  @copyright The MIT License (MIT) / Apache License Version 2.0
 //  @since 2018/01/09
-//  @date 2018/10/03
+//  @date 2019/04/30
 
 // ////////////////////////////////////////////////////////////////////////////
 // use  =======================================================================
@@ -570,8 +570,10 @@ Aizuna v{0}:
         if let Some(ref x) = self.db.get(key) {
             self.parse_uuid(label, unsafe { from_utf8_unchecked(x) })
         } else {
-            return Err(Ok(self
-                .whisper(format!("{}default is not found.", label.as_ref()))));
+            return Err(Ok(self.whisper(format!(
+                "{}default is not found.",
+                label.as_ref()
+            ))));
         }
     }
     // ========================================================================
@@ -629,8 +631,7 @@ Aizuna v{0}:
         for v in &user_sessions {
             let key_session = Behavior::key_session(v);
             if let Some(ref x) = self.db.get(key_session.as_bytes()) {
-                let mut session = ::serde_json::from_slice::<SessionImpl>(x)?;
-                list.push(session);
+                list.push(::serde_json::from_slice::<SessionImpl>(x)?);
             }
         }
 
@@ -1385,7 +1386,7 @@ Aizuna v{0}:
         &mut self,
         rules: &'a mut BTreeMap<String, RuleImpl>,
     ) -> Result<Command> {
-        for (k, mut v) in rules.iter_mut() {
+        for (k, v) in rules.iter_mut() {
             let l = k.as_bytes().len();
             if k.as_bytes() == &(self.inputs[0].as_bytes())[..l] {
                 self.inputs[0] = String::from(unsafe {

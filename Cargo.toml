@@ -1,8 +1,9 @@
 # -*- mode:toml; coding:utf-8-unix; -*-
 # =============================================================================
 [package]
+edition                 = "2021"
 name                    = "aizuna"
-version                 = "0.1.7-alpha.2"
+version                 = "0.1.8-alpha.0"
 authors                 = ["hanepjiv <hanepjiv@gmail.com>"]
 license                 = "MIT/Apache-2.0"
 keywords                = ["bot", "game"]
@@ -28,21 +29,20 @@ coroutine_fringe        = ["coroutine", "fringe"]
 [build-dependencies]
 # =============================================================================
 [dependencies]
-bitflags                = { default-features = false, version = "^1.0" }
-dirs                    = { default-features = false, version = "^1.0" }
+bitflags                = { default-features = false, version = "^2" }
+dirs                    = { default-features = false, version = "^5" }
 discord                 = { default-features = false, version = "^0.8" }
-env_logger              = { default-features = false, version = "^0.6" }
+env_logger              = { default-features = false, version = "^0.11" }
 elicit                  = { default-features = false, version = "^0.7" }
-#elicit                  = { default-features = false, path = "../../elicit-rs/orig" }
 getopts                 = { default-features = false, version = "^0.2" }
 log                     = { default-features = false, version = "^0.4" }
-rand                    = { default-features =  true, version = "^0.6" }
-regex                   = { default-features =  true, version = "^1.0" }
-rusty-leveldb           = { default-features = false, version = "^0.2" }
-serde                   = { default-features = false, version = "^1.0" }
-serde_derive            = { default-features = false, version = "^1.0" }
-serde_json              = { default-features = false, version = "^1.0" }
-toml                    = { default-features = false, version = "^0.5" }
+rand                    = { default-features =  true, version = "^0.8" }
+regex                   = { default-features =  true, version = "^1" }
+rusty-leveldb           = { default-features = false, version = "^3" }
+serde                   = { default-features = false, version = "^1" }
+serde_derive            = { default-features = false, version = "^1" }
+serde_json              = { default-features = false, version = "^1" }
+toml                    = { default-features = false, version = "^0.8" }
 # -----------------------------------------------------------------------------
 [dependencies.chrono]
 default-features        = false
@@ -51,16 +51,10 @@ features                = ["clock", "serde"]
 # -----------------------------------------------------------------------------
 [dependencies.fringe]
 default-features        = false
-version                 = "^1.2"
+version                 = "^1"
 optional                = true
 # -----------------------------------------------------------------------------
 [dependencies.uuid]
 default-features        = false
-version                 = "^0.7"
+version                 = "^1"
 features                = ["v4", "serde"]
-# =============================================================================
-[replace."elicit:0.7.6"]
-default-features        = false
-git                     = "https://github.com/hanepjiv/elicit-rs.git"
-tag                     = "v0.7.6+nightly"
-#path                     = "../../elicit-rs/orig"

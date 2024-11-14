@@ -29,16 +29,16 @@ coroutine_fringe        = ["coroutine", "fringe"]
 # =============================================================================
 [dependencies]
 bitflags                = { default-features = false, version = "^1.0" }
-dirs                    = { default-features = false, version = "^1.0" }
+dirs                    = { default-features = false, version = "^2.0" }
 discord                 = { default-features = false, version = "^0.8" }
-env_logger              = { default-features = false, version = "^0.6" }
+env_logger              = { default-features = false, version = "^0.7" }
 elicit                  = { default-features = false, version = "^0.7" }
 #elicit                  = { default-features = false, path = "../../elicit-rs/orig" }
 getopts                 = { default-features = false, version = "^0.2" }
 log                     = { default-features = false, version = "^0.4" }
-rand                    = { default-features =  true, version = "^0.6" }
+rand                    = { default-features =  true, version = "^0.7" }
 regex                   = { default-features =  true, version = "^1.0" }
-rusty-leveldb           = { default-features = false, version = "^0.2" }
+rusty-leveldb           = { default-features = false, version = "^0.3" }
 serde                   = { default-features = false, version = "^1.0" }
 serde_derive            = { default-features = false, version = "^1.0" }
 serde_json              = { default-features = false, version = "^1.0" }
@@ -56,7 +56,7 @@ optional                = true
 # -----------------------------------------------------------------------------
 [dependencies.uuid]
 default-features        = false
-version                 = "^0.7"
+version                 = "^0.8"
 features                = ["v4", "serde"]
 # =============================================================================
 [replace."elicit:0.7.6"]
